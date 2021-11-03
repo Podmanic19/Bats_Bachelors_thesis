@@ -9,15 +9,17 @@ import static Environment.EnvironmentConstants.ATTRACTION_DISTANCE;
 
 public class Home implements Serializable {
     private int id;
+    private final Coordinate coords;
     private ArrayList<Agent> agents = new ArrayList<Agent>();
     private double pollution;
     private double attraction_distance = ATTRACTION_DISTANCE;
     private boolean attracting;
 
 
-    public Home(int id, double pollution) {
+    public Home(int id, double pollution, Coordinate coords) {
         this.id = id;
         this.pollution = pollution;
+        this.coords = coords;
     }
 
     public boolean isAttracting() {
@@ -45,26 +47,14 @@ public class Home implements Serializable {
     }
 
     public boolean decreasePollution(Agent a){
+
         if(pollution > 0){
             pollution -= a.getWorkRate();
             return true;
         }
         else{
-            Point homePoint = null;
-            ArrayList<Point> homes =  Environment.getInstance().getHomes();
-            for(Point p : homes){
-                if(p.getHome() == this){
-                    homePoint = p;
-                    break;
-                }
-            }
-            if (homePoint == null){
-                System.out.println("FATAL ERROR HOME NOT FOUND");
-                System.exit(1);
-            }
-            homePoint.deleteHome();
-            homes.remove(homePoint);
-
+            ArrayList<Home> homes =  BatEnvironment.getInstance().getHomes();
+            homes.remove(this);
             return false;
         }
     }
@@ -75,5 +65,9 @@ public class Home implements Serializable {
 
     public void setAttracting(boolean attracting) {
         this.attracting = attracting;
+    }
+
+    public Coordinate getCoords() {
+        return coords;
     }
 }

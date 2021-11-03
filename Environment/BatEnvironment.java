@@ -1,8 +1,6 @@
 package Environment;
 
 import Classes.Agent;
-import Classes.State;
-import com.sun.javafx.scene.traversal.ContainerTabOrder;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -10,40 +8,31 @@ import java.util.concurrent.ThreadLocalRandom;
 import static Classes.State.*;
 import static Environment.EnvironmentConstants.*;
 
-public class Environment {
-    private Point[][] map;
+public class BatEnvironment {
+    private Random generator;
     private ArrayList<Agent> agents = new ArrayList<>();
-    private ArrayList<Point> walls = new ArrayList<>();
-    private ArrayList<Point> homes = new ArrayList<>();
-    private static Environment instance = null;
+    private ArrayList<Vector> walls = new ArrayList<>();
+    private ArrayList<Home> homes = new ArrayList<>();
+    private static BatEnvironment instance = null;
 
-    private Environment()
+    private BatEnvironment(int seed)
     {
-        generateMap();
+        generator = new Random(seed);
         placeHomes();
         placeAgents();
     }
 
-    public static Environment getInstance()
+    public static BatEnvironment getInstance()
     {
         if (instance == null)
-            instance = new Environment();
+            instance = new BatEnvironment(5);
 
         return instance;
     }
 
-    private void generateMap() {
-        map = new Point[POINT_MAX][POINT_MAX];
-        for (int i = POINT_MIN; i < POINT_MAX; i++) {
-            for (int j = POINT_MIN; j < POINT_MAX; j++) {
-                map[i][j] = new Point(new Coordinate(i, j), generateWall(i, j));
-            }
-        }
-    }
-
     private void placeHomes(){
 
-        ArrayList<Point> flatMap = flatten();
+        ArrayList<Coordinate> flatMap = flatten();
         HashSet<Integer> possibleHomes = fillPossibleHomes(flatMap);
         int homeID = 1;
         Collections.shuffle(flatMap);
@@ -60,8 +49,8 @@ public class Environment {
             for(int j = 0; j < flatMap.size(); j++){
                 boolean remove = false;
                 if(!possibleHomes.contains(j)) continue;
-                for(Point home: homes){
-                    if(home.getCoords().cheapDistanceTo(flatMap.get(j).getCoords()) < (int) Math.pow(MIN_DISTANCE, 2)) {
+                for(Home home: homes){
+                    if(home.getCoords().cheapDistanceTo(flatMap.get(j)) < (int) Math.pow(MIN_DISTANCE, 2)) {
                         remove = true;
                         break;
                     }
@@ -71,12 +60,12 @@ public class Environment {
         }
     }
 
-    private HashSet<Integer> fillPossibleHomes(ArrayList<Point> flatMap){
+    private HashSet<Integer> fillPossibleHomes(ArrayList<Coordinate> flatMap){
 
         HashSet<Integer> possibleHomes = new HashSet<>();
 
         for(int i = 0; i < flatMap.size(); i++){
-            if(flatMap.get(i).isWall()) continue;
+            //if(flatMap.get(i).isWall()) continue;
             possibleHomes.add(i);
         }
 
@@ -84,12 +73,11 @@ public class Environment {
 
     }
 
-    private void createHome(Point p, int id){
+    private void createHome(Coordinate coord, int id){
 
         int workNeeded = ThreadLocalRandom.current().nextInt(MIN_WORK, MAX_WORK + 1);
 
-        p.setHome(new Home(id, workNeeded));
-        homes.add(p);
+        homes.add(new Home(id, workNeeded, coord));
 
     }
 
@@ -116,10 +104,10 @@ public class Environment {
         int x = ThreadLocalRandom.current().nextInt(POINT_MIN, POINT_MAX + 1);
         int y = ThreadLocalRandom.current().nextInt(POINT_MIN, POINT_MAX + 1);
 
-        while(getPoint(x,y).isWall()){
-            x = ThreadLocalRandom.current().nextInt(POINT_MIN, POINT_MAX + 1);
-            y = ThreadLocalRandom.current().nextInt(POINT_MIN, POINT_MAX + 1);
-        }
+//        while(getPoint(x,y).isWall()){
+//            x = ThreadLocalRandom.current().nextInt(POINT_MIN, POINT_MAX + 1);
+//            y = ThreadLocalRandom.current().nextInt(POINT_MIN, POINT_MAX + 1);
+//        }
 
         return new Coordinate(
                 ThreadLocalRandom.current().nextInt(POINT_MIN, POINT_MAX + 1),
@@ -128,39 +116,26 @@ public class Environment {
 
     }
 
-    private ArrayList<Point> flatten(){
+    private ArrayList<Coordinate> flatten(){
 
-        Point[] flatMap = new Point[(int) Math.pow((POINT_MAX-POINT_MIN),2)];
+        ArrayList<Coordinate> flatMap = new ArrayList<>();
         for(int i = POINT_MIN; i < POINT_MAX; i++){
-            if (POINT_MAX - POINT_MIN >= 0)
-                System.arraycopy(
-                        map[i],
-                        POINT_MIN,
-                        flatMap,
-                        i * POINT_MAX + POINT_MIN,
-                        POINT_MAX - POINT_MIN
-                );
+            for(int j = 0; j < POINT_MAX; j++){
+                flatMap.add(new Coordinate(i,j));
+            }
         }
-        return new ArrayList<>(Arrays.asList(flatMap));
-    }
-
-    public Point[][] getMap() {
-        return map;
+        return flatMap;
     }
 
     public ArrayList<Agent> getAgents() {
         return agents;
     }
 
-    public Point getPoint(int x, int y){
-        return this.map[x][y];
-    }
-
-    public ArrayList<Point> getWalls() {
+    public ArrayList<Vector> getWalls() {
         return walls;
     }
 
-    public ArrayList<Point> getHomes() {
+    public ArrayList<Home> getHomes() {
         return homes;
     }
 

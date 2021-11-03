@@ -1,9 +1,8 @@
-package Main;
+package Simulation;
 
 import Classes.Agent;
 import Environment.Coordinate;
 import Environment.Home;
-import Environment.Point;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,12 +11,12 @@ public class SimulationStep implements Serializable {
     private ArrayList<Coordinate> agent_coords = new ArrayList<>();
     private ArrayList<Coordinate> home_coords = new ArrayList<>();
 
-    public SimulationStep(ArrayList<Agent> agents, ArrayList<Point> homes) {
+    public SimulationStep(ArrayList<Agent> agents, ArrayList<Home> homes) {
         for(Agent a: agents) {
-            this.agent_coords.add(a.getPosition());
+            this.agent_coords.add(new Coordinate(a.getPosition()));
         }
-        for(Point h: homes) {
-            this.home_coords.add(h.getCoords());
+        for(Home h: homes) {
+            this.home_coords.add(new Coordinate(h.getCoords()));
         }
     }
 

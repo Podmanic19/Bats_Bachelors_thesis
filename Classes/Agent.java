@@ -1,8 +1,7 @@
 package Classes;
 
-import Environment.Environment;
+import Environment.BatEnvironment;
 import Environment.Vector;
-import Environment.Point;
 import Environment.Home;
 import Environment.Coordinate;
 
@@ -19,7 +18,7 @@ import static java.lang.Math.sqrt;
 
 public class Agent implements Serializable {
     private final int id;
-    private Point home;
+    private Home home;
     private Coordinate position;
     private Vector direction;               // vector movement
     private double speed;                   // speed - between 2 and 11.5
@@ -164,15 +163,15 @@ public class Agent implements Serializable {
     }
 
     private void checkForHomes(){
-        ArrayList<Point> attractingHomes = new ArrayList<>();
-        ArrayList<Point> notAttractingHomes = new ArrayList<>();
+        ArrayList<Home> attractingHomes = new ArrayList<>();
+        ArrayList<Home> notAttractingHomes = new ArrayList<>();
 
-        for(Point home: Environment.getInstance().getHomes()){
+        for(Home home: BatEnvironment.getInstance().getHomes()){
             double distance = this.position.distanceTo(home.getCoords());
             Vector agentToHome = new Vector(this.position, home.getCoords());
             double angle = direction.angleBetween(agentToHome);
 
-            if(home.getHome().isAttracting()){                     // if agents are attracting others to home
+            if(home.isAttracting()){                     // if agents are attracting others to home
                 if(isInAttractionDistance(distance,home) && isVisible(distance, angle)){
                         attractingHomes.add(home);
                 }
@@ -188,8 +187,8 @@ public class Agent implements Serializable {
 
     }
 
-    private boolean isInAttractionDistance(double distance, Point home){
-        return (distance < home.getHome().getAttraction_distance());
+    private boolean isInAttractionDistance(double distance, Home home){
+        return (distance < home.getAttraction_distance());
     }
 
     private boolean isVisible(double distance, double angle){
@@ -197,8 +196,8 @@ public class Agent implements Serializable {
         return (distance < sightDist && angle < fov/2);
     }
 
-    private void chooseHome(ArrayList<Point> aHomes, ArrayList<Point> nAHomes){
-        Point home;
+    private void chooseHome(ArrayList<Home> aHomes, ArrayList<Home> nAHomes){
+        Home home;
 
         if(!aHomes.isEmpty()){
             int index = ThreadLocalRandom.current().nextInt(0, aHomes.size());
@@ -219,14 +218,14 @@ public class Agent implements Serializable {
     }
 
     private void travel(){
-        if(home.getHome() == null){
+        if(home == null){
             state = searching;
             act();
         }
         else if(position.distanceTo(home.getCoords()) <= speed){
           position = new Coordinate(home.getCoords());
           state = working;
-          home.getHome().addAgent(this);
+          home.addAgent(this);
         }
         else{
             checkForHomes();
@@ -238,7 +237,7 @@ public class Agent implements Serializable {
 
     private void work(){
         speed = 0;
-        Home home = this.home.getHome();
+        Home home = this.home;
         if(home == null){
             this.home = null;
             state = searching;
