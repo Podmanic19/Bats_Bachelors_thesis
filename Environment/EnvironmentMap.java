@@ -1,31 +1,42 @@
 package Environment;
 
 import Classes.Agent;
+import Classes.AgentParams;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static Classes.State.*;
-import static Environment.EnvironmentConstants.*;
 
-public class BatEnvironment {
+public class EnvironmentMap {
+    private EnvironmentParameters envparams;
+    private AgentParams agentparams;
     private Random generator;
     private ArrayList<Agent> agents = new ArrayList<>();
     private ArrayList<Vector> walls = new ArrayList<>();
     private ArrayList<Home> homes = new ArrayList<>();
-    private static BatEnvironment instance = null;
+    private static EnvironmentMap instance = null;
 
-    private BatEnvironment(int seed)
+    private EnvironmentMap(int seed)
     {
+        envparams = new EnvironmentParameters();
         generator = new Random(seed);
         placeHomes();
         placeAgents();
     }
 
-    public static BatEnvironment getInstance()
+    public static EnvironmentMap getInstance()
     {
         if (instance == null)
-            instance = new BatEnvironment(5);
+            instance = new EnvironmentMap(0);
+
+        return instance;
+    }
+
+    public static EnvironmentMap getInstance(int seed)
+    {
+        if (instance == null)
+            instance = new EnvironmentMap(5);
 
         return instance;
     }
@@ -38,7 +49,7 @@ public class BatEnvironment {
         Collections.shuffle(flatMap);
 
         for(int i = 0; i < flatMap.size(); i++){
-            if(homes.size() == NUMBER_HOME) break;
+            if(homes.size() == envparams.NUMBER_HOME) break;
             if(possibleHomes.isEmpty()) break;
 
             if(!possibleHomes.contains(i)) continue;
@@ -50,7 +61,7 @@ public class BatEnvironment {
                 boolean remove = false;
                 if(!possibleHomes.contains(j)) continue;
                 for(Home home: homes){
-                    if(home.getCoords().cheapDistanceTo(flatMap.get(j)) < (int) Math.pow(MIN_DISTANCE, 2)) {
+                    if(home.getCoords().cheapDistanceTo(flatMap.get(j)) < (int) Math.pow(envparams.MIN_DISTANCE, 2)) {
                         remove = true;
                         break;
                     }
@@ -75,7 +86,7 @@ public class BatEnvironment {
 
     private void createHome(Coordinate coord, int id){
 
-        int workNeeded = ThreadLocalRandom.current().nextInt(MIN_WORK, MAX_WORK + 1);
+        int workNeeded = ThreadLocalRandom.current().nextInt(envparams.MIN_WORK, envparams.MAX_WORK + 1);
 
         homes.add(new Home(id, workNeeded, coord));
 
@@ -84,14 +95,14 @@ public class BatEnvironment {
     private void generateAgents(){
         agents = new ArrayList<>();
 
-        for(int i = 0; i < AGENT_NUM; i++){
+        for(int i = 0; i < envparams.AGENT_NUM; i++){
             agents.add(new Agent(i + 1, generateRandPos()));
         }
     }
 
     private boolean generateWall(int x, int y){
-        if(x == 0 || x == POINT_MAX) return true;
-        if(y == 0 || y == POINT_MAX) return true;
+        if(x == 0 || x == envparams.POINT_MAX) return true;
+        if(y == 0 || y == envparams.POINT_MAX) return true;
         return false;
     }
 
@@ -101,17 +112,12 @@ public class BatEnvironment {
 
     private Coordinate generateRandPos(){
 
-        int x = ThreadLocalRandom.current().nextInt(POINT_MIN, POINT_MAX + 1);
-        int y = ThreadLocalRandom.current().nextInt(POINT_MIN, POINT_MAX + 1);
-
-//        while(getPoint(x,y).isWall()){
-//            x = ThreadLocalRandom.current().nextInt(POINT_MIN, POINT_MAX + 1);
-//            y = ThreadLocalRandom.current().nextInt(POINT_MIN, POINT_MAX + 1);
-//        }
+        int x = ThreadLocalRandom.current().nextInt(envparams.POINT_MIN, envparams.POINT_MAX + 1);
+        int y = ThreadLocalRandom.current().nextInt(envparams.POINT_MIN, envparams.POINT_MAX + 1);
 
         return new Coordinate(
-                ThreadLocalRandom.current().nextInt(POINT_MIN, POINT_MAX + 1),
-                ThreadLocalRandom.current().nextInt(POINT_MIN, POINT_MAX + 1)
+                ThreadLocalRandom.current().nextInt(envparams.POINT_MIN, envparams.POINT_MAX + 1),
+                ThreadLocalRandom.current().nextInt(envparams.POINT_MIN, envparams.POINT_MAX + 1)
         );
 
     }
@@ -119,8 +125,8 @@ public class BatEnvironment {
     private ArrayList<Coordinate> flatten(){
 
         ArrayList<Coordinate> flatMap = new ArrayList<>();
-        for(int i = POINT_MIN; i < POINT_MAX; i++){
-            for(int j = 0; j < POINT_MAX; j++){
+        for(int i = envparams.POINT_MIN; i < envparams.POINT_MAX; i++){
+            for(int j = 0; j < envparams.POINT_MAX; j++){
                 flatMap.add(new Coordinate(i,j));
             }
         }
@@ -168,4 +174,14 @@ public class BatEnvironment {
         }
         return i;
     }
+
+    public EnvironmentParameters getEnvparams() {
+        return envparams;
+    }
+
+    public AgentParams getAgentparams() {
+        return agentparams;
+    }
 }
+
+

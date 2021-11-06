@@ -2,8 +2,8 @@ package Environment;
 
 import java.io.Serializable;
 
-import static Environment.EnvironmentConstants.POINT_MAX;
-import static Environment.EnvironmentConstants.POINT_MIN;
+import static Environment.EnvironmentParameters.POINT_MAX;
+import static Environment.EnvironmentParameters.POINT_MIN;
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Simulation.EnvSettingsController">
+   <children>
+      <Label layoutX="73.0" layoutY="64.0" text="Seed:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="73.0" layoutY="206.0" text="Number of homes">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="73.0" layoutY="157.0" text="Number of agents">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="73.0" layoutY="106.0" text="Size">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Button layoutX="274.0" layoutY="330.0" mnemonicParsing="false" onAction="#btnSaveOnAction" text="Save" />
+      <Label layoutX="73.0" layoutY="262.0" text="Equal agent spacing">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <CheckBox fx:id="spachingCheck" layoutX="441.0" layoutY="264.0" mnemonicParsing="false" />
+      <Slider fx:id="sizeSlide" layoutX="379.0" layoutY="109.0" />
+      <TextField fx:id="seedTf" layoutX="375.0" layoutY="62.0" />
+      <TextField fx:id="agentsTf" layoutX="375.0" layoutY="155.0" />
+      <TextField fx:id="homesTf" layoutX="375.0" layoutY="204.0" />
+   </children>
+</AnchorPane>

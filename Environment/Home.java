@@ -5,14 +5,12 @@ import Classes.Agent;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import static Environment.EnvironmentConstants.ATTRACTION_DISTANCE;
-
 public class Home implements Serializable {
     private int id;
     private final Coordinate coords;
     private ArrayList<Agent> agents = new ArrayList<Agent>();
     private double pollution;
-    private double attraction_distance = ATTRACTION_DISTANCE;
+    private double attraction_distance = EnvironmentMap.getInstance().getEnvparams().ATTRACTION_DISTANCE;
     private boolean attracting;
 
 
@@ -53,7 +51,7 @@ public class Home implements Serializable {
             return true;
         }
         else{
-            ArrayList<Home> homes =  BatEnvironment.getInstance().getHomes();
+            ArrayList<Home> homes =  EnvironmentMap.getInstance().getHomes();
             homes.remove(this);
             return false;
         }
