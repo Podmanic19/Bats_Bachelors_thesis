@@ -1,9 +1,8 @@
 package Environment;
-
 import java.io.Serializable;
 
-import static Environment.EnvironmentParameters.POINT_MAX;
-import static Environment.EnvironmentParameters.POINT_MIN;
+import static Main.Main.envMap;
+import static Main.Main.envparams;
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 
@@ -57,10 +56,10 @@ public class Coordinate implements Serializable {
      *
      */
     public boolean is_traversable(Coordinate b){
-        if(b.getX() < POINT_MIN || b.getY() < POINT_MIN){
+        if(b.getX() < envparams.POINT_MIN || b.getY() <  envparams.POINT_MIN){
             return false;
         }
-        else if(b.getX() > POINT_MAX || b.getY() > POINT_MAX){
+        else if(b.getX() >  envparams.POINT_MAX || b.getY() >  envparams.POINT_MAX){
             return false;
         }
         else if(false){

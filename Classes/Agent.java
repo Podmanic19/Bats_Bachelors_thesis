@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import static Classes.State.*;
+import static Main.Main.*;
 import static java.lang.Math.sqrt;
 
 public class Agent implements Serializable {
-    public static AgentParams agentparams = EnvironmentMap.getInstance().getAgentparams();
     private final int id;
     private Home home;
     private Coordinate position;
@@ -50,10 +50,10 @@ public class Agent implements Serializable {
             return;
         }
 
-        double front = agentparams.FORWARD / (double) (10000 * ThreadLocalRandom.current().nextInt(1, 10000));
-        double back  = agentparams.BACK / (double) (10000 * ThreadLocalRandom.current().nextInt(1, 10000));
-        double left  = agentparams.LEFT / (double) (10000 * ThreadLocalRandom.current().nextInt(1, 10000));
-        double right = agentparams.RIGHT / (double) (10000 * ThreadLocalRandom.current().nextInt(1, 10000));
+        double front = agentparams.FORWARD / (double) (10000 * envparams.GENERATOR.nextInt(10000) + 1);
+        double back  = agentparams.BACK / (double) (10000 * envparams.GENERATOR.nextInt(10000) + 1);
+        double left  = agentparams.LEFT / (double) (10000 * envparams.GENERATOR.nextInt(10000) + 1);
+        double right = agentparams.RIGHT / (double) (10000 * envparams.GENERATOR.nextInt(10000) + 1);
 
         Vector n = (front - back) >= 0 ? this.direction.copy() : this.direction.reverse_vec();
         Vector s = (left - right) >= 0 ? this.direction.reverse_x() : this.direction.reverse_y();
@@ -66,12 +66,12 @@ public class Agent implements Serializable {
     }
 
     private void generateRandDir(){
-        double x =  EnvironmentMap.getInstance().getEnvparams().POINT_MIN + (
-                EnvironmentMap.getInstance().getEnvparams().POINT_MAX -  EnvironmentMap.getInstance().getEnvparams().POINT_MIN)/
-                (double) 10000 * ThreadLocalRandom.current().nextInt(1, 10000);
-        double y =  EnvironmentMap.getInstance().getEnvparams().POINT_MIN + (
-                EnvironmentMap.getInstance().getEnvparams().POINT_MAX -  EnvironmentMap.getInstance().getEnvparams().POINT_MIN)/
-                (double) 10000 * ThreadLocalRandom.current().nextInt(1, 10000);
+        double x = envparams.POINT_MIN + (
+                envparams.POINT_MAX - envparams.POINT_MIN)/
+                (double) (10000 * envparams.GENERATOR.nextInt(10000) + 1);
+        double y =envparams.POINT_MIN + (
+                envparams.POINT_MAX - envparams.POINT_MIN)/
+                (double) (10000 * envparams.GENERATOR.nextInt(10000) + 1);
 
         if(direction == null) {
             direction = new Vector(x - position.getX(), y - position.getY());
@@ -101,21 +101,21 @@ public class Agent implements Serializable {
         System.out.println("PLACING AGENT" + this.id + "BACK INTO ENVIRONMENT");
         Coordinate P;
         Coordinate Q;
-        if(new_pos.getX() <=  EnvironmentMap.getInstance().getEnvparams().POINT_MIN){
-            P = new Coordinate( EnvironmentMap.getInstance().getEnvparams().POINT_MIN, EnvironmentMap.getInstance().getEnvparams().POINT_MIN);
-            Q = new Coordinate( EnvironmentMap.getInstance().getEnvparams().POINT_MIN, EnvironmentMap.getInstance().getEnvparams().POINT_MAX);
+        if(new_pos.getX() <= envparams.POINT_MIN){
+            P = new Coordinate(envparams.POINT_MIN,  envparams.POINT_MIN);
+            Q = new Coordinate(envparams.POINT_MIN, envparams.POINT_MAX);
         }
-        else if(new_pos.getX() >=  EnvironmentMap.getInstance().getEnvparams().POINT_MAX){
-            P = new Coordinate( EnvironmentMap.getInstance().getEnvparams().POINT_MAX, EnvironmentMap.getInstance().getEnvparams().POINT_MIN);
-            Q = new Coordinate( EnvironmentMap.getInstance().getEnvparams().POINT_MAX, EnvironmentMap.getInstance().getEnvparams().POINT_MAX);
+        else if(new_pos.getX() >= envparams.POINT_MAX){
+            P = new Coordinate(envparams.POINT_MAX, envparams.POINT_MIN);
+            Q = new Coordinate(envparams.POINT_MAX,envparams.POINT_MAX);
         }
-        else if(new_pos.getY() <=  EnvironmentMap.getInstance().getEnvparams().POINT_MIN){
-            P = new Coordinate( EnvironmentMap.getInstance().getEnvparams().POINT_MIN, EnvironmentMap.getInstance().getEnvparams().POINT_MIN);
-            Q = new Coordinate( EnvironmentMap.getInstance().getEnvparams().POINT_MAX, EnvironmentMap.getInstance().getEnvparams().POINT_MIN);
+        else if(new_pos.getY() <= envparams.POINT_MIN){
+            P = new Coordinate(envparams.POINT_MIN, envparams.POINT_MIN);
+            Q = new Coordinate(envparams.POINT_MAX, envparams.POINT_MIN);
         }
-        else if(new_pos.getY() >=  EnvironmentMap.getInstance().getEnvparams().POINT_MIN){
-            P = new Coordinate( EnvironmentMap.getInstance().getEnvparams().POINT_MIN, EnvironmentMap.getInstance().getEnvparams().POINT_MAX);
-            Q = new Coordinate( EnvironmentMap.getInstance().getEnvparams().POINT_MAX, EnvironmentMap.getInstance().getEnvparams().POINT_MAX);
+        else if(new_pos.getY() >= envparams.POINT_MIN){
+            P = new Coordinate(envparams.POINT_MIN,envparams.POINT_MAX);
+            Q = new Coordinate(envparams.POINT_MAX,envparams.POINT_MAX);
         }
         else{
             System.out.println("Fatal errror - couldnt place agent back into environment.");
@@ -162,7 +162,7 @@ public class Agent implements Serializable {
         ArrayList<Home> attractingHomes = new ArrayList<>();
         ArrayList<Home> notAttractingHomes = new ArrayList<>();
 
-        for(Home home: EnvironmentMap.getInstance().getHomes()){
+        for(Home home: envMap.getHomes()){
             double distance = this.position.distanceTo(home.getCoords());
             Vector agentToHome = new Vector(this.position, home.getCoords());
             double angle = direction.angleBetween(agentToHome);
@@ -196,11 +196,11 @@ public class Agent implements Serializable {
         Home home;
 
         if(!aHomes.isEmpty()){
-            int index = ThreadLocalRandom.current().nextInt(0, aHomes.size());
+            int index = envparams.GENERATOR.nextInt(aHomes.size());
             home = aHomes.get(index);
         }
         else if (!nAHomes.isEmpty()){
-            int index = ThreadLocalRandom.current().nextInt(0, nAHomes.size());
+            int index = envparams.GENERATOR.nextInt(aHomes.size());
             home = nAHomes.get(index);
         }
         else{
@@ -233,9 +233,7 @@ public class Agent implements Serializable {
 
     private void work(){
         speed = 0;
-        Home home = this.home;
         if(home == null){
-            this.home = null;
             state = searching;
             act();
             return;

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 
-<SplitPane dividerPositions="0.75" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Simulation.MainSceneController">
-   <items>
-      <Pane fx:id="paneMain" prefHeight="598.0" prefWidth="172.0" />
-      <Pane fx:id="PaneBtn" prefHeight="200.0" prefWidth="200.0">
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Simulation.MainSceneController">
+   <children>
+      <Pane fx:id="paneMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" />
+      <Pane fx:id="PaneBtn" maxHeight="800.0" maxWidth="200.0" minHeight="200.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0">
          <children>
             <Button fx:id="btnCreate" layoutX="33.0" layoutY="80.0" mnemonicParsing="false" onAction="#btnCreateEnv" prefHeight="25.0" prefWidth="128.0" text="Create environment" />
             <Button fx:id="btnEnvSettings" layoutX="34.0" layoutY="200.0" mnemonicParsing="false" onAction="#btnEnvSettings" prefHeight="25.0" prefWidth="128.0" text="Environment settings" />
@@ -15,5 +16,5 @@
             <Button fx:id="btnLoadEnv" layoutX="33.0" layoutY="440.0" mnemonicParsing="false" onAction="#btnLoad" prefHeight="25.0" prefWidth="128.0" text="Load environment" />
          </children>
       </Pane>
-   </items>
-</SplitPane>
+   </children>
+</HBox>

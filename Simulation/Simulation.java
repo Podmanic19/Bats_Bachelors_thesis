@@ -1,12 +1,19 @@
 package Simulation;
 
 import Classes.Agent;
+import Classes.AgentParams;
 import Environment.EnvironmentMap;
+import Environment.EnvironmentParameters;
+
+import static Main.Main.envMap;
 
 public class Simulation {
+    private EnvironmentParameters envparams;
+    private AgentParams agentparams;
+    private EnvironmentMap env;
 
     private void simulate() {
-        EnvironmentMap e = EnvironmentMap.getInstance();
+        EnvironmentMap e = envMap;
         while(!e.getHomes().isEmpty()) {
             System.out.println("SEARCHING: " + e.searching());
             System.out.println("TRAVELLING: " + e.traveling());

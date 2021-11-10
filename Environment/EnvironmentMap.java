@@ -1,48 +1,23 @@
 package Environment;
 
 import Classes.Agent;
-import Classes.AgentParams;
-
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
-
 import static Classes.State.*;
+import static Main.Main.envparams;
 
 public class EnvironmentMap {
-    private EnvironmentParameters envparams;
-    private AgentParams agentparams;
-    private Random generator;
     private ArrayList<Agent> agents = new ArrayList<>();
-    private ArrayList<Vector> walls = new ArrayList<>();
+    private ArrayList<LineSegment> walls = new ArrayList<>();
     private ArrayList<Home> homes = new ArrayList<>();
-    private static EnvironmentMap instance = null;
 
-    private EnvironmentMap(int seed)
-    {
-        envparams = new EnvironmentParameters();
-        generator = new Random(seed);
+    public EnvironmentMap() {
         placeHomes();
+        generateWalls();
         placeAgents();
     }
 
-    public static EnvironmentMap getInstance()
-    {
-        if (instance == null)
-            instance = new EnvironmentMap(0);
-
-        return instance;
-    }
-
-    public static EnvironmentMap getInstance(int seed)
-    {
-        if (instance == null)
-            instance = new EnvironmentMap(5);
-
-        return instance;
-    }
-
-    private void placeHomes(){
-
+    private void placeHomes() {
         ArrayList<Coordinate> flatMap = flatten();
         HashSet<Integer> possibleHomes = fillPossibleHomes(flatMap);
         int homeID = 1;
@@ -51,7 +26,6 @@ public class EnvironmentMap {
         for(int i = 0; i < flatMap.size(); i++){
             if(homes.size() == envparams.NUMBER_HOME) break;
             if(possibleHomes.isEmpty()) break;
-
             if(!possibleHomes.contains(i)) continue;
 
             createHome(flatMap.get(i), homeID++);
@@ -71,28 +45,37 @@ public class EnvironmentMap {
         }
     }
 
-    private HashSet<Integer> fillPossibleHomes(ArrayList<Coordinate> flatMap){
+    private HashSet<Integer> fillPossibleHomes(ArrayList<Coordinate> flatMap) {
 
         HashSet<Integer> possibleHomes = new HashSet<>();
 
         for(int i = 0; i < flatMap.size(); i++){
-            //if(flatMap.get(i).isWall()) continue;
             possibleHomes.add(i);
+        }
+
+        for(LineSegment wall: walls){
+            for(int i = 0; i < flatMap.size(); i++){
+                Coordinate C = flatMap.get(i);
+                if (Double.compare(wall.getA().distanceTo(C) + wall.getB().distanceTo(C), wall.length()) == 0){
+                    possibleHomes.remove(i);
+                }
+            }
         }
 
         return possibleHomes;
 
     }
 
-    private void createHome(Coordinate coord, int id){
+    private void createHome(Coordinate coord, int id) {
 
-        int workNeeded = ThreadLocalRandom.current().nextInt(envparams.MIN_WORK, envparams.MAX_WORK + 1);
-
+        int workNeeded = envparams.GENERATOR.nextInt(((envparams.POINT_MAX - 1) - 1) + 1) + 1;
         homes.add(new Home(id, workNeeded, coord));
+
+        System.out.println(coord.getX() + " " + coord.getY());
 
     }
 
-    private void generateAgents(){
+    private void generateAgents() {
         agents = new ArrayList<>();
 
         for(int i = 0; i < envparams.AGENT_NUM; i++){
@@ -100,17 +83,31 @@ public class EnvironmentMap {
         }
     }
 
-    private boolean generateWall(int x, int y){
+    private boolean generateWall(int x, int y) {
         if(x == 0 || x == envparams.POINT_MAX) return true;
         if(y == 0 || y == envparams.POINT_MAX) return true;
         return false;
+    }
+
+    private void generateWalls(){
+        walls.add(new LineSegment(new Coordinate(envparams.POINT_MIN, envparams.POINT_MIN),
+                new Coordinate(envparams.POINT_MIN, envparams.POINT_MAX)));
+
+        walls.add(new LineSegment(new Coordinate(envparams.POINT_MAX, envparams.POINT_MIN),
+                new Coordinate(envparams.POINT_MAX, envparams.POINT_MAX)));
+
+        walls.add(new LineSegment(new Coordinate(envparams.POINT_MIN, envparams.POINT_MIN),
+                new Coordinate(envparams.POINT_MAX, envparams.POINT_MIN)));
+
+        walls.add(new LineSegment(new Coordinate(envparams.POINT_MIN, envparams.POINT_MAX),
+                new Coordinate(envparams.POINT_MAX, envparams.POINT_MAX)));
     }
 
     private void placeAgents(){
         generateAgents();
     }
 
-    private Coordinate generateRandPos(){
+    private Coordinate generateRandPos() {
 
         int x = ThreadLocalRandom.current().nextInt(envparams.POINT_MIN, envparams.POINT_MAX + 1);
         int y = ThreadLocalRandom.current().nextInt(envparams.POINT_MIN, envparams.POINT_MAX + 1);
@@ -122,7 +119,7 @@ public class EnvironmentMap {
 
     }
 
-    private ArrayList<Coordinate> flatten(){
+    private ArrayList<Coordinate> flatten() {
 
         ArrayList<Coordinate> flatMap = new ArrayList<>();
         for(int i = envparams.POINT_MIN; i < envparams.POINT_MAX; i++){
@@ -137,7 +134,7 @@ public class EnvironmentMap {
         return agents;
     }
 
-    public ArrayList<Vector> getWalls() {
+    public ArrayList<LineSegment> getWalls() {
         return walls;
     }
 
@@ -145,7 +142,7 @@ public class EnvironmentMap {
         return homes;
     }
 
-    public int traveling(){
+    public int traveling() {
         int i = 0;
         for(Agent a : agents){
             if (a.getState() == traveling){
@@ -155,7 +152,7 @@ public class EnvironmentMap {
         return i;
     }
 
-    public int working(){
+    public int working() {
         int i = 0;
         for(Agent a : agents){
             if (a.getState() == working){
@@ -165,7 +162,7 @@ public class EnvironmentMap {
         return i;
     }
 
-    public int searching(){
+    public int searching() {
         int i = 0;
         for(Agent a : agents){
             if (a.getState() == searching){
@@ -173,14 +170,6 @@ public class EnvironmentMap {
             }
         }
         return i;
-    }
-
-    public EnvironmentParameters getEnvparams() {
-        return envparams;
-    }
-
-    public AgentParams getAgentparams() {
-        return agentparams;
     }
 }
 
