@@ -1,11 +1,9 @@
 package Classes;
 
 import Environment.*;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 import static Classes.State.*;
 import static Main.Main.*;
 import static java.lang.Math.sqrt;
@@ -97,42 +95,6 @@ public class Agent implements Serializable {
         }
     }
 
-    private Coordinate placeBack(Coordinate new_pos){
-        System.out.println("PLACING AGENT" + this.id + "BACK INTO ENVIRONMENT");
-        Coordinate P;
-        Coordinate Q;
-        if(new_pos.getX() <= envparams.POINT_MIN){
-            P = new Coordinate(envparams.POINT_MIN,  envparams.POINT_MIN);
-            Q = new Coordinate(envparams.POINT_MIN, envparams.POINT_MAX);
-        }
-        else if(new_pos.getX() >= envparams.POINT_MAX){
-            P = new Coordinate(envparams.POINT_MAX, envparams.POINT_MIN);
-            Q = new Coordinate(envparams.POINT_MAX,envparams.POINT_MAX);
-        }
-        else if(new_pos.getY() <= envparams.POINT_MIN){
-            P = new Coordinate(envparams.POINT_MIN, envparams.POINT_MIN);
-            Q = new Coordinate(envparams.POINT_MAX, envparams.POINT_MIN);
-        }
-        else if(new_pos.getY() >= envparams.POINT_MIN){
-            P = new Coordinate(envparams.POINT_MIN,envparams.POINT_MAX);
-            Q = new Coordinate(envparams.POINT_MAX,envparams.POINT_MAX);
-        }
-        else{
-            System.out.println("Fatal errror - couldnt place agent back into environment.");
-            System.exit(1);
-            return null;
-        }
-
-        Vector m = new Vector(position, P);
-        Vector n = new Vector(P, Q);
-
-        double a = direction.getX() * m.getY() - direction.getY() * m.getX();
-        double b = direction.getY() * n.getX() - direction.getX() * n.getY();
-        double param = a/b;
-
-        return new Coordinate((P.getX() + n.getX()*param), (P.getY() + n.getY()*param));
-    }
-
     private void move(){            // method that changes the position of the agent
         double c =  sqrt(Math.pow(this.speed,2)/
                 (Math.pow(direction.getX(),2) + Math.pow(direction.getY(),2)));
@@ -142,11 +104,13 @@ public class Agent implements Serializable {
                 position.getY()+(c*(direction.getY()))
         );
 
-        if (this.position.is_traversable(new_pos)){
+        WallCollision collision = position.checkWalls(new_pos);
+
+        if (collision.getWall() == null){               //if there are no walls between this position and the new one
             position = new_pos;
         }
-        else{                                   //TODO add clause for walls
-            position = placeBack(new_pos);
+        else{
+
         }
     }
 
@@ -200,7 +164,7 @@ public class Agent implements Serializable {
             home = aHomes.get(index);
         }
         else if (!nAHomes.isEmpty()){
-            int index = envparams.GENERATOR.nextInt(aHomes.size());
+            int index = envparams.GENERATOR.nextInt(nAHomes.size());
             home = nAHomes.get(index);
         }
         else{

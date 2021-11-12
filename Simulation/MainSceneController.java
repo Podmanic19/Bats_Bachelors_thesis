@@ -1,6 +1,6 @@
 package Simulation;
 
-import Environment.Coordinate;
+import Classes.Agent;
 import Environment.EnvironmentMap;
 import Environment.Home;
 import Environment.LineSegment;
@@ -11,8 +11,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-
-import java.awt.*;
 import java.io.IOException;
 import static Main.Main.envMap;
 import static Main.Main.envparams;
@@ -31,16 +29,19 @@ public class MainSceneController implements LoadToPane {
         System.out.println("--------------------------------------");
     }
 
-//        private void placeAgents(Pane canvas){
-//        for(Coordinate a : steps.get(0).getAgent_coords()){
-//            Circle cir = new Circle();
-//            cir.setFill(Color.RED);
-//            cir.setStroke(Color.RED);
-//            cir.setRadius(3);
-//            cir.relocate(a.getX(), a.getY());
-//            canvas.getChildren().add(cir);
-//        }
-//    }
+    public void btnPlaceAgents() {
+        double coef_h = paneMain.getHeight() / envparams.POINT_MAX;
+        double coef_w = paneMain.getWidth() / envparams.POINT_MAX;
+        for(Agent a : envMap.getAgents()) {
+            Circle cir = new Circle();
+            cir.setFill(Color.RED);
+            cir.setStroke(Color.RED);
+            cir.setRadius(3);
+            cir.setCenterX(a.getPosition().getX() * coef_w);
+            cir.setCenterY(a.getPosition().getY() * coef_h);
+            paneMain.getChildren().add(cir);
+        }
+    }
 
     private void placeHomes(Pane canvas){
         canvas.getChildren().clear();

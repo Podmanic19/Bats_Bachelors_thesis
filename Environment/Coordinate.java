@@ -1,8 +1,10 @@
 package Environment;
+
 import java.io.Serializable;
 
+import static Environment.LineSegment.doIntersect;
+import static Environment.LineSegment.intersectPoint;
 import static Main.Main.envMap;
-import static Main.Main.envparams;
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 
@@ -55,18 +57,25 @@ public class Coordinate implements Serializable {
      * between these two coordinates or whether the provided coordinate is outside the environment boundaries
      *
      */
-    public boolean is_traversable(Coordinate b){
-        if(b.getX() < envparams.POINT_MIN || b.getY() <  envparams.POINT_MIN){
-            return false;
-        }
-        else if(b.getX() >  envparams.POINT_MAX || b.getY() >  envparams.POINT_MAX){
-            return false;
-        }
-        else if(false){
-            // TODO create condition for walls
+    public WallCollision checkWalls(Coordinate b){
+
+        LineSegment AtoB = new LineSegment(this, b);            // A in line segment being current position
+        LineSegment closestWall = null;
+        Coordinate intersect = null;
+        double distanceToWall = -1;
+
+        for(LineSegment w: envMap.getWalls()){
+            if(doIntersect(w,AtoB)){
+                intersect = intersectPoint(AtoB,w);
+                double thisDistance = this.distanceTo(intersect);
+                if(distanceToWall == -1 || Double.compare(thisDistance, distanceToWall) > 0){
+                    distanceToWall = thisDistance;
+                    closestWall = w;
+                }
+            }
         }
 
-        return true;
+        return new WallCollision(closestWall, intersect);
     }
 
     @Override

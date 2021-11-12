@@ -6,9 +6,6 @@ public class Vector implements Serializable {
     private double x;
     private double y;
 
-    public Vector(){
-    }
-
     public Vector(Coordinate A, Coordinate B){
         this.x = B.getX() - A.getX();
         this.y = B.getY() - A.getY();

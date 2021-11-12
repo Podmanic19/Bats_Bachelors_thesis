@@ -2,7 +2,6 @@ package Environment;
 
 import Classes.Agent;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 import static Classes.State.*;
 import static Main.Main.envparams;
 
@@ -83,12 +82,6 @@ public class EnvironmentMap {
         }
     }
 
-    private boolean generateWall(int x, int y) {
-        if(x == 0 || x == envparams.POINT_MAX) return true;
-        if(y == 0 || y == envparams.POINT_MAX) return true;
-        return false;
-    }
-
     private void generateWalls(){
         walls.add(new LineSegment(new Coordinate(envparams.POINT_MIN, envparams.POINT_MIN),
                 new Coordinate(envparams.POINT_MIN, envparams.POINT_MAX)));
@@ -101,6 +94,11 @@ public class EnvironmentMap {
 
         walls.add(new LineSegment(new Coordinate(envparams.POINT_MIN, envparams.POINT_MAX),
                 new Coordinate(envparams.POINT_MAX, envparams.POINT_MAX)));
+
+        for(int i = 0; i < envparams.WALLS_NUM; i++){
+
+        }
+
     }
 
     private void placeAgents(){
@@ -108,13 +106,9 @@ public class EnvironmentMap {
     }
 
     private Coordinate generateRandPos() {
-
-        int x = ThreadLocalRandom.current().nextInt(envparams.POINT_MIN, envparams.POINT_MAX + 1);
-        int y = ThreadLocalRandom.current().nextInt(envparams.POINT_MIN, envparams.POINT_MAX + 1);
-
         return new Coordinate(
-                ThreadLocalRandom.current().nextInt(envparams.POINT_MIN, envparams.POINT_MAX + 1),
-                ThreadLocalRandom.current().nextInt(envparams.POINT_MIN, envparams.POINT_MAX + 1)
+                envparams.GENERATOR.nextInt(((envparams.POINT_MAX - 1) - 1) + 1) + 1,
+                envparams.GENERATOR.nextInt(((envparams.POINT_MAX - 1) - 1) + 1) + 1
         );
 
     }
