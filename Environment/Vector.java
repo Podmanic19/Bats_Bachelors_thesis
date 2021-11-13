@@ -33,15 +33,16 @@ public class Vector implements Serializable {
         return scalarProduct(B)/(this.absValue() * B.absValue());
     }
 
-    public Vector reverse_vec(){
+    public Vector reverse(){
         return new Vector(- this.x, - this.y);
     }
-    public Vector reverse_x(){
+    public Vector reverseX(){
         return new Vector(- this.x, this.y);
     }
-    public Vector reverse_y(){
+    public Vector reverseY(){
         return new Vector(this.x, - this.y);
     }
+    public Vector getNormal(){ return new Vector(- this.y, this.x); }
     public Vector copy(){
         return new Vector(this);
     }

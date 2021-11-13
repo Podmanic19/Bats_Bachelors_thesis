@@ -3,6 +3,7 @@ package Environment;
 import Classes.Agent;
 import java.util.*;
 import static Classes.State.*;
+import static Environment.LineSegment.doIntersect;
 import static Main.Main.envparams;
 
 public class EnvironmentMap {
@@ -95,8 +96,40 @@ public class EnvironmentMap {
         walls.add(new LineSegment(new Coordinate(envparams.POINT_MIN, envparams.POINT_MAX),
                 new Coordinate(envparams.POINT_MAX, envparams.POINT_MAX)));
 
-        for(int i = 0; i < envparams.WALLS_NUM; i++){
+        ArrayList<Coordinate> flatMap = flatten();
 
+        for(int i = 0; i < envparams.WALLS_NUM; i++){
+            boolean didIntersect = false;
+            int index = envparams.GENERATOR.nextInt(flatMap.size());
+            Coordinate first = flatMap.get(index);
+
+            double x1 = first.getX();
+            double y1 = first.getY();
+
+            int wallLen = envparams.GENERATOR.nextInt(envparams.WALL_LENGTH_MAX + 1 - envparams.WALL_LENGTH_MIN)
+                    + envparams.WALL_LENGTH_MIN;
+            double angle = envparams.GENERATOR.nextDouble() * Math.PI * 2;
+            double x2 = x1 + Math.cos(angle) * wallLen;
+            double y2 = y1 + Math.sin(angle) * wallLen;
+
+            x2 = x2 > envparams.POINT_MIN ? x2 : envparams.POINT_MIN;
+            y2 = y2 > envparams.POINT_MIN ? y2 : envparams.POINT_MIN;
+
+            x2 = x2 < envparams.POINT_MAX ? x2 : envparams.POINT_MAX;
+            y2 = y2 < envparams.POINT_MAX ? y2 : envparams.POINT_MAX;
+
+            Coordinate second = new Coordinate(x2, y2);
+            LineSegment wall = new LineSegment(first, second);
+
+            for(LineSegment w : walls) {
+                if (doIntersect(wall, w)){
+                    didIntersect = true;
+                    i--;
+                    break;
+                }
+            }
+
+            if(!didIntersect) walls.add(wall);
         }
 
     }

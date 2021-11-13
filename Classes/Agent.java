@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 import static Classes.State.*;
+import static Environment.LineSegment.doIntersect;
 import static Main.Main.*;
 import static java.lang.Math.sqrt;
 
@@ -53,8 +54,8 @@ public class Agent implements Serializable {
         double left  = agentparams.LEFT / (double) (10000 * envparams.GENERATOR.nextInt(10000) + 1);
         double right = agentparams.RIGHT / (double) (10000 * envparams.GENERATOR.nextInt(10000) + 1);
 
-        Vector n = (front - back) >= 0 ? this.direction.copy() : this.direction.reverse_vec();
-        Vector s = (left - right) >= 0 ? this.direction.reverse_x() : this.direction.reverse_y();
+        Vector n = (front - back) >= 0 ? this.direction.copy() : this.direction.reverse();
+        Vector s = (left - right) >= 0 ? this.direction.reverseX() : this.direction.reverseY();
 
         double frontal_dir = sqrt(Math.pow(front - back, 2) / (Math.pow(n.getX(), 2) + Math.pow(n.getY(), 2)));
         double side_dir = sqrt(Math.pow(left - right, 2) / (Math.pow(s.getX(), 2) + Math.pow(s.getY(), 2)));
@@ -95,25 +96,42 @@ public class Agent implements Serializable {
         }
     }
 
-    private void move(){            // method that changes the position of the agent
-        double c =  sqrt(Math.pow(this.speed,2)/
-                (Math.pow(direction.getX(),2) + Math.pow(direction.getY(),2)));
+    private void move(){                                 // method that changes the position of the agent
+        while(speed > 0) {
+            double c = sqrt(Math.pow(this.speed, 2) /
+                    (Math.pow(direction.getX(), 2) + Math.pow(direction.getY(), 2)));
 
-        Coordinate new_pos = new Coordinate(
-                position.getX()+(c*(direction.getX())),
-                position.getY()+(c*(direction.getY()))
-        );
+            Coordinate new_pos = new Coordinate(
+                    position.getX() + (c * (direction.getX())),
+                    position.getY() + (c * (direction.getY()))
+            );
 
-        WallCollision collision = position.checkWalls(new_pos);
+            WallCollision collision = position.checkWalls(new_pos);
 
-        if (collision.getWall() == null){               //if there are no walls between this position and the new one
-            position = new_pos;
-        }
-        else{
-
+            if (collision.getWall() == null) {          // if there are no walls between this position and the new one
+                position = new_pos;
+            } else {
+                collideWithWall(collision);
+            }
         }
     }
 
+    private void collideWithWall(WallCollision wall){
+        Vector normal = wall.getWall().asVector().getNormal();
+        double projectionCoef = (direction.scalarProduct(normal))/Math.pow((normal.absValue()), 2);
+
+        if(projectionCoef == 0){
+            direction.reverse();
+        }
+        else {
+            Vector projected = new Vector(normal.getX() * projectionCoef, normal.getY() * projectionCoef);
+            setDirection(new Vector(direction.getX() - 2 * projected.getX(),
+                    direction.getY() - 2 * projected.getY()));
+        }
+
+        this.speed -= position.distanceTo(wall.getCollisionPoint());
+        if(speed == 0) speed = 0.5 + (1 - 0.5) * envparams.GENERATOR.nextDouble();
+    }
 
     private void search(){
         checkForHomes();                        // look for nearby homes
@@ -132,28 +150,37 @@ public class Agent implements Serializable {
             double angle = direction.angleBetween(agentToHome);
 
             if(home.isAttracting()){                     // if agents are attracting others to home
-                if(isInAttractionDistance(distance,home) && isVisible(distance, angle)){
-                        attractingHomes.add(home);
+                if(isInAttractionDistance(distance,home) && isVisible(home, angle)){
+                    attractingHomes.add(home);
                 }
             }
             else{
-                if(isVisible(distance, angle)){                   //and he can see the home
+                if(isVisible(home, angle)){                   //and he can see the home
                     notAttractingHomes.add(home);
                 }
             }
         }
-
         chooseHome(attractingHomes, notAttractingHomes);
-
     }
 
     private boolean isInAttractionDistance(double distance, Home home){
-        return (distance < home.getAttraction_distance());
+        if(distance > home.getAttraction_distance()) return false;
+        for(LineSegment wall :envMap.getWalls()){
+            if(doIntersect(new LineSegment(position, home.getCoords()), wall)){
+                return false;
+            }
+        }
+        return true;
     }
 
-    private boolean isVisible(double distance, double angle){
-        //TODO add clause for walls in fov blocking vision of home
-        return (distance < sightDist && angle < fov/2);
+    private boolean isVisible(Home home, double angle){
+        if(position.distanceTo(home.getCoords()) > sightDist || angle > fov/2) return false;
+        for(LineSegment wall :envMap.getWalls()){
+            if(doIntersect(new LineSegment(position, home.getCoords()), wall)){
+                return false;
+            }
+        }
+        return true;
     }
 
     private void chooseHome(ArrayList<Home> aHomes, ArrayList<Home> nAHomes){

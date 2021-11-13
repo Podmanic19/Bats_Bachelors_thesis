@@ -21,14 +21,15 @@ public class LineSegment {
      * @param r point 3
      * @return clockwise or counterclockwise orientation
      */
+
     static int orientation(Coordinate p, Coordinate q, Coordinate r)
     {
         double val = (q.getY() - p.getY()) * (r.getX() - q.getX()) -
                 (q.getX() - p.getX()) * (r.getY() - q.getY());
 
-        if (val == 0) return 0; // collinear
+        if (Double.compare(val, 0) == 0) return 0; // collinear
 
-        return (val > 0)? 1 : 2; // clock or counterclock wise
+        return Double.compare(val, 0) > 0 ? 1 : 2; // clock or counterclock wise
     }
 
     /***
@@ -36,12 +37,13 @@ public class LineSegment {
      * @param second second line segment
      * @return whether they intersect
      */
-    static boolean doIntersect(LineSegment first, LineSegment second)
-    {
-        int o1 = orientation(first.getA(), second.getB(), first.getB());
-        int o2 = orientation(first.getA(), second.getA(), second.getB());
-        int o3 = orientation(first.getB(), second.getB(), first.getA());
-        int o4 = orientation(first.getB(), second.getB(), second.getA());
+
+
+    public static boolean doIntersect(LineSegment first, LineSegment second) {
+        int o1 = orientation(first.getA(), first.getB(), second.getA());
+        int o2 = orientation(first.getA(), first.getB(), second.getB());
+        int o3 = orientation(second.getA(), second.getB(), first.getA());
+        int o4 = orientation(second.getA(), second.getB(), first.getB());
 
         // General case
         if (o1 != o2 && o3 != o4) return true;
