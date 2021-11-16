@@ -1,19 +1,23 @@
 package Simulation;
 
 import Classes.Agent;
+import Classes.AgentCircle;
 import Environment.EnvironmentMap;
 import Environment.Home;
 import Environment.LineSegment;
 import Main.LoadToPane;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import java.io.IOException;
-import static Main.Main.envMap;
-import static Main.Main.envparams;
+import java.util.ArrayList;
+
+import static Main.Main.*;
+import static Simulation.ThreadAdmin.semaphore;
 
 public class MainSceneController implements LoadToPane {
     @FXML Button btnCreate;
@@ -21,19 +25,34 @@ public class MainSceneController implements LoadToPane {
     @FXML Button btnAgentSettings;
     @FXML Button btnLoadEnv;
     @FXML Pane paneMain;
+    @FXML Button btnPlay;
+    private boolean simStarted;
+    public static boolean playing = false;
 
     public void btnCreateEnv(){
         envMap = new EnvironmentMap();
-        placeHomes(paneMain);
+        placeHomes();
         placeWalls(paneMain);
-        System.out.println("--------------------------------------");
     }
 
     public void btnPlaceAgents() {
+        placeAgents();
+    }
+
+    public void btnPlayOnAction(){
+        btnPlay.setText(playing ? "Pause" : "Play");
+        playing = !playing;
+        if(simStarted) semaphore.notify();
+        else{
+            Visualisation.getInstance(paneMain).start();
+        }
+    }
+
+    private void placeAgents(){
         double coef_h = paneMain.getHeight() / envparams.POINT_MAX;
         double coef_w = paneMain.getWidth() / envparams.POINT_MAX;
         for(Agent a : envMap.getAgents()) {
-            Circle cir = new Circle();
+            AgentCircle cir = new AgentCircle();
             cir.setFill(Color.RED);
             cir.setStroke(Color.RED);
             cir.setRadius(3);
@@ -43,9 +62,8 @@ public class MainSceneController implements LoadToPane {
         }
     }
 
-    private void placeHomes(Pane canvas){
-        canvas.getChildren().clear();
-        System.out.println("***********************************");
+
+    private void placeHomes(){
         int RADIUS = 6;
         double coef_h = paneMain.getHeight() / envparams.POINT_MAX;
         double coef_w = paneMain.getWidth() / envparams.POINT_MAX;
@@ -56,8 +74,35 @@ public class MainSceneController implements LoadToPane {
             cir.setRadius(RADIUS);
             cir.setCenterX(h.getCoords().getX() * coef_w);
             cir.setCenterY(h.getCoords().getY() * coef_h);
-            System.out.println((h.getCoords().getX() * coef_w) + " " + (h.getCoords().getY() * coef_h));
-            canvas.getChildren().add(cir);
+            paneMain.getChildren().add(cir);
+        }
+    }
+
+
+    public void removeAgents(){
+        ArrayList<Node> toRemove = new ArrayList<>();
+        for(int i = 0; i < paneMain.getChildren().size(); i++){
+            Node circle = paneMain.getChildren().get(i);
+            if(circle instanceof  AgentCircle){
+                toRemove.add(circle);
+            }
+        }
+        for(Node node: toRemove){
+            paneMain.getChildren().remove(node);
+        }
+    }
+
+
+    public void removeHomes(){
+        ArrayList<Node> toRemove = new ArrayList<>();
+        for(int i = 0; i < paneMain.getChildren().size(); i++){
+            Node circle = paneMain.getChildren().get(i);
+            if(circle instanceof Circle){
+                toRemove.add(circle);
+            }
+        }
+        for(Node node: toRemove){
+            paneMain.getChildren().remove(node);
         }
     }
 

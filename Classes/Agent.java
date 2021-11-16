@@ -68,7 +68,7 @@ public class Agent implements Serializable {
         double x = envparams.POINT_MIN + (
                 envparams.POINT_MAX - envparams.POINT_MIN)/
                 (double) (10000 * envparams.GENERATOR.nextInt(10000) + 1);
-        double y =envparams.POINT_MIN + (
+        double y = envparams.POINT_MIN + (
                 envparams.POINT_MAX - envparams.POINT_MIN)/
                 (double) (10000 * envparams.GENERATOR.nextInt(10000) + 1);
 
@@ -110,8 +110,14 @@ public class Agent implements Serializable {
 
             if (collision.getWall() == null) {          // if there are no walls between this position and the new one
                 position = new_pos;
+                this.speed = 0;
             } else {
                 collideWithWall(collision);
+                this.speed -= position.distanceTo(collision.getCollisionPoint());
+                if (speed < 0) {
+                    System.out.println("si kkt dusan");
+                }
+                if(speed == 0) speed = 0.5 + (1 - 0.5) * envparams.GENERATOR.nextDouble();
             }
         }
     }
@@ -128,9 +134,6 @@ public class Agent implements Serializable {
             setDirection(new Vector(direction.getX() - 2 * projected.getX(),
                     direction.getY() - 2 * projected.getY()));
         }
-
-        this.speed -= position.distanceTo(wall.getCollisionPoint());
-        if(speed == 0) speed = 0.5 + (1 - 0.5) * envparams.GENERATOR.nextDouble();
     }
 
     private void search(){
@@ -160,7 +163,7 @@ public class Agent implements Serializable {
                 }
             }
         }
-        chooseHome(attractingHomes, notAttractingHomes);
+        if(home == null) chooseHome(attractingHomes, notAttractingHomes);
     }
 
     private boolean isInAttractionDistance(double distance, Home home){
@@ -242,10 +245,6 @@ public class Agent implements Serializable {
         return workRate;
     }
 
-    public void setPosition(Coordinate position) {
-        this.position = position;
-    }
-
     public Coordinate getPosition() {
         return position;
     }
@@ -256,5 +255,9 @@ public class Agent implements Serializable {
 
     public State getState() {
         return state;
+    }
+
+    public int getId() {
+        return id;
     }
 }
