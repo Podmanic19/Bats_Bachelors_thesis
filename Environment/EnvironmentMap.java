@@ -4,6 +4,7 @@ import Classes.Agent;
 import java.util.*;
 import static Classes.State.*;
 import static Environment.LineSegment.doIntersect;
+import static Environment.LineSegment.liesOnLine;
 import static Main.Main.envparams;
 
 public class EnvironmentMap {
@@ -12,12 +13,12 @@ public class EnvironmentMap {
     private ArrayList<Home> homes = new ArrayList<>();
 
     public EnvironmentMap() {
-        placeHomes();
         generateWalls();
-        placeAgents();
+        generateHomes();
+        generateAgents();
     }
 
-    private void placeHomes() {
+    private void generateHomes() {
         ArrayList<Coordinate> flatMap = flatten();
         HashSet<Integer> possibleHomes = fillPossibleHomes(flatMap);
         int homeID = 1;
@@ -53,10 +54,9 @@ public class EnvironmentMap {
             possibleHomes.add(i);
         }
 
-        for(LineSegment wall: walls){
-            for(int i = 0; i < flatMap.size(); i++){
-                Coordinate C = flatMap.get(i);
-                if (Double.compare(wall.getA().distanceTo(C) + wall.getB().distanceTo(C), wall.length()) == 0){
+        for(int i = 0; i < flatMap.size(); i++) {
+            for (LineSegment w : walls) {
+                if (liesOnLine(flatMap.get(i), w)) {
                     possibleHomes.remove(i);
                 }
             }
@@ -134,15 +134,25 @@ public class EnvironmentMap {
 
     }
 
-    private void placeAgents(){
-        generateAgents();
-    }
-
     private Coordinate generateRandPos() {
-        return new Coordinate(
-                envparams.GENERATOR.nextInt(((envparams.POINT_MAX - 1) - 1) + 1) + 1,
-                envparams.GENERATOR.nextInt(((envparams.POINT_MAX - 1) - 1) + 1) + 1
-        );
+        boolean generate = true;
+        Coordinate c = new Coordinate(envparams.GENERATOR.nextInt(((envparams.POINT_MAX - 1) - 1) + 1) + 1,
+                envparams.GENERATOR.nextInt(((envparams.POINT_MAX - 1) - 1) + 1) + 1);
+
+        while(generate){
+            generate = false;
+            for(LineSegment w: walls){
+                if(liesOnLine(c, w)){
+                    generate = true;
+                    break;
+                }
+            }
+            c = new Coordinate(
+                    envparams.GENERATOR.nextInt(((envparams.POINT_MAX - 1) - 1) + 1) + 1,
+                    envparams.GENERATOR.nextInt(((envparams.POINT_MAX - 1) - 1) + 1) + 1);
+        }
+
+        return c;
 
     }
 
@@ -151,7 +161,8 @@ public class EnvironmentMap {
         ArrayList<Coordinate> flatMap = new ArrayList<>();
         for(int i = envparams.POINT_MIN; i < envparams.POINT_MAX; i++){
             for(int j = 0; j < envparams.POINT_MAX; j++){
-                flatMap.add(new Coordinate(i,j));
+                Coordinate c = new Coordinate(i,j);
+                flatMap.add(c);
             }
         }
         return flatMap;

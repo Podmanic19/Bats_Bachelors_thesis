@@ -13,8 +13,6 @@ import java.util.ArrayList;
 
 import static Main.Main.envMap;
 import static Main.Main.envparams;
-import static Simulation.MainSceneController.playing;
-import static Simulation.ThreadAdmin.*;
 
 public class Visualisation extends Thread{
 
@@ -27,10 +25,6 @@ public class Visualisation extends Thread{
 
     public static Visualisation getInstance(Pane pane){
         return new Visualisation(pane);
-    }
-
-    public static Visualisation getInstance(){
-        return instance;
     }
 
     @Override

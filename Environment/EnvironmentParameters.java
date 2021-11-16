@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class EnvironmentParameters {
     public int AGENT_NUM = 60;
-    public int POINT_MAX = 800;
+    public int POINT_MAX = 2000;
     public int POINT_MIN = 0;
     public int MIN_DISTANCE = 50;
     public int MIN_WORK = 10;

@@ -38,6 +38,9 @@ public class LineSegment {
      * @return whether they intersect
      */
 
+    public static boolean liesOnLine(Coordinate c, LineSegment ls){
+        return Double.compare(c.distanceTo(ls.getA()) + c.distanceTo(ls.getB()), ls.length()) == 0;
+    }
 
     public static boolean doIntersect(LineSegment first, LineSegment second) {
         int o1 = orientation(first.getA(), first.getB(), second.getA());

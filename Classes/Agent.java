@@ -137,10 +137,10 @@ public class Agent implements Serializable {
     }
 
     private void search(){
-        checkForHomes();                        // look for nearby homes
-        move();                                 // move to new coordinates
-        generateRandDir();                      // get new direction
-        generateRandSpeed();                    // get new speed
+        checkForHomes();                       // look for nearby homes
+        move();                                // move to new coordinates
+        generateDir();                         // get new direction
+        generateRandSpeed();                   // get new speed
     }
 
     private void checkForHomes(){
@@ -163,7 +163,7 @@ public class Agent implements Serializable {
                 }
             }
         }
-        if(home == null) chooseHome(attractingHomes, notAttractingHomes);
+        chooseHome(attractingHomes, notAttractingHomes);
     }
 
     private boolean isInAttractionDistance(double distance, Home home){

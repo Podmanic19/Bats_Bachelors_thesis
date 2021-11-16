@@ -31,8 +31,10 @@ public class MainSceneController implements LoadToPane {
 
     public void btnCreateEnv(){
         envMap = new EnvironmentMap();
+        paneMain.getChildren().clear();
         placeHomes();
         placeWalls(paneMain);
+        placeAgents();
     }
 
     public void btnPlaceAgents() {
@@ -75,34 +77,6 @@ public class MainSceneController implements LoadToPane {
             cir.setCenterX(h.getCoords().getX() * coef_w);
             cir.setCenterY(h.getCoords().getY() * coef_h);
             paneMain.getChildren().add(cir);
-        }
-    }
-
-
-    public void removeAgents(){
-        ArrayList<Node> toRemove = new ArrayList<>();
-        for(int i = 0; i < paneMain.getChildren().size(); i++){
-            Node circle = paneMain.getChildren().get(i);
-            if(circle instanceof  AgentCircle){
-                toRemove.add(circle);
-            }
-        }
-        for(Node node: toRemove){
-            paneMain.getChildren().remove(node);
-        }
-    }
-
-
-    public void removeHomes(){
-        ArrayList<Node> toRemove = new ArrayList<>();
-        for(int i = 0; i < paneMain.getChildren().size(); i++){
-            Node circle = paneMain.getChildren().get(i);
-            if(circle instanceof Circle){
-                toRemove.add(circle);
-            }
-        }
-        for(Node node: toRemove){
-            paneMain.getChildren().remove(node);
         }
     }
 
