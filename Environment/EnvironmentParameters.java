@@ -3,8 +3,8 @@ package Environment;
 import java.util.Random;
 
 public class EnvironmentParameters {
-    public int AGENT_NUM = 60;
-    public int POINT_MAX = 2000;
+    public int AGENT_NUM = 20;
+    public int POINT_MAX = 800;
     public int POINT_MIN = 0;
     public int MIN_DISTANCE = 50;
     public int MIN_WORK = 10;
@@ -14,6 +14,9 @@ public class EnvironmentParameters {
     public int WALLS_NUM = 50;
     public int WALL_LENGTH_MIN = 50;
     public int WALL_LENGTH_MAX = 150;
+    public boolean SHOW_ATTRACTION = false;
+    public boolean SHOW_SIGHT = true;
+
     public Random GENERATOR = new Random(0);
 
     public void setAGENT_NUM(int AGENT_NUM) {

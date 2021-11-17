@@ -21,6 +21,20 @@ public class Vector implements Serializable {
         this.y = A.getY();
     }
 
+    public void add(Vector A){
+        this.x += A.getX();
+        this.y += A.getY();
+    }
+
+    public void multiply(double multiplier){
+        this.x *= multiplier;
+        this.y *= multiplier;
+    }
+
+    public void subtract(Vector A){
+        this.add(A.reverse());
+    }
+
     public double absValue(){
         return  Math.sqrt(Math.pow(x,2) + Math.pow(y,2));
     }
@@ -30,7 +44,14 @@ public class Vector implements Serializable {
     }
 
     public double angleBetween(Vector B){               // returns the degrees between this vector and vector B
-        return scalarProduct(B)/(this.absValue() * B.absValue());
+        return Math.toDegrees(Math.acos(scalarProduct(B)/(this.absValue() * B.absValue())));
+    }
+
+    public double signedAngleBetween(Vector B){               // returns the degrees between this vector and vector B
+        double angle = -Math.toDegrees(Math.acos(scalarProduct(B)/(this.absValue() * B.absValue())));
+        if(Double.compare(this.x * B.getY() - this.y * B.getX(), 0) < 0)
+            angle = -angle;
+        return angle;
     }
 
     public Vector reverse(){
@@ -74,4 +95,10 @@ public class Vector implements Serializable {
     public void setY(double y) {
         this.y = y;
     }
+
+    @Override
+    public String toString(){
+        return ("(" + x + "," + y + ")");
+    }
+
 }

@@ -49,6 +49,30 @@ public class Agent implements Serializable {
             return;
         }
 
+        if(agentparams.AVOID_OTHERS && this.state == searching) {
+            ArrayList<Vector> vectorsToOthers = new ArrayList<>();
+
+            for (Agent a: envMap.getAgents()){
+                if(a == this) continue;
+                if(a.getState() == working) continue;
+                Vector thisToAgent = new Vector(this.position, a.getPosition());
+                double angle = direction.angleBetween(thisToAgent);
+
+                if(isVisible(a.getPosition(), angle)){
+                    vectorsToOthers.add(new Vector(this.position, a.getPosition()));
+                }
+
+            }
+            if(!vectorsToOthers.isEmpty()) {
+                Vector direction = new Vector(0,0);
+                for (Vector v : vectorsToOthers){
+                    direction.subtract(v);
+                }
+                this.direction = direction;
+            }
+
+        }
+
         double front = agentparams.FORWARD / (double) (10000 * envparams.GENERATOR.nextInt(10000) + 1);
         double back  = agentparams.BACK / (double) (10000 * envparams.GENERATOR.nextInt(10000) + 1);
         double left  = agentparams.LEFT / (double) (10000 * envparams.GENERATOR.nextInt(10000) + 1);
@@ -60,8 +84,8 @@ public class Agent implements Serializable {
         double frontal_dir = sqrt(Math.pow(front - back, 2) / (Math.pow(n.getX(), 2) + Math.pow(n.getY(), 2)));
         double side_dir = sqrt(Math.pow(left - right, 2) / (Math.pow(s.getX(), 2) + Math.pow(s.getY(), 2)));
 
-        direction.setX(frontal_dir*n.getX() + side_dir*s.getX());
-        direction.setY(frontal_dir*n.getY() + side_dir*s.getY());
+        direction.setX(frontal_dir * n.getX() + side_dir * s.getX());
+        direction.setY(frontal_dir * n.getY() + side_dir * s.getY());
     }
 
     private void generateRandDir(){
@@ -72,13 +96,7 @@ public class Agent implements Serializable {
                 envparams.POINT_MAX - envparams.POINT_MIN)/
                 (double) (10000 * envparams.GENERATOR.nextInt(10000) + 1);
 
-        if(direction == null) {
-            direction = new Vector(x - position.getX(), y - position.getY());
-        }
-        else{
-            direction.setX(x - position.getX());
-            direction.setY(y - position.getY());
-        }
+        direction = new Vector(x - position.getX(), y - position.getY());
 
     }
 
@@ -123,16 +141,15 @@ public class Agent implements Serializable {
     }
 
     private void collideWithWall(WallCollision wall){
-        Vector normal = wall.getWall().asVector().getNormal();
-        double projectionCoef = (direction.scalarProduct(normal))/Math.pow((normal.absValue()), 2);
+        Vector newDirection = wall.getWall().asVector().getNormal();
+        double projectionCoef = 2 * (direction.scalarProduct(newDirection))/Math.pow((newDirection.absValue()), 2);
 
         if(projectionCoef == 0){
             direction.reverse();
         }
         else {
-            Vector projected = new Vector(normal.getX() * projectionCoef, normal.getY() * projectionCoef);
-            setDirection(new Vector(direction.getX() - 2 * projected.getX(),
-                    direction.getY() - 2 * projected.getY()));
+            newDirection.multiply(projectionCoef);
+            direction.subtract(newDirection);
         }
     }
 
@@ -153,12 +170,12 @@ public class Agent implements Serializable {
             double angle = direction.angleBetween(agentToHome);
 
             if(home.isAttracting()){                     // if agents are attracting others to home
-                if(isInAttractionDistance(distance,home) && isVisible(home, angle)){
+                if(isInAttractionDistance(distance,home) && isVisible(home.getCoords(), angle)){
                     attractingHomes.add(home);
                 }
             }
             else{
-                if(isVisible(home, angle)){                   //and he can see the home
+                if(isVisible(home.getCoords(), angle)){                   //and he can see the home
                     notAttractingHomes.add(home);
                 }
             }
@@ -167,7 +184,7 @@ public class Agent implements Serializable {
     }
 
     private boolean isInAttractionDistance(double distance, Home home){
-        if(distance > home.getAttraction_distance()) return false;
+        if(Double.compare(distance, home.getAttraction_distance()) > 0) return false;
         for(LineSegment wall :envMap.getWalls()){
             if(doIntersect(new LineSegment(position, home.getCoords()), wall)){
                 return false;
@@ -176,10 +193,10 @@ public class Agent implements Serializable {
         return true;
     }
 
-    private boolean isVisible(Home home, double angle){
-        if(position.distanceTo(home.getCoords()) > sightDist || angle > fov/2) return false;
+    private boolean isVisible(Coordinate c, double angle){
+        if(Double.compare(position.distanceTo(c),sightDist) > 0 || Double.compare(angle, fov/2) > 0) return false;
         for(LineSegment wall :envMap.getWalls()){
-            if(doIntersect(new LineSegment(position, home.getCoords()), wall)){
+            if(doIntersect(new LineSegment(position, c), wall)){
                 return false;
             }
         }
@@ -212,7 +229,7 @@ public class Agent implements Serializable {
             state = searching;
             act();
         }
-        else if(position.distanceTo(home.getCoords()) <= speed){
+        else if(Double.compare(position.distanceTo(home.getCoords()),speed) <= 0){
           position = new Coordinate(home.getCoords());
           state = working;
           home.addAgent(this);
@@ -232,7 +249,7 @@ public class Agent implements Serializable {
             act();
             return;
         }
-        home.setAttracting((home.getPollution()) >= interestBound);
+        home.setAttracting(Double.compare((home.getPollution()), interestBound) >=0);
         boolean worked = home.decreasePollution(this);
         if(!worked){
             this.home = null;
@@ -259,5 +276,9 @@ public class Agent implements Serializable {
 
     public int getId() {
         return id;
+    }
+
+    public Vector getDirection() {
+        return direction;
     }
 }

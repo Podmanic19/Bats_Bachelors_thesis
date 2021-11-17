@@ -20,9 +20,9 @@ public class EnvironmentMap {
 
     private void generateHomes() {
         ArrayList<Coordinate> flatMap = flatten();
+        Collections.shuffle(flatMap);
         HashSet<Integer> possibleHomes = fillPossibleHomes(flatMap);
         int homeID = 1;
-        Collections.shuffle(flatMap);
 
         for(int i = 0; i < flatMap.size(); i++){
             if(homes.size() == envparams.NUMBER_HOME) break;
@@ -62,6 +62,11 @@ public class EnvironmentMap {
             }
         }
 
+        for(Integer i : possibleHomes){
+            if(Double.compare(flatMap.get(i).getX(),0) == 0) {
+                System.out.println(flatMap.get(i));
+            }
+        }
         return possibleHomes;
 
     }
