@@ -20,8 +20,8 @@ public interface PlaceAgents {
             AgentCircle cir = new AgentCircle();
             if(envparams.SHOW_SIGHT && a.getState() != Classes.State.working){
                 Arc arc = new Arc();
-                arc.setCenterX(a.getPosition().getX());
-                arc.setCenterY(a.getPosition().getY());
+                arc.setCenterX(a.getPosition().getX() * coef_w);
+                arc.setCenterY(a.getPosition().getY() * coef_h);
                 arc.setRadiusX(agentparams.SIGHT * coef_w);
                 arc.setRadiusY(agentparams.SIGHT * coef_h);
                 double angle = new Vector(1,0).signedAngleBetween(a.getDirection());
@@ -32,9 +32,14 @@ public interface PlaceAgents {
                 arc.setStroke(Color.RED);
                 paneMain.getChildren().add(arc);
             }
-            if(a.getState() == State.searching) cir.setFill(Color.DARKSEAGREEN);
-            if(a.getState() == State.traveling) cir.setFill(Color.DARKRED);
-            cir.setStroke(Color.RED);
+            if(a.getState() == State.searching){
+                cir.setFill(Color.DARKSEAGREEN);
+                cir.setStroke(Color.DARKSEAGREEN);
+            }
+            if(a.getState() == State.traveling) {
+                cir.setFill(Color.DARKRED);
+                cir.setStroke(Color.DARKRED);
+            }
             cir.setRadius(3);
             cir.setCenterX(a.getPosition().getX() * coef_w);
             cir.setCenterY(a.getPosition().getY() * coef_h);

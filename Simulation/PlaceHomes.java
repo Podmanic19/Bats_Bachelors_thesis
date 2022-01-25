@@ -24,7 +24,7 @@ public interface PlaceHomes {
                 if(envparams.SHOW_ATTRACTION){
                     Circle att = new Circle();
                     att.setFill(Color.TRANSPARENT);
-                    att.setRadius(envparams.ATTRACTION_DISTANCE);
+                    att.setRadius(envparams.ATTRACTION_DISTANCE * coef_w);
                     att.setCenterX(h.getCoords().getX() * coef_w);
                     att.setCenterY(h.getCoords().getY() * coef_h);
                     att.setStroke(Color.GREEN);

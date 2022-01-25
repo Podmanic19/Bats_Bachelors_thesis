@@ -132,9 +132,6 @@ public class Agent implements Serializable {
             } else {
                 collideWithWall(collision);
                 this.speed -= position.distanceTo(collision.getCollisionPoint());
-                if (speed < 0) {
-                    System.out.println("si kkt dusan");
-                }
                 if(speed == 0) speed = 0.5 + (1 - 0.5) * envparams.GENERATOR.nextDouble();
             }
         }
@@ -170,7 +167,7 @@ public class Agent implements Serializable {
             double angle = direction.angleBetween(agentToHome);
 
             if(home.isAttracting()){                     // if agents are attracting others to home
-                if(isInAttractionDistance(distance,home) && isVisible(home.getCoords(), angle)){
+                if(isInAttractionDistance(distance,home)  || isVisible(home.getCoords(), angle)){
                     attractingHomes.add(home);
                 }
             }
@@ -194,7 +191,16 @@ public class Agent implements Serializable {
     }
 
     private boolean isVisible(Coordinate c, double angle){
-        if(Double.compare(position.distanceTo(c),sightDist) > 0 || Double.compare(angle, fov/2) > 0) return false;
+        if(Double.compare(position.distanceTo(c), sightDist) > 0 || Double.compare(angle, fov/2) > 0) return false;
+        for(LineSegment wall :envMap.getWalls()){
+            if(doIntersect(new LineSegment(position, c), wall)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isAttracted(Coordinate c){
         for(LineSegment wall :envMap.getWalls()){
             if(doIntersect(new LineSegment(position, c), wall)){
                 return false;

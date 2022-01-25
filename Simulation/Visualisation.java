@@ -36,7 +36,7 @@ public class Visualisation extends Thread implements PlaceHomes, PlaceAgents{
 
     @Override
     public void run(){
-        while(!envMap.getHomes().isEmpty()) {
+        for(int i = 0; i < 28800; i++) {
 //            System.out.println("SEARCHING: " + envMap.searching());
 //            System.out.println("TRAVELLING: " + envMap.traveling());
 //            System.out.println("WORKING: " + envMap.working());
@@ -51,6 +51,10 @@ public class Visualisation extends Thread implements PlaceHomes, PlaceAgents{
                 sleep(20);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+            if(envMap.getHomes().isEmpty()) {
+                System.out.println("Pocet iteracii: " + i);
+                break;
             }
         }
     }

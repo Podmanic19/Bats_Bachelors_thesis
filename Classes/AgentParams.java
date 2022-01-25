@@ -11,5 +11,5 @@ public class AgentParams {
     public int INTEREST_BOUNDARY = 40;
     public double SPEED_MIN = 2.5;
     public double SPEED_MAX = 11.5;
-    public boolean AVOID_OTHERS = true;
+    public boolean AVOID_OTHERS = false;
 }
