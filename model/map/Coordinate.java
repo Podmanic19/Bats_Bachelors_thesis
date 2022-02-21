@@ -1,10 +1,11 @@
-package Environment;
+package model.map;
+
+import model.Main;
 
 import java.io.Serializable;
 
-import static Environment.LineSegment.doIntersect;
-import static Environment.LineSegment.intersectPoint;
-import static Main.Main.envMap;
+import static model.map.LineSegment.doIntersect;
+import static model.map.LineSegment.intersectPoint;
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 
@@ -64,7 +65,7 @@ public class Coordinate implements Serializable {
         Coordinate intersect = null;
         double distanceToWall = -1;
 
-        for(LineSegment w: envMap.getWalls()){
+        for(LineSegment w: Main.envMap.getWalls()){
             if(doIntersect(w,AtoB)){
                 intersect = intersectPoint(AtoB,w);
                 double thisDistance = this.distanceTo(intersect);

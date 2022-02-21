@@ -1,4 +1,4 @@
-package Main;
+package model.gui;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import java.io.IOException;
@@ -8,7 +8,7 @@ public interface LoadToPane {
 
     default void load(Pane pane, String view) throws IOException {
         pane.getChildren().clear();
-        Pane pane2 = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/Scenes/" + view + ".fxml")));
+        Pane pane2 = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/" + view + ".fxml")));
         pane.getChildren().add(pane2);
     }
 

@@ -1,4 +1,4 @@
-package Classes;
+package model.agents;
 
 public enum State {
     searching,                      // agent is searching for a place of interest

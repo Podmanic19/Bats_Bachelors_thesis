@@ -1,4 +1,4 @@
-package Environment;
+package model.map;
 
 public class WallCollision {
     private LineSegment wall;

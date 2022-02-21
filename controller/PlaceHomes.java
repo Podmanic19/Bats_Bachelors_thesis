@@ -1,12 +1,12 @@
-package Simulation;
+package controller;
 
-import Environment.Home;
+import model.map.Home;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-import static Main.Main.envMap;
-import static Main.Main.envparams;
+import static model.Main.envMap;
+import static model.Main.envparams;
 
 public interface PlaceHomes {
 

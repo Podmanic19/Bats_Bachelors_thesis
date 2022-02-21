@@ -1,6 +1,8 @@
-package Environment;
+package model.map;
 
-public class LineSegment {
+import java.io.Serializable;
+
+public class LineSegment implements Serializable {
     private Coordinate A;
     private Coordinate B;
 
@@ -21,7 +23,6 @@ public class LineSegment {
      * @param r point 3
      * @return clockwise or counterclockwise orientation
      */
-
     static int orientation(Coordinate p, Coordinate q, Coordinate r)
     {
         double val = (q.getY() - p.getY()) * (r.getX() - q.getX()) -
@@ -31,12 +32,6 @@ public class LineSegment {
 
         return Double.compare(val, 0) > 0 ? 1 : 2; // clock or counterclock wise
     }
-
-    /***
-     * @param first first line segment
-     * @param second second line segment
-     * @return whether they intersect
-     */
 
     public static boolean liesOnLine(Coordinate c, LineSegment ls){
         return Double.compare(c.distanceTo(ls.getA()) + c.distanceTo(ls.getB()), ls.length()) == 0;
@@ -91,7 +86,7 @@ public class LineSegment {
     }
 
     public Vector asVector(){
-        return new Vector(A,B);
+        return new Vector(A, B);
     }
 
     public Coordinate getA() {

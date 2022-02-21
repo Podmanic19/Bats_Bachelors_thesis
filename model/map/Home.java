@@ -1,20 +1,19 @@
-package Environment;
+package model.map;
 
-import Classes.Agent;
+import model.agents.BatAgent;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import static Main.Main.*;
+import static model.Main.*;
 
 public class Home implements Serializable {
     private final int id;
     private final Coordinate coords;
-    private ArrayList<Agent> agents = new ArrayList<Agent>();
+    private ArrayList<BatAgent> agents = new ArrayList<BatAgent>();
     private double pollution;
     private double attraction_distance = envparams.ATTRACTION_DISTANCE;
     private boolean attracting;
-
 
     public Home(int id, double pollution, Coordinate coords) {
         this.id = id;
@@ -22,7 +21,7 @@ public class Home implements Serializable {
         this.coords = coords;
     }
 
-    public boolean isAttracting() {
+    public synchronized boolean isAttracting() {
         return attracting;
     }
 
@@ -30,7 +29,7 @@ public class Home implements Serializable {
         return attraction_distance;
     }
 
-    public void addAgent(Agent a){
+    public synchronized void addAgent(BatAgent a) {
         agents.add(a);
     }
 
@@ -38,32 +37,30 @@ public class Home implements Serializable {
         return id;
     }
 
-    public ArrayList<Agent> getAgents() {
+    public synchronized ArrayList<BatAgent> getAgents() {
         return agents;
     }
 
-    public boolean decreasePollution(Agent a){
+    public synchronized boolean decreasePollution(BatAgent a) {
 
-        if(pollution > 0){
+        if (pollution > 0) {
             pollution -= a.getWorkRate();
             return true;
-        }
-        else{
+        } else {
             ArrayList<Home> homes = envMap.getHomes();
-            homes.remove(this);
             return false;
         }
     }
 
-    public double getPollution() {
+    public synchronized double getPollution() {
         return pollution;
     }
 
-    public void setAttracting(boolean attracting) {
+    public synchronized void setAttracting(boolean attracting) {
         this.attracting = attracting;
     }
 
-    public Coordinate getCoords() {
+    public synchronized Coordinate getCoords() {
         return coords;
     }
 }

@@ -1,10 +1,10 @@
-package Classes;
+package model.agents;
 
 public class AgentParams {
     public double LEFT = 0.8;
     public double RIGHT = 0.8;
-    public int FORWARD = 2;
-    public double BACK = 0.5;
+    public int FORWARD = 4;
+    public double BACK = 1;
     public int SIGHT = 150;
     public double FOV = 60;
     public double WORK_RATE = 0.5;
