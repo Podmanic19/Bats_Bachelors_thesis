@@ -1,7 +1,7 @@
 package model.main;
 import model.agents.AgentParams;
 import model.map.Map;
-import model.map.EnvironmentParameters;
+import model.map.MapParameters;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Main extends Application {
-    public static EnvironmentParameters envparams = new EnvironmentParameters();
+    public static MapParameters envparams = new MapParameters();
     public static AgentParams agentparams = new AgentParams();
     public static Map envMap;
 

@@ -6,6 +6,7 @@ import model.map.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static model.map.LineSegment.doIntersect;
 import static java.lang.Math.sqrt;
@@ -82,10 +83,10 @@ public class BatAgent implements Serializable {
 
     private void dirJa() {
 
-        int degrees = Main.envparams.GENERATOR.nextInt((90 - (-90)) + 1) + (-90);
-        double forward = Main.agentparams.FORWARD * Main.envparams.GENERATOR.nextInt(100);
-        double back = Main.agentparams.BACK * Main.envparams.GENERATOR.nextInt(100);
-        this.direction.rotate(Math.toRadians((double) degrees));
+        int degrees = ThreadLocalRandom.current().nextInt((90 - (-90)) + 1) + (-90);
+        double forward = Main.agentparams.FORWARD * ThreadLocalRandom.current().nextInt(100);
+        double back = Main.agentparams.BACK * ThreadLocalRandom.current().nextInt(100);
+        this.direction.rotate(Math.toRadians(degrees));
         if (Double.compare(back, forward) < 0) {
             this.direction.reverse();
         }
@@ -93,10 +94,10 @@ public class BatAgent implements Serializable {
     }
 
     private void dirZelenka() {
-        double front = Main.agentparams.FORWARD / (double) (10000 * Main.envparams.GENERATOR.nextInt(10000) + 1);
-        double back = Main.agentparams.BACK / (double) (10000 * Main.envparams.GENERATOR.nextInt(10000) + 1);
-        double left = Main.agentparams.LEFT / (double) (10000 * Main.envparams.GENERATOR.nextInt(10000) + 1);
-        double right = Main.agentparams.RIGHT / (double) (10000 * Main.envparams.GENERATOR.nextInt(10000) + 1);
+        double front = Main.agentparams.FORWARD / (double) (10000 * ThreadLocalRandom.current().nextInt(10000) + 1);
+        double back = Main.agentparams.BACK / (double) (10000 * ThreadLocalRandom.current().nextInt(10000) + 1);
+        double left = Main.agentparams.LEFT / (double) (10000 * ThreadLocalRandom.current().nextInt(10000) + 1);
+        double right = Main.agentparams.RIGHT / (double) (10000 * ThreadLocalRandom.current().nextInt(10000) + 1);
 
         Vector n = (front - back) >= 0 ? this.direction.copy() : this.direction.reverse();
         Vector s = (left - right) >= 0 ? this.direction.reverseX() : this.direction.reverseY();
@@ -110,9 +111,9 @@ public class BatAgent implements Serializable {
 
     private void generateRandDir() {
         double x = Main.envparams.POINT_MIN + (Main.envparams.POINT_MAX - Main.envparams.POINT_MIN) /
-                (double) (10000 * Main.envparams.GENERATOR.nextInt(10000) + 1);
+                (double) (10000 * ThreadLocalRandom.current().nextInt(10000) + 1);
         double y = Main.envparams.POINT_MIN + (Main.envparams.POINT_MAX - Main.envparams.POINT_MIN) /
-                (double) (10000 * Main.envparams.GENERATOR.nextInt(10000) + 1);
+                (double) (10000 * ThreadLocalRandom.current().nextInt(10000) + 1);
 
         direction = new Vector(x - position.getX(), y - position.getY());
 
@@ -150,7 +151,7 @@ public class BatAgent implements Serializable {
                 collideWithWall(collision);
                 this.speed -= position.distanceTo(collision.getCollisionPoint());
                 if (speed == 0)
-                    speed = 0.5 + (1 - 0.5) * Main.envparams.GENERATOR.nextDouble();
+                    speed = 0.5 + (1 - 0.5) * ThreadLocalRandom.current().nextDouble();
             }
         }
     }
@@ -224,10 +225,10 @@ public class BatAgent implements Serializable {
         Home home;
 
         if (!aHomes.isEmpty()) {
-            int index = Main.envparams.GENERATOR.nextInt(aHomes.size());
+            int index = ThreadLocalRandom.current().nextInt(aHomes.size());
             home = aHomes.get(index);
         } else if (!nAHomes.isEmpty()) {
-            int index = Main.envparams.GENERATOR.nextInt(nAHomes.size());
+            int index = ThreadLocalRandom.current().nextInt(nAHomes.size());
             home = nAHomes.get(index);
         } else {
             return; // no home found

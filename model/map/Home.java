@@ -1,13 +1,14 @@
 package model.map;
 
 import model.agents.BatAgent;
+import model.serialization.Save;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 import static model.main.Main.*;
 
-public class Home implements Serializable {
+public class Home extends Save {
     private final int id;
     private final Coordinate coords;
     private ArrayList<BatAgent> agents = new ArrayList<BatAgent>();

@@ -1,6 +1,8 @@
 package model.agents;
 
-public class AgentParams {
+import model.serialization.Save;
+
+public class AgentParams extends Save {
     public String name = "Default";
     public double LEFT = 0.8;
     public double RIGHT = 0.8;

@@ -5,7 +5,6 @@ import model.map.Map;
 import model.map.LineSegment;
 import model.gui.IAlert;
 import model.gui.LoadToPane;
-import model.serialization.Serialization;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -16,6 +15,8 @@ import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
+import model.serialization.Save;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -111,13 +112,13 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
         }
     }
 
-    public void btnLoad() throws IOException {
+    public void btnLoad() {
         FileChooser fch = new FileChooser();
         FileChooser.ExtensionFilter fileExtensions = new FileChooser.ExtensionFilter("KKT", "*.emap");
         fch.getExtensionFilters().add(fileExtensions);
         File file = fch.showOpenDialog(new Stage());
 
-        envMap = Serialization.getInstance().loadMap(file);
+        envMap = (Map) envMap.loadMap(file);
         showMap(paneMain);
     }
 
@@ -126,7 +127,8 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
         fileChooser.setTitle("Save Map");
         fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Maps", "*.emap"));
         File file = fileChooser.showSaveDialog(new Stage());
-        Serialization.getInstance().saveMap(envMap, file);
+        envMap.save(envMap, file);
+
     }
 
     public void btnCreateTest() {
