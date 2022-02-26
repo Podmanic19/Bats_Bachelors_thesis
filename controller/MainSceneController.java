@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.fxml.Initializable;
 import model.map.Map;
 import model.map.LineSegment;
 import model.gui.IAlert;
@@ -15,12 +16,15 @@ import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
-
 import java.io.File;
 import java.io.IOException;
-import static model.Main.*;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes, IAlert {
+
+import static model.main.Main.*;
+
+public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes, IAlert, Initializable {
     @FXML
     Button btnCreate;
     @FXML
@@ -36,7 +40,11 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
     @FXML
     Button btnPlace;
     @FXML
+    Button btnHelp;
+    @FXML
     Pane paneMain;
+    @FXML
+    Pane paneBtn;
     @FXML
     Label lblLoading;
 
@@ -52,7 +60,6 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
                 showMap(paneMain);
                 disableButtons(false);
                 lblLoading.setVisible(false);
-                btnPlay.setDefaultButton(true);
             });
         }).start();
     }
@@ -122,6 +129,10 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
         Serialization.getInstance().saveMap(envMap, file);
     }
 
+    public void btnCreateTest() {
+
+    }
+
     private void disableButtons(boolean disable){
         btnPlay.setDisable(disable);
         btnAgentSettings.setDisable(disable);
@@ -132,4 +143,8 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
         btnPlace.setDisable(disable);
     }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        btnHelp.setVisible(false);
+    }
 }

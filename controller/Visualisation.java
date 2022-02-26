@@ -8,7 +8,7 @@ import javafx.scene.shape.Line;
 import java.time.Duration;
 import java.time.Instant;
 
-import static model.Main.*;
+import static model.main.Main.*;
 
 public class Visualisation extends Thread implements PlaceHomes, PlaceAgents {
 

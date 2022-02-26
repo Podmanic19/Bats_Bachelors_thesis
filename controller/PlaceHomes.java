@@ -5,8 +5,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-import static model.Main.envMap;
-import static model.Main.envparams;
+import static model.main.Main.envMap;
+import static model.main.Main.envparams;
 
 public interface PlaceHomes {
 

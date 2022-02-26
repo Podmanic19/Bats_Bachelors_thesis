@@ -1,6 +1,6 @@
 package model.agents;
 
-import model.Main;
+import model.main.Main;
 import model.map.*;
 
 import java.io.Serializable;

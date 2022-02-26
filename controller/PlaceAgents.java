@@ -8,8 +8,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
-import static model.Main.*;
-import static model.Main.agentparams;
+import static model.main.Main.*;
+import static model.main.Main.agentparams;
 
 public interface PlaceAgents {
     default void placeAgents(Pane paneMain) {

@@ -1,50 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AgentSettingsController">
+<AnchorPane prefHeight="800.0" prefWidth="800.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AgentSettingsController">
    <children>
-      <Label layoutX="76.0" layoutY="47.0" text="Left">
+      <Label layoutX="78.0" layoutY="90.0" text="Left">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Label layoutX="75.0" layoutY="189.0" text="Back">
+      <Label layoutX="80.0" layoutY="240.0" text="Back">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Label layoutX="75.0" layoutY="140.0" text="Forward">
+      <Label layoutX="80.0" layoutY="190.0" text="Forward">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Label layoutX="75.0" layoutY="96.0" text="Right">
+      <Label layoutX="80.0" layoutY="140.0" text="Right">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <TextField fx:id="leftTf" layoutX="377.0" layoutY="45.0" />
-      <TextField fx:id="forwardTf" layoutX="377.0" layoutY="138.0" />
-      <TextField fx:id="backTf" layoutX="377.0" layoutY="187.0" />
-      <TextField fx:id="rightTf" layoutX="377.0" layoutY="94.0" />
-      <Label layoutX="75.0" layoutY="290.0" text="Field of view">
+      <TextField fx:id="leftTf" layoutX="540.0" layoutY="90.0" />
+      <TextField fx:id="forwardTf" layoutX="538.0" layoutY="190.0" />
+      <TextField fx:id="backTf" layoutX="538.0" layoutY="240.0" />
+      <TextField fx:id="rightTf" layoutX="540.0" layoutY="140.0" />
+      <Label layoutX="80.0" layoutY="340.0" text="Field of view">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Label layoutX="75.0" layoutY="239.0" text="Sight">
+      <Label layoutX="80.0" layoutY="290.0" text="Sight">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <TextField fx:id="fovTf" layoutX="377.0" layoutY="288.0" />
-      <TextField fx:id="sightTf" layoutX="377.0" layoutY="237.0" />
-      <Button layoutX="274.0" layoutY="338.0" mnemonicParsing="false" onAction="#btnSaveOnAction" text="Save" />
+      <TextField fx:id="fovTf" layoutX="538.0" layoutY="340.0" />
+      <TextField fx:id="sightTf" layoutX="538.0" layoutY="290.0" />
+      <Button fx:id="btnSave" layoutX="361.0" layoutY="703.0" mnemonicParsing="false" onAction="#btnSaveOnAction" text="Save" />
+      <Label layoutX="80.0" layoutY="40.0" text="Name">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="nameTf" layoutX="540.0" layoutY="40.0" />
+      <Label layoutX="80.0" layoutY="390.0" text="Work rate">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="workRateTf" layoutX="540.0" layoutY="390.0" />
+      <Label layoutX="80.0" layoutY="440.0" text="Interest rate">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="interestTf" layoutX="540.0" layoutY="440.0" />
+      <Label layoutX="80.0" layoutY="490.0" text="Speed min">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="speedMinTf" layoutX="540.0" layoutY="490.0" />
+      <TextField fx:id="speedMaxTf" layoutX="540.0" layoutY="540.0" />
+      <Label layoutX="80.0" layoutY="540.0" text="Speed max">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="80.0" layoutY="590.0" text="Speed distribution">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <ChoiceBox fx:id="speedDistCB" layoutX="540.0" layoutY="590.0" prefWidth="150.0" />
+      <CheckBox fx:id="avoidOthersCb" layoutX="153.0" layoutY="653.0" mnemonicParsing="false" text="avoid others" />
+      <CheckBox fx:id="repulseCallCb" layoutX="544.0" layoutY="655.0" mnemonicParsing="false" text="Repulse call" />
    </children>
 </AnchorPane>

@@ -1,6 +1,6 @@
 package model.map;
 
-import model.Main;
+import model.main.Main;
 
 import java.io.Serializable;
 

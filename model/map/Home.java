@@ -5,7 +5,7 @@ import model.agents.BatAgent;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import static model.Main.*;
+import static model.main.Main.*;
 
 public class Home implements Serializable {
     private final int id;

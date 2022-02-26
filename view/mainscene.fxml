@@ -8,7 +8,7 @@
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainSceneController">
    <children>
-      <Pane fx:id="paneMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0">
+      <Pane fx:id="paneMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" style="-fx-background-color: WHITE;">
          <children>
             <Label fx:id="lblLoading" layoutX="270.0" layoutY="377.0" text="NO MAP LOADED" textAlignment="CENTER">
                <font>
@@ -16,12 +16,14 @@
                </font>
             </Label>
          </children></Pane>
-      <Pane fx:id="PaneBtn" maxHeight="800.0" maxWidth="200.0" minHeight="200.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: DFDFDF;">
+      <Pane fx:id="paneBtn" maxHeight="800.0" maxWidth="200.0" minHeight="200.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: DFDFDF;">
          <children>
-            <Button fx:id="btnCreate" defaultButton="true" layoutX="37.0" layoutY="60.0" mnemonicParsing="false" onAction="#btnCreateEnv" prefHeight="25.0" prefWidth="128.0" text="GENERATE MAP" textAlignment="CENTER">
+            <Button fx:id="btnHelp" layoutX="81.0" layoutY="14.0" mnemonicParsing="false" opacity="0.0" text="Button" />
+            <Button fx:id="btnCreate" layoutX="37.0" layoutY="60.0" mnemonicParsing="false" onAction="#btnCreateEnv" prefHeight="25.0" prefWidth="128.0" style=": ;" text="GENERATE MAP" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />
-               </font></Button>
+               </font>
+            </Button>
             <Button fx:id="btnPlace" disable="true" layoutX="37.0" layoutY="140.0" mnemonicParsing="false" onAction="#btnPlaceAgents" prefHeight="25.0" prefWidth="128.0" text="PLACE AGENTS" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />
@@ -38,14 +40,20 @@
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Button>
+            <Button fx:id="btnSave" disable="true" layoutX="36.0" layoutY="460.0" mnemonicParsing="false" onAction="#btnSave" prefHeight="25.0" prefWidth="128.0" text="SAVE MAP" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
             <Button fx:id="btnPlay" disable="true" layoutX="71.0" layoutY="630.0" mnemonicParsing="false" onAction="#btnPlayOnAction" prefHeight="62.0" prefWidth="72.0" text="PLAY" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Button>
-            <Button fx:id="btnSave" disable="true" layoutX="37.0" layoutY="460.0" mnemonicParsing="false" onAction="#btnSave" prefHeight="25.0" prefWidth="128.0" text="SAVE MAP" textAlignment="CENTER">
+            <Button fx:id="btnCreateTest" layoutX="36.0" layoutY="540.0" mnemonicParsing="false" onAction="#btnLoad" prefHeight="25.0" prefWidth="128.0" text="CREATE TESTS" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />
-               </font></Button>
+               </font>
+            </Button>
          </children>
       </Pane>
    </children>

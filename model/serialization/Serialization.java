@@ -12,7 +12,6 @@ import java.io.ObjectOutputStream;
 
 public class Serialization implements IAlert {
     public static Serialization instance = null;
-    public static String dir = "maps\\";
 
     private Serialization() {
     }
@@ -25,7 +24,7 @@ public class Serialization implements IAlert {
 
     public void saveMap(Map m, String path) {
         try {
-            FileOutputStream fos = new FileOutputStream(dir + path);
+            FileOutputStream fos = new FileOutputStream(path);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(m);
             oos.close();
@@ -37,7 +36,7 @@ public class Serialization implements IAlert {
 
     public Map loadMap(String path) throws IOException {
 
-        File inFile = new File(dir + path);
+        File inFile = new File(path);
         boolean newFile = inFile.createNewFile();
         Map readObject = null;
 

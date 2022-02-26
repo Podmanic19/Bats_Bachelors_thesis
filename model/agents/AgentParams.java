@@ -1,9 +1,10 @@
 package model.agents;
 
 public class AgentParams {
+    public String name = "Default";
     public double LEFT = 0.8;
     public double RIGHT = 0.8;
-    public int FORWARD = 4;
+    public double FORWARD = 4;
     public double BACK = 1;
     public int SIGHT = 150;
     public double FOV = 60;
@@ -12,4 +13,6 @@ public class AgentParams {
     public double SPEED_MIN = 2.5;
     public double SPEED_MAX = 11.5;
     public boolean AVOID_OTHERS = false;
+
+
 }

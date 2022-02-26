@@ -1,4 +1,4 @@
-package model;
+package model.main;
 import model.agents.AgentParams;
 import model.map.Map;
 import model.map.EnvironmentParameters;
