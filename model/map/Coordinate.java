@@ -4,8 +4,6 @@ import model.main.Main;
 
 import java.io.Serializable;
 
-import static model.map.LineSegment.doIntersect;
-import static model.map.LineSegment.intersectPoint;
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 
@@ -66,8 +64,8 @@ public class Coordinate implements Serializable {
         double distanceToWall = -1;
 
         for(LineSegment w: Main.envMap.getWalls()){
-            if(doIntersect(w,AtoB)){
-                intersect = intersectPoint(AtoB,w);
+            if(w.doIntersect(AtoB)){
+                intersect = w.intersectPoint(AtoB);
                 double thisDistance = this.distanceTo(intersect);
                 if(distanceToWall == -1 || Double.compare(thisDistance, distanceToWall) > 0){
                     distanceToWall = thisDistance;

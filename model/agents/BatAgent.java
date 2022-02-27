@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static model.main.Main.agentparams;
-import static model.map.LineSegment.doIntersect;
 import static java.lang.Math.sqrt;
 
 public class BatAgent implements Serializable {
@@ -216,7 +215,7 @@ public class BatAgent implements Serializable {
         if (Double.compare(distance, home.getAttraction_distance()) > 0)
             return false;
         for (LineSegment wall : Main.envMap.getWalls()) {
-            if (doIntersect(new LineSegment(position, home.getCoords()), wall)) {
+            if (wall.doIntersect(new LineSegment(position, home.getCoords()))) {
                 return false;
             }
         }
@@ -227,7 +226,7 @@ public class BatAgent implements Serializable {
         if (Double.compare(position.distanceTo(c), sightDist) > 0 || Double.compare(angle, fov / 2) > 0)
             return false;
         for (LineSegment wall : Main.envMap.getWalls()) {
-            if (doIntersect(new LineSegment(position, c), wall)) {
+            if (wall.doIntersect(new LineSegment(position, c))) {
                 return false;
             }
         }

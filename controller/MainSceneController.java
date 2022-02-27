@@ -36,8 +36,6 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
     @FXML
     Button btnSave;
     @FXML
-    Button btnPlace;
-    @FXML
     Button btnHelp;
     @FXML
     Button btnCreateTest;
@@ -154,7 +152,6 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
         btnLoadEnv.setDisable(disable);
         btnSave.setDisable(disable);
         btnEnvSettings.setDisable(disable);
-        btnPlace.setDisable(disable);
         btnCreateTest.setDisable(disable);
     }
 }

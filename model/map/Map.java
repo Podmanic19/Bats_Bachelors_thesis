@@ -5,13 +5,10 @@ import model.agents.State;
 import model.agents.BatAgent;
 import model.serialization.Save;
 
-import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static model.main.Main.envparams;
-import static model.map.LineSegment.doIntersect;
-import static model.map.LineSegment.liesOnLine;
 
 public class Map extends Save {
     private ArrayList<BatAgent> agents = new ArrayList<>();
@@ -28,7 +25,6 @@ public class Map extends Save {
         ArrayList<Coordinate> flatMap = flatten();
         Collections.shuffle(flatMap);
         HashSet<Integer> possibleHomes = fillPossibleHomes(flatMap);
-        int homeID = 1;
 
         for (int i = 0; i < flatMap.size(); i++) {
             if (homes.size() == envparams.NUMBER_HOME)
@@ -38,7 +34,7 @@ public class Map extends Save {
             if (!possibleHomes.contains(i))
                 continue;
 
-            createHome(flatMap.get(i), homeID++);
+            createHome(flatMap.get(i), Home.ID++);
             possibleHomes.remove(i);
 
             for (int j = 0; j < flatMap.size(); j++) {
@@ -57,6 +53,36 @@ public class Map extends Save {
         }
     }
 
+    public void addHome(){
+
+        Coordinate c = new Coordinate(
+                ThreadLocalRandom.current().nextInt(envparams.POINT_MIN, envparams.POINT_MAX + 1),
+                ThreadLocalRandom.current().nextInt(envparams.POINT_MIN, envparams.POINT_MAX + 1)
+        );
+
+        while(liesOnWall(c) || alreadyHome(c)){
+                c.setX(ThreadLocalRandom.current().nextInt(envparams.POINT_MIN, envparams.POINT_MAX + 1));
+                c.setY(ThreadLocalRandom.current().nextInt(envparams.POINT_MIN, envparams.POINT_MAX + 1));
+        }
+
+        createHome(c,Home.ID);
+
+    }
+
+    boolean alreadyHome(Coordinate c){
+        for(Home h: homes){
+            if(c.getX() == h.getCoords().getX() && c.getY() == h.getCoords().getY()) return true;
+        }
+        return false;
+    }
+
+    boolean liesOnWall(Coordinate c){
+        for(LineSegment w: walls){
+            if(w.liesOnLine(c)) return true;
+        }
+        return false;
+    }
+
     private HashSet<Integer> fillPossibleHomes(ArrayList<Coordinate> flatMap) {
 
         HashSet<Integer> possibleHomes = new HashSet<>();
@@ -66,11 +92,7 @@ public class Map extends Save {
         }
 
         for (int i = 0; i < flatMap.size(); i++) {
-            for (LineSegment w : walls) {
-                if (liesOnLine(flatMap.get(i), w)) {
-                    possibleHomes.remove(i);
-                }
-            }
+            if(liesOnWall(flatMap.get(i))) possibleHomes.remove(i);
         }
 
         for (Integer i : possibleHomes) {
@@ -84,10 +106,8 @@ public class Map extends Save {
 
     private void createHome(Coordinate coord, int id) {
 
-        int workNeeded = ThreadLocalRandom.current().nextInt(envparams.POINT_MIN,envparams.POINT_MAX + 1);
+        int workNeeded = ThreadLocalRandom.current().nextInt(envparams.MIN_WORK,envparams.MAX_WORK + 1);
         homes.add(new Home(id, workNeeded, coord));
-
-        System.out.println(coord.getX() + " " + coord.getY());
 
     }
 
@@ -138,7 +158,7 @@ public class Map extends Save {
             LineSegment wall = new LineSegment(first, second);
 
             for (LineSegment w : walls) {
-                if (doIntersect(wall, w)) {
+                if (w.doIntersect(wall)) {
                     didIntersect = true;
                     i--;
                     break;
@@ -160,7 +180,7 @@ public class Map extends Save {
         while (generate) {
             generate = false;
             for (LineSegment w : walls) {
-                if (liesOnLine(c, w)) {
+                if (w.liesOnLine(c)) {
                     generate = true;
                     break;
                 }

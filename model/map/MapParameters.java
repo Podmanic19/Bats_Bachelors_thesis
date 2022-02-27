@@ -14,4 +14,8 @@ public class MapParameters extends Save {
     public int WALLS_NUM = 50;
     public int WALL_LENGTH_MIN = 50;
     public int WALL_LENGTH_MAX = 150;
+    public boolean DYNAMIC_HOME_CREATION = false;
+    public boolean DYNAMIC_HOME_GROWTH = false;
+    public int DYNAMIC_HOME_SPAWN_TIME = 0;
+    public int DYNAMIC_HOME_GROWTH_SIZE = 0;
 }

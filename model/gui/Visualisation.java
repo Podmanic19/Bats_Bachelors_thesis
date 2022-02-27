@@ -44,6 +44,7 @@ public class Visualisation extends Thread implements PlaceHomes, PlaceAgents {
                 System.out.println("Pocet iteracii: " + i);
                 break;
             }
+            if(i % 100 == 0) envMap.addHome();
         }
         Instant end = Instant.now();
         System.out.println(Duration.between(start, end));

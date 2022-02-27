@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import static model.main.Main.*;
 
 public class Home extends Save {
+    public static int ID = 1;
     private final int id;
     private final Coordinate coords;
     private ArrayList<BatAgent> agents = new ArrayList<BatAgent>();

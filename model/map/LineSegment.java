@@ -3,8 +3,8 @@ package model.map;
 import java.io.Serializable;
 
 public class LineSegment implements Serializable {
-    private Coordinate A;
-    private Coordinate B;
+    private final Coordinate A;
+    private final Coordinate B;
 
     public LineSegment(Coordinate A, Coordinate B){
         this.A = A;
@@ -23,7 +23,7 @@ public class LineSegment implements Serializable {
      * @param r point 3
      * @return clockwise or counterclockwise orientation
      */
-    static int orientation(Coordinate p, Coordinate q, Coordinate r)
+    private int orientation(Coordinate p, Coordinate q, Coordinate r)
     {
         double val = (q.getY() - p.getY()) * (r.getX() - q.getX()) -
                 (q.getX() - p.getX()) * (r.getY() - q.getY());
@@ -33,33 +33,33 @@ public class LineSegment implements Serializable {
         return Double.compare(val, 0) > 0 ? 1 : 2; // clock or counterclock wise
     }
 
-    public static boolean liesOnLine(Coordinate c, LineSegment ls){
-        return Double.compare(c.distanceTo(ls.getA()) + c.distanceTo(ls.getB()), ls.length()) == 0;
+    public boolean liesOnLine(Coordinate c){
+        return Double.compare(c.distanceTo(A) + c.distanceTo(B), this.length()) == 0;
     }
 
-    public static boolean doIntersect(LineSegment first, LineSegment second) {
-        int o1 = orientation(first.getA(), first.getB(), second.getA());
-        int o2 = orientation(first.getA(), first.getB(), second.getB());
-        int o3 = orientation(second.getA(), second.getB(), first.getA());
-        int o4 = orientation(second.getA(), second.getB(), first.getB());
+    public boolean doIntersect(LineSegment second) {
+        int o1 = orientation(A, B, second.getA());
+        int o2 = orientation(A, B, second.getB());
+        int o3 = orientation(second.getA(), second.getB(), A);
+        int o4 = orientation(second.getA(), second.getB(), B);
 
         // General case
         if (o1 != o2 && o3 != o4) return true;
 
         // Special Cases
-        if (o1 == 0 && onSegment(first.getA(), first.getB(), second.getA())) return true;
-        if (o2 == 0 && onSegment(first.getA(), second.getB(), second.getA())) return true;
-        if (o3 == 0 && onSegment(first.getB(), first.getA(), second.getB())) return true;
-        if (o4 == 0 && onSegment(first.getB(), second.getA(), second.getB())) return true;
+        if (o1 == 0 && onSegment(A, B, second.getA())) return true;
+        if (o2 == 0 && onSegment(A, second.getB(), second.getA())) return true;
+        if (o3 == 0 && onSegment(B, A, second.getB())) return true;
+        if (o4 == 0 && onSegment(B, second.getA(), second.getB())) return true;
 
         return false;
     }
 
-    static Coordinate intersectPoint(LineSegment first, LineSegment second){
+    public Coordinate intersectPoint(LineSegment second){
 
-        double a1 = first.getB().getY() - first.getA().getY();
-        double b1 = first.getA().getX() - first.getB().getX();
-        double c1 = a1 * (first.getA().getX()) + b1 * (first.getA().getY());
+        double a1 = B.getY() - A.getY();
+        double b1 = A.getX() - B.getX();
+        double c1 = a1 * (A.getX()) + b1 * (A.getY());
 
         double a2 = second.getB().getY() - second.getA().getY();
         double b2 = second.getA().getX() - second.getB().getX();
@@ -69,7 +69,7 @@ public class LineSegment implements Serializable {
 
         if (determinant == 0)                               // line segments belong to the same line
         {
-            return first.getA().distanceTo(second.getA()) < first.getA().distanceTo(second.getB()) ?
+            return A.distanceTo(second.getA()) < A.distanceTo(second.getB()) ?
                     second.getA() : second.getB();          // return the line segment starting point closer to agent
         }
         else
