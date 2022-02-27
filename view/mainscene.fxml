@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -45,7 +46,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <Button fx:id="btnPlay" disable="true" layoutX="71.0" layoutY="630.0" mnemonicParsing="false" onAction="#btnPlayOnAction" prefHeight="62.0" prefWidth="72.0" text="PLAY" textAlignment="CENTER">
+            <Button fx:id="btnPlay" disable="true" layoutX="65.0" layoutY="690.0" mnemonicParsing="false" onAction="#btnPlayOnAction" prefHeight="62.0" prefWidth="72.0" text="PLAY" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Button>
@@ -54,6 +55,8 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
+            <CheckBox fx:id="cbShowCalls" layoutX="36.0" layoutY="592.0" mnemonicParsing="false" onAction="#showCallsOnAction" text="SHOW CALLS" />
+            <CheckBox fx:id="cbShowVision" layoutX="36.0" layoutY="629.0" mnemonicParsing="false" onAction="#showVisionOnAction" text="SHOW VISION" />
          </children>
       </Pane>
    </children>

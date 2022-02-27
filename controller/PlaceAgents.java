@@ -3,6 +3,7 @@ package controller;
 import model.agents.BatAgent;
 import model.agents.AgentCircle;
 import model.agents.State;
+import model.main.Main;
 import model.map.Vector;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -17,7 +18,7 @@ public interface PlaceAgents {
         double coef_w = paneMain.getWidth() / envparams.POINT_MAX;
         for (BatAgent a : envMap.getAgents()) {
             AgentCircle cir = new AgentCircle();
-            if (envparams.SHOW_SIGHT && a.getState() != State.working) {
+            if (Main.SHOW_SIGHT && a.getState() != State.working) {
                 Arc arc = new Arc();
                 arc.setCenterX(a.getPosition().getX() * coef_w);
                 arc.setCenterY(a.getPosition().getY() * coef_h);

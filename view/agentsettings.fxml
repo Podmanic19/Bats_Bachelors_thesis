@@ -83,7 +83,7 @@
          </font>
       </Label>
       <ChoiceBox fx:id="speedDistCB" layoutX="540.0" layoutY="590.0" prefWidth="150.0" />
-      <CheckBox fx:id="avoidOthersCb" layoutX="153.0" layoutY="653.0" mnemonicParsing="false" text="avoid others" />
+      <CheckBox fx:id="avoidOthersCb" layoutX="153.0" layoutY="653.0" mnemonicParsing="false" text="Avoid others" />
       <CheckBox fx:id="repulseCallCb" layoutX="544.0" layoutY="655.0" mnemonicParsing="false" text="Repulse call" />
       <Button fx:id="btnSet" layoutX="460.0" layoutY="702.0" mnemonicParsing="false" onAction="#btnSetOnAction" text="Set" />
    </children>

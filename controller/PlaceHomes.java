@@ -1,5 +1,6 @@
 package controller;
 
+import model.main.Main;
 import model.map.Home;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -21,7 +22,7 @@ public interface PlaceHomes {
             }
             else {
                 cir.setFill(Color.GREEN);
-                if(envparams.SHOW_ATTRACTION){
+                if(Main.SHOW_ATTRACTION){
                     Circle att = new Circle();
                     att.setFill(Color.TRANSPARENT);
                     att.setRadius(envparams.ATTRACTION_DISTANCE * coef_w);

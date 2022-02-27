@@ -14,6 +14,4 @@ public class MapParameters extends Save {
     public int WALLS_NUM = 50;
     public int WALL_LENGTH_MIN = 50;
     public int WALL_LENGTH_MAX = 150;
-    public boolean SHOW_ATTRACTION = false;
-    public boolean SHOW_SIGHT = false;
 }

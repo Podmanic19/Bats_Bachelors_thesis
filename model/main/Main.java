@@ -15,6 +15,8 @@ import java.util.Objects;
 public class Main extends Application {
     public static MapParameters envparams = new MapParameters();
     public static AgentParams agentparams = new AgentParams();
+    public static boolean SHOW_ATTRACTION = false;
+    public static boolean SHOW_SIGHT = false;
     public static Map envMap;
 
     public static void main(String[] args) {

@@ -1,5 +1,7 @@
 package controller;
+import javafx.scene.control.CheckBox;
 import model.gui.Visualisation;
+import model.main.Main;
 import model.map.Map;
 import model.map.LineSegment;
 import model.gui.IAlert;
@@ -45,6 +47,11 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
     Pane paneBtn;
     @FXML
     Label lblLoading;
+    @FXML
+    CheckBox cbShowVision;
+    @FXML
+    CheckBox cbShowCalls;
+
 
     public static boolean playing = false;
 
@@ -126,6 +133,14 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
         File file = fileChooser.showSaveDialog(new Stage());
         envMap.save(envMap, file);
 
+    }
+
+    public void showCallsOnAction(){
+        SHOW_ATTRACTION = cbShowCalls.isSelected();
+    }
+
+    public void showVisionOnAction(){
+        SHOW_SIGHT = cbShowVision.isSelected();
     }
 
     public void btnCreateTest() {

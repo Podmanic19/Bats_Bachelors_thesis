@@ -30,6 +30,7 @@ public class BatAgent implements Serializable {
         this.id = id;
         this.home = null;
         this.position = position;
+        this.speedType = agentparams.SPEED_TYPE;
         generateRandSpeed();
         generateRandDir();
         this.sightDist = agentparams.SIGHT;
@@ -37,7 +38,6 @@ public class BatAgent implements Serializable {
         this.workRate = agentparams.WORK_RATE;
         this.interestBound = agentparams.INTEREST_BOUNDARY;
         this.state = State.searching;
-        this.speedType = agentparams.SPEED_TYPE;
     }
 
     private void generateRandSpeed() {
