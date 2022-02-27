@@ -1,9 +1,10 @@
 package model.agents;
 
+import controller.SpeedDistribution;
 import model.serialization.Save;
 
 public class AgentParams extends Save {
-    public String name = "Default";
+    public String NAME = "Default";
     public double LEFT = 0.8;
     public double RIGHT = 0.8;
     public double FORWARD = 4;
@@ -15,6 +16,7 @@ public class AgentParams extends Save {
     public double SPEED_MIN = 2.5;
     public double SPEED_MAX = 11.5;
     public boolean AVOID_OTHERS = false;
+    public SpeedDistribution SPEED_TYPE = SpeedDistribution.GAUSSIAN;
 
 
 }

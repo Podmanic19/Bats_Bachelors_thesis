@@ -1,6 +1,5 @@
 package controller;
-
-import javafx.fxml.Initializable;
+import model.gui.Visualisation;
 import model.map.Map;
 import model.map.LineSegment;
 import model.gui.IAlert;
@@ -15,17 +14,13 @@ import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
-import model.serialization.Save;
-
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 
 import static model.main.Main.*;
 
-public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes, IAlert, Initializable {
+public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes, IAlert {
     @FXML
     Button btnCreate;
     @FXML
@@ -42,6 +37,8 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
     Button btnPlace;
     @FXML
     Button btnHelp;
+    @FXML
+    Button btnCreateTest;
     @FXML
     Pane paneMain;
     @FXML
@@ -143,10 +140,6 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
         btnSave.setDisable(disable);
         btnEnvSettings.setDisable(disable);
         btnPlace.setDisable(disable);
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        btnHelp.setVisible(false);
+        btnCreateTest.setDisable(disable);
     }
 }

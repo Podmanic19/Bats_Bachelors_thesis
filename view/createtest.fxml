@@ -9,28 +9,35 @@
 
 <Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ComboBox layoutX="500.0" layoutY="380.0" prefWidth="150.0" promptText="AGENT TYPE" style="-fx-border-color: black; -fx-background-color: white;" styleClass="-" />
-      <Label layoutX="70.0" layoutY="274.0" text="Number of iterations over each map">
+      <Label layoutX="80.0" layoutY="170.0" text="Test name">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <TextField layoutX="500.0" layoutY="280.0" />
-      <TextField layoutX="500.0" layoutY="180.0" />
-      <Label layoutX="65.0" layoutY="174.0" text="Number of maps">
+      <TextField layoutX="590.0" layoutY="170.0" />
+      <Button layoutX="61.0" layoutY="35.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="79.0" text="&lt;&lt;">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Button>
+      <Button layoutX="668.0" layoutY="37.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="79.0" text="&gt;&gt;">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Button>
+      <ComboBox layoutX="590.0" layoutY="220.0" prefWidth="150.0" />
+      <ComboBox layoutX="590.0" layoutY="270.0" prefWidth="150.0" />
+      <Label layoutX="82.0" layoutY="220.0" text="Map type">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Button layoutX="374.0" layoutY="691.0" mnemonicParsing="false" text="RUN TESTS" />
-      <Label layoutX="70.0" layoutY="74.0" text="Test name">
+      <Label layoutX="79.0" layoutY="270.0" text="Agent type">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <TextField layoutX="500.0" layoutY="80.0" />
-      <Button layoutX="709.0" layoutY="381.0" mnemonicParsing="false" text="new" />
-      <ComboBox layoutX="500.0" layoutY="480.0" prefWidth="150.0" promptText="MAP TYPE" style="-fx-border-color: black; -fx-background-color: white;" styleClass="-" />
-      <Button layoutX="709.0" layoutY="481.0" mnemonicParsing="false" text="new" />
+      <Button layoutX="470.0" layoutY="220.0" mnemonicParsing="false" text="custom map" />
+      <Button layoutX="465.0" layoutY="270.0" mnemonicParsing="false" text="custom agent" />
    </children>
 </Pane>

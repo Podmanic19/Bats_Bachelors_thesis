@@ -47,10 +47,10 @@ public class Home extends Save {
         if (pollution > 0) {
             pollution -= a.getWorkRate();
             return true;
-        } else {
-            ArrayList<Home> homes = envMap.getHomes();
-            return false;
         }
+
+        return false;
+
     }
 
     public synchronized double getPollution() {

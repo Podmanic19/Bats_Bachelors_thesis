@@ -46,7 +46,7 @@
       </Label>
       <TextField fx:id="fovTf" layoutX="538.0" layoutY="340.0" />
       <TextField fx:id="sightTf" layoutX="538.0" layoutY="290.0" />
-      <Button fx:id="btnSave" layoutX="361.0" layoutY="703.0" mnemonicParsing="false" onAction="#btnSaveOnAction" text="Save" />
+      <Button fx:id="btnSave" layoutX="274.0" layoutY="700.0" mnemonicParsing="false" onAction="#btnSaveOnAction" text="Save as..." />
       <Label layoutX="80.0" layoutY="40.0" text="Name">
          <font>
             <Font size="15.0" />
@@ -85,5 +85,6 @@
       <ChoiceBox fx:id="speedDistCB" layoutX="540.0" layoutY="590.0" prefWidth="150.0" />
       <CheckBox fx:id="avoidOthersCb" layoutX="153.0" layoutY="653.0" mnemonicParsing="false" text="avoid others" />
       <CheckBox fx:id="repulseCallCb" layoutX="544.0" layoutY="655.0" mnemonicParsing="false" text="Repulse call" />
+      <Button fx:id="btnSet" layoutX="460.0" layoutY="702.0" mnemonicParsing="false" onAction="#btnSetOnAction" text="Set" />
    </children>
 </AnchorPane>

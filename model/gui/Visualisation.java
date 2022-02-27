@@ -1,5 +1,7 @@
-package controller;
+package model.gui;
 
+import controller.PlaceAgents;
+import controller.PlaceHomes;
 import model.agents.BatAgent;
 import javafx.application.Platform;
 import javafx.scene.layout.Pane;

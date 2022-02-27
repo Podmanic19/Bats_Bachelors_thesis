@@ -1,13 +1,14 @@
 package model.agents;
 
+import controller.SpeedDistribution;
 import model.main.Main;
 import model.map.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static model.main.Main.agentparams;
 import static model.map.LineSegment.doIntersect;
 import static java.lang.Math.sqrt;
 
@@ -22,6 +23,8 @@ public class BatAgent implements Serializable {
     private final double workRate; // how much work the agent performs per unit of time
     private final double interestBound; // may not be needed
     private State state; // the state the agent is in
+    private double totalWork = 0;
+    private final SpeedDistribution speedType;
 
     public BatAgent(int id, Coordinate position) {
         this.id = id;
@@ -29,18 +32,28 @@ public class BatAgent implements Serializable {
         this.position = position;
         generateRandSpeed();
         generateRandDir();
-        this.sightDist = Main.agentparams.SIGHT;
-        this.fov = Main.agentparams.FOV;
-        this.workRate = Main.agentparams.WORK_RATE;
-        this.interestBound = Main.agentparams.INTEREST_BOUNDARY;
+        this.sightDist = agentparams.SIGHT;
+        this.fov = agentparams.FOV;
+        this.workRate = agentparams.WORK_RATE;
+        this.interestBound = agentparams.INTEREST_BOUNDARY;
         this.state = State.searching;
+        this.speedType = agentparams.SPEED_TYPE;
     }
 
     private void generateRandSpeed() {
-        double rand_speed = (new Random().nextGaussian() + 3.7);
-        rand_speed = Math.max(rand_speed, Main.agentparams.SPEED_MIN);
-        rand_speed = Math.min(rand_speed, Main.agentparams.SPEED_MAX);
-        this.speed = rand_speed;
+        switch(speedType) {
+            case GAUSSIAN:
+                double rand_speed = (ThreadLocalRandom.current().nextGaussian() + 3.7);
+                rand_speed = Math.max(rand_speed, agentparams.SPEED_MIN);
+                rand_speed = Math.min(rand_speed, agentparams.SPEED_MAX);
+                this.speed = rand_speed;
+                break;
+            case UNIFORM:
+                this.speed = (ThreadLocalRandom.current().nextDouble(agentparams.SPEED_MIN, agentparams.SPEED_MAX));
+                break;
+            case STABLE:
+                this.speed = agentparams.SPEED_MAX;
+        }
     }
 
     private void generateDir() {
@@ -51,7 +64,7 @@ public class BatAgent implements Serializable {
             return;
         }
 
-        if (Main.agentparams.AVOID_OTHERS && this.state == State.searching) {
+        if (agentparams.AVOID_OTHERS && this.state == State.searching) {
             ArrayList<Vector> vectorsToOthers = new ArrayList<>();
 
             for (BatAgent a : Main.envMap.getAgents()) {
@@ -84,8 +97,8 @@ public class BatAgent implements Serializable {
     private void dirJa() {
 
         int degrees = ThreadLocalRandom.current().nextInt((90 - (-90)) + 1) + (-90);
-        double forward = Main.agentparams.FORWARD * ThreadLocalRandom.current().nextInt(100);
-        double back = Main.agentparams.BACK * ThreadLocalRandom.current().nextInt(100);
+        double forward = agentparams.FORWARD * ThreadLocalRandom.current().nextInt(100);
+        double back = agentparams.BACK * ThreadLocalRandom.current().nextInt(100);
         this.direction.rotate(Math.toRadians(degrees));
         if (Double.compare(back, forward) < 0) {
             this.direction.reverse();
@@ -94,10 +107,10 @@ public class BatAgent implements Serializable {
     }
 
     private void dirZelenka() {
-        double front = Main.agentparams.FORWARD / (double) (10000 * ThreadLocalRandom.current().nextInt(10000) + 1);
-        double back = Main.agentparams.BACK / (double) (10000 * ThreadLocalRandom.current().nextInt(10000) + 1);
-        double left = Main.agentparams.LEFT / (double) (10000 * ThreadLocalRandom.current().nextInt(10000) + 1);
-        double right = Main.agentparams.RIGHT / (double) (10000 * ThreadLocalRandom.current().nextInt(10000) + 1);
+        double front = agentparams.FORWARD / (double) (10000 * ThreadLocalRandom.current().nextInt(10000) + 1);
+        double back = agentparams.BACK / (double) (10000 * ThreadLocalRandom.current().nextInt(10000) + 1);
+        double left = agentparams.LEFT / (double) (10000 * ThreadLocalRandom.current().nextInt(10000) + 1);
+        double right = agentparams.RIGHT / (double) (10000 * ThreadLocalRandom.current().nextInt(10000) + 1);
 
         Vector n = (front - back) >= 0 ? this.direction.copy() : this.direction.reverse();
         Vector s = (left - right) >= 0 ? this.direction.reverseX() : this.direction.reverseY();
@@ -270,6 +283,7 @@ public class BatAgent implements Serializable {
             state = State.searching;
             act();
         }
+        totalWork += workRate;
     }
 
     public double getWorkRate() {
