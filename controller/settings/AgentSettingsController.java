@@ -1,5 +1,6 @@
-package controller;
+package controller.settings;
 
+import model.agents.SpeedDistribution;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -30,27 +31,14 @@ public class AgentSettingsController implements Initializable, IAlert {
     @FXML ChoiceBox<SpeedDistribution> speedDistCB;
     @FXML CheckBox avoidOthersCb;
     @FXML CheckBox repulseCallCb;
+    @FXML CheckBox decisiveCb;
     @FXML Button btnSave;
     AgentParams params;
 
 
     public void btnSaveOnAction(){
         try{
-            params = new AgentParams();
-            params.NAME = nameTf.getText();
-            params.RIGHT = Double.parseDouble(rightTf.getText());
-            params.LEFT = Double.parseDouble(leftTf.getText());
-            params.BACK = Double.parseDouble(backTf.getText());
-            params.FORWARD = Double.parseDouble(forwardTf.getText());
-            params.SIGHT = Integer.parseInt(sightTf.getText());
-            params.FOV = Double.parseDouble(fovTf.getText());
-            params.WORK_RATE = Double.parseDouble(workRateTf.getText());
-            params.INTEREST_BOUNDARY = Integer.parseInt(interestTf.getText());
-            params.SPEED_MIN = Double.parseDouble(speedMinTf.getText());
-            params.SPEED_MAX = Double.parseDouble(speedMaxTf.getText());
-            params.SPEED_TYPE = speedDistCB.getValue();
-            params.AVOID_OTHERS = avoidOthersCb.isSelected();
-            params.REPULSIVE_CALL = repulseCallCb.isSelected();
+            setParams();
         }
         catch (Exception e){
             e.printStackTrace();
@@ -65,6 +53,7 @@ public class AgentSettingsController implements Initializable, IAlert {
         speedMinTf.getText().isEmpty() || speedMaxTf.getText().isEmpty() || speedDistCB.getValue() == null){
             popup("All fields must be filled in.");
         }
+        setParams();
         agentparams = params;
     }
 
@@ -86,5 +75,25 @@ public class AgentSettingsController implements Initializable, IAlert {
         ObservableList<SpeedDistribution> priorities = FXCollections.observableArrayList(SpeedDistribution.values());
         speedDistCB.getItems().setAll(priorities);
         speedDistCB.setValue(SpeedDistribution.GAUSSIAN);
+        decisiveCb.setSelected(agentparams.DECISIVE);
+    }
+
+    private void setParams(){
+        params = new AgentParams();
+        params.NAME = nameTf.getText();
+        params.RIGHT = Double.parseDouble(rightTf.getText());
+        params.LEFT = Double.parseDouble(leftTf.getText());
+        params.BACK = Double.parseDouble(backTf.getText());
+        params.FORWARD = Double.parseDouble(forwardTf.getText());
+        params.SIGHT = Integer.parseInt(sightTf.getText());
+        params.FOV = Double.parseDouble(fovTf.getText());
+        params.WORK_RATE = Double.parseDouble(workRateTf.getText());
+        params.INTEREST_BOUNDARY = Integer.parseInt(interestTf.getText());
+        params.SPEED_MIN = Double.parseDouble(speedMinTf.getText());
+        params.SPEED_MAX = Double.parseDouble(speedMaxTf.getText());
+        params.SPEED_TYPE = speedDistCB.getValue();
+        params.AVOID_OTHERS = avoidOthersCb.isSelected();
+        params.REPULSIVE_CALL = repulseCallCb.isSelected();
+        params.DECISIVE = decisiveCb.isSelected();
     }
 }

@@ -34,7 +34,7 @@ public class Map extends Save {
             if (!possibleHomes.contains(i))
                 continue;
 
-            createHome(flatMap.get(i), Home.ID++);
+            createHome(flatMap.get(i), Home.ID++, 0);
             possibleHomes.remove(i);
 
             for (int j = 0; j < flatMap.size(); j++) {
@@ -53,7 +53,7 @@ public class Map extends Save {
         }
     }
 
-    public void addHome(){
+    public void addHome(int spawn_time){
 
         Coordinate c = new Coordinate(
                 ThreadLocalRandom.current().nextInt(envparams.POINT_MIN, envparams.POINT_MAX + 1),
@@ -65,7 +65,7 @@ public class Map extends Save {
                 c.setY(ThreadLocalRandom.current().nextInt(envparams.POINT_MIN, envparams.POINT_MAX + 1));
         }
 
-        createHome(c,Home.ID);
+        createHome(c,Home.ID, spawn_time);
 
     }
 
@@ -104,10 +104,10 @@ public class Map extends Save {
 
     }
 
-    private void createHome(Coordinate coord, int id) {
+    private void createHome(Coordinate coord, int id, int spawn_time) {
 
         int workNeeded = ThreadLocalRandom.current().nextInt(envparams.MIN_WORK,envparams.MAX_WORK + 1);
-        homes.add(new Home(id, workNeeded, coord));
+        homes.add(new Home(id, workNeeded, spawn_time, coord));
 
     }
 

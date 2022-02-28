@@ -1,6 +1,5 @@
 package model.agents;
 
-import controller.SpeedDistribution;
 import model.serialization.Save;
 
 public class AgentParams extends Save {
@@ -17,7 +16,6 @@ public class AgentParams extends Save {
     public double SPEED_MAX = 11.5;
     public boolean AVOID_OTHERS = false;
     public boolean REPULSIVE_CALL = false;
+    public boolean DECISIVE = true;
     public SpeedDistribution SPEED_TYPE = SpeedDistribution.GAUSSIAN;
-
-
 }

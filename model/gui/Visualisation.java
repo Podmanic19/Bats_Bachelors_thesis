@@ -6,6 +6,7 @@ import model.agents.BatAgent;
 import javafx.application.Platform;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
+import model.map.Home;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -31,7 +32,10 @@ public class Visualisation extends Thread implements PlaceHomes, PlaceAgents {
         for (int i = 0; i < 10000; i++) {
             envMap.getAgents().parallelStream().forEach(BatAgent::act);
             envMap.getHomes().removeIf(h -> (h.getPollution() <= 0));
-
+            for(Home h : envMap.getHomes()){
+                h.incrementLifetime();
+                h.increasePollution(envparams.DYNAMIC_HOME_GROWTH_SIZE);
+            }
             Platform.runLater(this::refresh);
             Platform.runLater(() -> placeHomes(paneMain));
             Platform.runLater(() -> placeAgents(paneMain));
@@ -44,7 +48,7 @@ public class Visualisation extends Thread implements PlaceHomes, PlaceAgents {
                 System.out.println("Pocet iteracii: " + i);
                 break;
             }
-            if(i % 100 == 0) envMap.addHome();
+            if(envparams.DYNAMIC_HOME_CREATION && i % envparams.DYNAMIC_HOME_SPAWN_TIME == 0) envMap.addHome(i);
         }
         Instant end = Instant.now();
         System.out.println(Duration.between(start, end));

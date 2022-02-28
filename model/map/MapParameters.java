@@ -3,7 +3,8 @@ package model.map;
 import model.serialization.Save;
 
 public class MapParameters extends Save {
-    public int AGENT_NUM = 100;
+    public String name = "DEFAULT";
+    public int AGENT_NUM = 20;
     public int POINT_MAX = 1000;
     public int POINT_MIN = 0;
     public int MIN_DISTANCE = 50;
@@ -15,7 +16,6 @@ public class MapParameters extends Save {
     public int WALL_LENGTH_MIN = 50;
     public int WALL_LENGTH_MAX = 150;
     public boolean DYNAMIC_HOME_CREATION = false;
-    public boolean DYNAMIC_HOME_GROWTH = false;
     public int DYNAMIC_HOME_SPAWN_TIME = 0;
     public int DYNAMIC_HOME_GROWTH_SIZE = 0;
 }

@@ -10,16 +10,20 @@ import static model.main.Main.*;
 public class Home extends Save {
     public static int ID = 1;
     private final int id;
+    private int spawn_time = 0;
+    private int life_time = 0;
     private final Coordinate coords;
     private ArrayList<BatAgent> agents = new ArrayList<BatAgent>();
     private double pollution;
     private double attraction_distance = envparams.ATTRACTION_DISTANCE;
     private CallType call;
 
-    public Home(int id, double pollution, Coordinate coords) {
+    public Home(int id, double pollution, int spawn_time, Coordinate coords) {
         this.id = id;
+        this.spawn_time = spawn_time;
         this.pollution = pollution;
         this.coords = coords;
+        this.call = CallType.NONE;
     }
 
     public synchronized CallType getCall() {
@@ -51,6 +55,14 @@ public class Home extends Save {
 
         return false;
 
+    }
+
+    public void incrementLifetime(){
+        life_time++;
+    }
+
+    public void increasePollution(int pollution){
+        this.pollution += pollution;
     }
 
     public synchronized double getPollution() {

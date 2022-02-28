@@ -1,7 +1,6 @@
 package controller;
 import javafx.scene.control.CheckBox;
 import model.gui.Visualisation;
-import model.main.Main;
 import model.map.Map;
 import model.map.LineSegment;
 import model.gui.IAlert;
@@ -120,7 +119,7 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
         fch.getExtensionFilters().add(fileExtensions);
         File file = fch.showOpenDialog(new Stage());
 
-        envMap = (Map) envMap.loadMap(file);
+        envMap = (Map) envMap.load(file);
         showMap(paneMain);
     }
 

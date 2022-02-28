@@ -1,6 +1,5 @@
 package model.agents;
 
-import controller.SpeedDistribution;
 import model.main.Main;
 import model.map.*;
 
@@ -95,7 +94,10 @@ public class BatAgent implements Serializable {
 
     private void dirJa() {
 
-        int degrees = ThreadLocalRandom.current().nextInt((90 - (-90)) + 1) + (-90);
+        int degrees = 0;
+        if(agentparams.LEFT > 0 && agentparams.RIGHT > 0) {
+            degrees = ThreadLocalRandom.current().nextInt((90 - (-90)) + 1) + (-90);
+        }
         double forward = agentparams.FORWARD * ThreadLocalRandom.current().nextInt(100);
         double back = agentparams.BACK * ThreadLocalRandom.current().nextInt(100);
         this.direction.rotate(Math.toRadians(degrees));
@@ -188,6 +190,9 @@ public class BatAgent implements Serializable {
     }
 
     private synchronized void checkForHomes() {
+
+        if(agentparams.DECISIVE && home != null) return;
+
         ArrayList<Home> attractingHomes = new ArrayList<>();
         ArrayList<Home> notAttractingHomes = new ArrayList<>();
 

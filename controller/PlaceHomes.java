@@ -1,6 +1,7 @@
 package controller;
 
 import model.main.Main;
+import model.map.CallType;
 import model.map.Home;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -17,7 +18,7 @@ public interface PlaceHomes {
         double coef_w = paneMain.getWidth() / envparams.POINT_MAX;
         for(Home h : envMap.getHomes()){
             Circle cir = new Circle();
-            if(h.getCall() == false) {
+            if(h.getCall() == CallType.NONE) {
                 cir.setFill(Color.BLUE);
             }
             else {
@@ -32,7 +33,7 @@ public interface PlaceHomes {
                     paneMain.getChildren().add(att);
                 }
             }
-            if(h.getCall() == false) cir.setStroke(Color.BLUE);
+            if(h.getCall() == CallType.NONE) cir.setStroke(Color.BLUE);
             else cir.setStroke(Color.GREEN);
             cir.setRadius(RADIUS);
             cir.setCenterX(h.getCoords().getX() * coef_w);

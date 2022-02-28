@@ -7,7 +7,7 @@ import java.io.*;
 
 public abstract class Save implements IAlert, Serializable {
 
-    public void save(Save s, File f){
+    public static void save(Save s, File f){
         try {
             FileOutputStream fos = new FileOutputStream(f.getAbsolutePath());
             ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -15,13 +15,14 @@ public abstract class Save implements IAlert, Serializable {
             oos.close();
             fos.close();
         } catch (IOException ioe) {
-            popup("Unable to save map.");
+            ioe.printStackTrace();
+//            popup("Unable to save map.");
         }
     }
 
-    public Save loadMap(File inFile) {
+    public static Save load(File inFile) {
 
-        Save readObject = null;
+        Save readObject;
 
         try {
             FileInputStream fis = new FileInputStream(inFile);
@@ -29,13 +30,12 @@ public abstract class Save implements IAlert, Serializable {
             readObject = (Map) ois.readObject();
             ois.close();
             fis.close();
-        } catch (IOException ioe) {
-            popup("Unable to open file");
+        } catch (IOException | ClassNotFoundException ioe) {
+            //popup("Unable to open file");
+            ioe.printStackTrace();
             return null;
-        } catch (ClassNotFoundException e) {
-            popup("Unable to open file, class not found");
-            return null;
-        }
+        } //popup("Unable to open file, class not found");
+
 
         return readObject;
 
