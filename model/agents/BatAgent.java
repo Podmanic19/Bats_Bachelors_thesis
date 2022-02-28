@@ -198,14 +198,19 @@ public class BatAgent implements Serializable {
             Vector agentToHome = new Vector(this.position, home.getCoords());
             double angle = direction.angleBetween(agentToHome);
 
-            if (home.isAttracting()) { // if agents are attracting others to home
-                if (isInAttractionDistance(distance, home) || isVisible(home.getCoords(), angle)) {
-                    attractingHomes.add(home);
-                }
-            } else {
-                if (isVisible(home.getCoords(), angle)) { // and he can see the home
-                    notAttractingHomes.add(home);
-                }
+            switch (home.getCall()) {
+                case REPULSING:
+                    break;
+                case ATTRACTING: // if agents are attracting others to home
+                    if (isInAttractionDistance(distance, home) || isVisible(home.getCoords(), angle)) {
+                        attractingHomes.add(home);
+                    }
+                    break;
+                case NONE:
+                    if (isVisible(home.getCoords(), angle)) { // and he can see the home
+                        notAttractingHomes.add(home);
+                    }
+                    break;
             }
         }
         chooseHome(attractingHomes, notAttractingHomes);
@@ -275,7 +280,8 @@ public class BatAgent implements Serializable {
             act();
             return;
         }
-        home.setAttracting(Double.compare((home.getPollution()), interestBound) >= 0);
+        CallType call = Double.compare((home.getPollution()), interestBound) >= 0 ? CallType.ATTRACTING : CallType.NONE;
+        home.setCall(call);
         boolean worked = home.decreasePollution(this);
         if (!worked) {
             this.home = null;

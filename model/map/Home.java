@@ -3,7 +3,6 @@ package model.map;
 import model.agents.BatAgent;
 import model.serialization.Save;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import static model.main.Main.*;
@@ -15,7 +14,7 @@ public class Home extends Save {
     private ArrayList<BatAgent> agents = new ArrayList<BatAgent>();
     private double pollution;
     private double attraction_distance = envparams.ATTRACTION_DISTANCE;
-    private boolean attracting;
+    private CallType call;
 
     public Home(int id, double pollution, Coordinate coords) {
         this.id = id;
@@ -23,8 +22,8 @@ public class Home extends Save {
         this.coords = coords;
     }
 
-    public synchronized boolean isAttracting() {
-        return attracting;
+    public synchronized CallType getCall() {
+        return call;
     }
 
     public double getAttraction_distance() {
@@ -58,8 +57,8 @@ public class Home extends Save {
         return pollution;
     }
 
-    public synchronized void setAttracting(boolean attracting) {
-        this.attracting = attracting;
+    public synchronized void setCall(CallType call) {
+        this.call = call;
     }
 
     public synchronized Coordinate getCoords() {

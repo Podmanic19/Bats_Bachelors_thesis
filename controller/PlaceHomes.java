@@ -17,7 +17,7 @@ public interface PlaceHomes {
         double coef_w = paneMain.getWidth() / envparams.POINT_MAX;
         for(Home h : envMap.getHomes()){
             Circle cir = new Circle();
-            if(h.isAttracting() == false) {
+            if(h.getCall() == false) {
                 cir.setFill(Color.BLUE);
             }
             else {
@@ -32,7 +32,7 @@ public interface PlaceHomes {
                     paneMain.getChildren().add(att);
                 }
             }
-            if(h.isAttracting() == false) cir.setStroke(Color.BLUE);
+            if(h.getCall() == false) cir.setStroke(Color.BLUE);
             else cir.setStroke(Color.GREEN);
             cir.setRadius(RADIUS);
             cir.setCenterX(h.getCoords().getX() * coef_w);
