@@ -1,6 +1,5 @@
 package model.map;
 
-import model.main.Main;
 import model.agents.State;
 import model.agents.BatAgent;
 import model.serialization.Save;
@@ -19,6 +18,12 @@ public class Map extends Save {
         generateWalls();
         generateHomes();
         generateAgents();
+    }
+
+    public Map(Map m) {
+        this.agents = new ArrayList<>(m.getAgents());
+        this.walls = new ArrayList<>(m.getWalls());
+        this.homes = new ArrayList<>(m.getHomes());
     }
 
     private void generateHomes() {
@@ -69,14 +74,14 @@ public class Map extends Save {
 
     }
 
-    boolean alreadyHome(Coordinate c){
+    private boolean alreadyHome(Coordinate c){
         for(Home h: homes){
             if(c.getX() == h.getCoords().getX() && c.getY() == h.getCoords().getY()) return true;
         }
         return false;
     }
 
-    boolean liesOnWall(Coordinate c){
+    private boolean liesOnWall(Coordinate c){
         for(LineSegment w: walls){
             if(w.liesOnLine(c)) return true;
         }
@@ -115,7 +120,7 @@ public class Map extends Save {
         agents = new ArrayList<>();
 
         for (int i = 0; i < envparams.AGENT_NUM; i++) {
-            agents.add(new BatAgent(i + 1, generateRandPos()));
+            agents.add(new BatAgent(BatAgent.ID++, generateRandPos()));
         }
     }
 

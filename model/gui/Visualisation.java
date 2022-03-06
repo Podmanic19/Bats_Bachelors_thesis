@@ -2,6 +2,7 @@ package model.gui;
 
 import controller.PlaceAgents;
 import controller.PlaceHomes;
+import javafx.scene.control.Label;
 import model.agents.BatAgent;
 import javafx.application.Platform;
 import javafx.scene.layout.Pane;
@@ -16,13 +17,15 @@ import static model.main.Main.*;
 public class Visualisation extends Thread implements PlaceHomes, PlaceAgents {
 
     private final Pane paneMain;
+    private final Label lblTicks;
 
-    private Visualisation(Pane pane) {
-        paneMain = pane;
+    private Visualisation(Pane pane, Label lblTicks) {
+        this.lblTicks = lblTicks;
+        this.paneMain = pane;
     }
 
-    public static Visualisation getInstance(Pane pane) {
-        return new Visualisation(pane);
+    public static Visualisation getInstance(Pane pane, Label lblTicks) {
+        return new Visualisation(pane, lblTicks);
     }
 
     @Override
@@ -30,6 +33,7 @@ public class Visualisation extends Thread implements PlaceHomes, PlaceAgents {
 
         Instant start = Instant.now();
         for (int i = 0; i < 10000; i++) {
+            int finalI = i;
             envMap.getAgents().parallelStream().forEach(BatAgent::act);
             envMap.getHomes().removeIf(h -> (h.getPollution() <= 0));
             for(Home h : envMap.getHomes()){
@@ -39,6 +43,7 @@ public class Visualisation extends Thread implements PlaceHomes, PlaceAgents {
             Platform.runLater(this::refresh);
             Platform.runLater(() -> placeHomes(paneMain));
             Platform.runLater(() -> placeAgents(paneMain));
+            Platform.runLater(() ->  updateTicks(finalI));
             try {
                 sleep(30);
             } catch (InterruptedException e) {
@@ -58,5 +63,13 @@ public class Visualisation extends Thread implements PlaceHomes, PlaceAgents {
     private void refresh() {
         paneMain.getChildren().removeIf(node -> (!(node instanceof Line)));
     }
+
+
+    public void updateTicks(int i){
+
+        lblTicks.setText("Second: " + i);
+
+    }
+
 
 }

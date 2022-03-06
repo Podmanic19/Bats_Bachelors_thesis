@@ -16,6 +16,6 @@ public class AgentParams extends Save {
     public double SPEED_MAX = 11.5;
     public boolean AVOID_OTHERS = false;
     public boolean REPULSIVE_CALL = false;
-    public boolean DECISIVE = true;
+    public boolean DECISIVE = false;
     public SpeedDistribution SPEED_TYPE = SpeedDistribution.GAUSSIAN;
 }

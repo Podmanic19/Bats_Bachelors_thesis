@@ -1,4 +1,5 @@
 package controller;
+import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
 import model.gui.Visualisation;
 import model.map.Map;
@@ -48,6 +49,7 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
     CheckBox cbShowVision;
     @FXML
     CheckBox cbShowCalls;
+    @FXML Label lblTicks;
 
 
     public static boolean playing = false;
@@ -73,13 +75,11 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
         placeAgents(paneMain);
     }
 
-    public void btnPlaceAgents() {
-        placeAgents(paneMain);
-    }
-
     public void btnPlayOnAction(){
+        lblTicks.setAlignment(Pos.CENTER);
         if(playing) return;
-        Visualisation.getInstance(paneMain).start();
+        Visualisation.getInstance(paneMain, lblTicks).start();
+        btnPlay.setDisable(true);
     }
 
     private void placeWalls(Pane canvas) {
@@ -120,6 +120,7 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
         File file = fch.showOpenDialog(new Stage());
 
         envMap = (Map) envMap.load(file);
+        btnPlay.setDisable(false);
         showMap(paneMain);
     }
 
@@ -153,4 +154,5 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
         btnEnvSettings.setDisable(disable);
         btnCreateTest.setDisable(disable);
     }
+
 }

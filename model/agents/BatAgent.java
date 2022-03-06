@@ -11,30 +11,43 @@ import static model.main.Main.agentparams;
 import static java.lang.Math.sqrt;
 
 public class BatAgent implements Serializable {
+    public static int ID = 1;
     private final int id;
     private Home home;
     private Coordinate position;
     private Vector direction; // vector movement
     private double speed; // speed - between 2 and 11.5
-    private final double sightDist; // how far the agent can see
-    private final double fov; // field of view
-    private final double workRate; // how much work the agent performs per unit of time
-    private final double interestBound; // may not be needed
+    private double sightDist; // how far the agent can see
+    private double fov; // field of view
+    private double workRate; // how much work the agent performs per unit of time
+    private double interestBound; // may not be needed
     private State state; // the state the agent is in
     private double totalWork = 0;
-    private final SpeedDistribution speedType;
+    private int[] timeSpentInState;
+    private SpeedDistribution speedType;
 
     public BatAgent(int id, Coordinate position) {
         this.id = id;
         this.home = null;
-        this.position = position;
+        this.position = new Coordinate(500,500);//position;
         this.speedType = agentparams.SPEED_TYPE;
+        this.timeSpentInState = new int[3];
         generateRandSpeed();
         generateRandDir();
         this.sightDist = agentparams.SIGHT;
         this.fov = agentparams.FOV;
         this.workRate = agentparams.WORK_RATE;
         this.interestBound = agentparams.INTEREST_BOUNDARY;
+        this.state = State.searching;
+    }
+
+    public void remake(AgentParams a) {
+        this.speedType = a.SPEED_TYPE;
+        this.timeSpentInState = new int[3];
+        this.sightDist = a.SIGHT;
+        this.fov = a.FOV;
+        this.workRate = a.WORK_RATE;
+        this.interestBound = a.INTEREST_BOUNDARY;
         this.state = State.searching;
     }
 
@@ -89,7 +102,7 @@ public class BatAgent implements Serializable {
 
         }
         dirJa();
-        // dirZelenka();
+        //dirZelenka();
     }
 
     private void dirJa() {
@@ -136,12 +149,15 @@ public class BatAgent implements Serializable {
     public void act() {
         switch (this.state) {
             case searching:
+                this.timeSpentInState[0]++;
                 search(); // Flying around randomly, looking for a home to clean
                 break;
             case traveling:
+                this.timeSpentInState[1]++;
                 travel(); // Traveling towards a home
                 break;
             case working:
+                this.timeSpentInState[2]++;
                 work(); // Working at a home
                 break;
         }
@@ -265,6 +281,7 @@ public class BatAgent implements Serializable {
     private void travel() {
         if (home == null) {
             state = State.searching;
+            timeSpentInState[1]--;
             act();
         } else if (Double.compare(position.distanceTo(home.getCoords()), speed) <= 0) {
             position = new Coordinate(home.getCoords());
@@ -280,18 +297,14 @@ public class BatAgent implements Serializable {
 
     private void work() {
         speed = 0;
-        if (home == null) {
-            state = State.searching;
-            act();
-            return;
-        }
         CallType call = Double.compare((home.getPollution()), interestBound) >= 0 ? CallType.ATTRACTING : CallType.NONE;
         home.setCall(call);
-        boolean worked = home.decreasePollution(this);
-        if (!worked) {
+        if (home == null || !home.decreasePollution(this)) {
             this.home = null;
             state = State.searching;
+            timeSpentInState[2]--;
             act();
+            return;
         }
         totalWork += workRate;
     }
@@ -318,5 +331,13 @@ public class BatAgent implements Serializable {
 
     public Vector getDirection() {
         return direction;
+    }
+
+    public double getTotalWork() {
+        return totalWork;
+    }
+
+    public int[] getTimeSpentInState() {
+        return timeSpentInState;
     }
 }
