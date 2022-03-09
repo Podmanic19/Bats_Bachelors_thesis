@@ -14,9 +14,9 @@ import static model.main.Main.agentparams;
 
 public interface PlaceAgents {
     default void placeAgents(Pane paneMain) {
-        double coef_h = paneMain.getHeight() / envparams.POINT_MAX;
-        double coef_w = paneMain.getWidth() / envparams.POINT_MAX;
-        for (BatAgent a : envMap.getAgents()) {
+        double coef_h = paneMain.getHeight() / mapparams.POINT_MAX;
+        double coef_w = paneMain.getWidth() / mapparams.POINT_MAX;
+        for (BatAgent a : loadedMap.getAgents()) {
             AgentCircle cir = new AgentCircle();
             if (Main.SHOW_SIGHT && a.getState() != State.working) {
                 Arc arc = new Arc();

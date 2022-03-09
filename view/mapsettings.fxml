@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -89,7 +88,6 @@
       <TextField fx:id="homeSpawnTimeTf" layoutX="540.0" layoutY="590.0" />
       <TextField fx:id="wallLengthMaxTf" layoutX="540.0" layoutY="540.0" />
       <TextField fx:id="homeGrowthSizeTf" layoutX="540.0" layoutY="640.0" />
-      <CheckBox fx:id="dynamicHomesCb" layoutX="324.0" layoutY="685.0" mnemonicParsing="false" text="Dynamic home creation" />
       <Button layoutX="274.0" layoutY="740.0" mnemonicParsing="false" onAction="#btnSaveOnAction" text="Save as..." />
    </children>
 </AnchorPane>

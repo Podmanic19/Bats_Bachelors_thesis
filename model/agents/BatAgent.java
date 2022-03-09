@@ -41,6 +41,21 @@ public class BatAgent implements Serializable {
         this.state = State.searching;
     }
 
+    public BatAgent(BatAgent a) {
+        this.id = a.id;
+        this.home = null;
+        this.position = a.position;//position;
+        this.speedType = a.speedType;
+        this.timeSpentInState = a.timeSpentInState;
+        this.speed = a.speed;
+        this.direction = a.direction;
+        this.sightDist = a.sightDist;
+        this.fov = a.fov;
+        this.workRate = a.workRate;
+        this.interestBound = a.interestBound;
+        this.state = State.searching;
+    }
+
     public void remake(AgentParams a) {
         this.speedType = a.SPEED_TYPE;
         this.timeSpentInState = new int[3];
@@ -78,7 +93,7 @@ public class BatAgent implements Serializable {
         if (agentparams.AVOID_OTHERS && this.state == State.searching) {
             ArrayList<Vector> vectorsToOthers = new ArrayList<>();
 
-            for (BatAgent a : Main.envMap.getAgents()) {
+            for (BatAgent a : Main.loadedMap.getAgents()) {
                 if (a == this)
                     continue;
                 if (a.getState() == State.working)
@@ -137,9 +152,9 @@ public class BatAgent implements Serializable {
     }
 
     private void generateRandDir() {
-        double x = Main.envparams.POINT_MIN + (Main.envparams.POINT_MAX - Main.envparams.POINT_MIN) /
+        double x = Main.mapparams.POINT_MIN + (Main.mapparams.POINT_MAX - Main.mapparams.POINT_MIN) /
                 (double) (10000 * ThreadLocalRandom.current().nextInt(10000) + 1);
-        double y = Main.envparams.POINT_MIN + (Main.envparams.POINT_MAX - Main.envparams.POINT_MIN) /
+        double y = Main.mapparams.POINT_MIN + (Main.mapparams.POINT_MAX - Main.mapparams.POINT_MIN) /
                 (double) (10000 * ThreadLocalRandom.current().nextInt(10000) + 1);
 
         direction = new Vector(x - position.getX(), y - position.getY());
@@ -212,7 +227,7 @@ public class BatAgent implements Serializable {
         ArrayList<Home> attractingHomes = new ArrayList<>();
         ArrayList<Home> notAttractingHomes = new ArrayList<>();
 
-        for (Home home : Main.envMap.getHomes()) {
+        for (Home home : Main.loadedMap.getHomes()) {
             if (home.getPollution() <= 0)
                 continue;
             double distance = this.position.distanceTo(home.getCoords());
@@ -240,7 +255,7 @@ public class BatAgent implements Serializable {
     private boolean isInAttractionDistance(double distance, Home home) {
         if (Double.compare(distance, home.getAttraction_distance()) > 0)
             return false;
-        for (LineSegment wall : Main.envMap.getWalls()) {
+        for (LineSegment wall : Main.loadedMap.getWalls()) {
             if (wall.doIntersect(new LineSegment(position, home.getCoords()))) {
                 return false;
             }
@@ -251,7 +266,7 @@ public class BatAgent implements Serializable {
     private boolean isVisible(Coordinate c, double angle) {
         if (Double.compare(position.distanceTo(c), sightDist) > 0 || Double.compare(angle, fov / 2) > 0)
             return false;
-        for (LineSegment wall : Main.envMap.getWalls()) {
+        for (LineSegment wall : Main.loadedMap.getWalls()) {
             if (wall.doIntersect(new LineSegment(position, c))) {
                 return false;
             }

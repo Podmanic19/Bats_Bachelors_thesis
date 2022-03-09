@@ -1,7 +1,9 @@
 package controller;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
+import model.agents.AgentParams;
 import model.gui.Visualisation;
+import model.main.testing.Test;
 import model.map.Map;
 import model.map.LineSegment;
 import model.gui.IAlert;
@@ -18,37 +20,25 @@ import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 import static model.main.Main.*;
 
 public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes, IAlert {
-    @FXML
-    Button btnCreate;
-    @FXML
-    Button btnEnvSettings;
-    @FXML
-    Button btnAgentSettings;
-    @FXML
-    Button btnLoadEnv;
-    @FXML
-    Button btnPlay;
-    @FXML
-    Button btnSave;
-    @FXML
-    Button btnHelp;
-    @FXML
-    Button btnCreateTest;
-    @FXML
-    Pane paneMain;
-    @FXML
-    Pane paneBtn;
-    @FXML
-    Label lblLoading;
-    @FXML
-    CheckBox cbShowVision;
-    @FXML
-    CheckBox cbShowCalls;
+    @FXML Button btnCreate;
+    @FXML Button btnEnvSettings;
+    @FXML Button btnAgentSettings;
+    @FXML Button btnLoadEnv;
+    @FXML Button btnPlay;
+    @FXML Button btnSave;
+    @FXML Button btnHelp;
+    @FXML Button btnCreateTest;
+    @FXML Pane paneMain;
+    @FXML Pane paneBtn;
+    @FXML Label lblLoading;
+    @FXML CheckBox cbShowVision;
+    @FXML CheckBox cbShowCalls;
     @FXML Label lblTicks;
 
 
@@ -59,7 +49,7 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
         btnCreate.setDefaultButton(false);
         new Thread(() -> {
             disableButtons(true);
-            envMap = new Map();
+            loadedMap = new Map();
             Platform.runLater(() -> {
                 showMap(paneMain);
                 disableButtons(false);
@@ -83,9 +73,9 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
     }
 
     private void placeWalls(Pane canvas) {
-        double coef_h = paneMain.getHeight() / envparams.POINT_MAX;
-        double coef_w = paneMain.getWidth() / envparams.POINT_MAX;
-        for (LineSegment w : envMap.getWalls()) {
+        double coef_h = paneMain.getHeight() / mapparams.POINT_MAX;
+        double coef_w = paneMain.getWidth() / mapparams.POINT_MAX;
+        for (LineSegment w : loadedMap.getWalls()) {
             Line l = new Line();
             l.setFill((Color.BLACK));
             l.setStartX(w.getA().getX() * coef_w);
@@ -119,7 +109,7 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
         fch.getExtensionFilters().add(fileExtensions);
         File file = fch.showOpenDialog(new Stage());
 
-        envMap = (Map) envMap.load(file);
+        loadedMap = (Map) loadedMap.load(file);
         btnPlay.setDisable(false);
         showMap(paneMain);
     }
@@ -129,7 +119,7 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
         fileChooser.setTitle("Save Map");
         fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Maps", "*.emap"));
         File file = fileChooser.showSaveDialog(new Stage());
-        envMap.save(envMap, file);
+        loadedMap.save(loadedMap, file);
 
     }
 
@@ -142,6 +132,14 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
     }
 
     public void btnCreateTest() {
+
+        ArrayList<AgentParams> agenttypes = new ArrayList<>();
+        ArrayList<Map> maps = new ArrayList<>();
+        agenttypes.add(agentparams);
+        maps.add(new Map());
+
+
+        new Test("Timetest", mapparams, agenttypes, maps, envparams, 1, 20, 100 ).run();
 
     }
 

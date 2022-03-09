@@ -63,7 +63,7 @@ public class Coordinate implements Serializable {
         Coordinate intersect = null;
         double distanceToWall = -1;
 
-        for(LineSegment w: Main.envMap.getWalls()){
+        for(LineSegment w: Main.loadedMap.getWalls()){
             if(w.doIntersect(AtoB)){
                 intersect = w.intersectPoint(AtoB);
                 double thisDistance = this.distanceTo(intersect);

@@ -1,5 +1,6 @@
 package model.main;
 import model.agents.AgentParams;
+import model.main.testing.EnvironmentParameters;
 import model.map.Map;
 import model.map.MapParameters;
 import javafx.application.Application;
@@ -13,11 +14,12 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Main extends Application {
-    public static MapParameters envparams = new MapParameters();
+    public static MapParameters mapparams = new MapParameters();
     public static AgentParams agentparams = new AgentParams();
+    public static EnvironmentParameters envparams = new EnvironmentParameters();
     public static boolean SHOW_ATTRACTION = false;
     public static boolean SHOW_SIGHT = false;
-    public static Map envMap;
+    public static Map loadedMap;
 
     public static void main(String[] args) {
         launch(args);

@@ -15,7 +15,7 @@ public class Home extends Save {
     private final Coordinate coords;
     private ArrayList<BatAgent> agents = new ArrayList<>();
     private double pollution;
-    private double attraction_distance = envparams.ATTRACTION_DISTANCE;
+    private double attraction_distance = mapparams.ATTRACTION_DISTANCE;
     private CallType call;
 
     public Home(int id, double pollution, int spawn_time, Coordinate coords) {
@@ -24,6 +24,14 @@ public class Home extends Save {
         this.pollution = pollution;
         this.coords = coords;
         this.call = CallType.NONE;
+    }
+
+    public Home(Home h){
+        this.id = h.id;
+        this.spawnTime = h.spawnTime;
+        this.pollution = h.pollution;
+        this.coords = h.coords;
+        this.call = h.call;
     }
 
     public synchronized CallType getCall() {

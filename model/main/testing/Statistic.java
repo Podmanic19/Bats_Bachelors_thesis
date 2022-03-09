@@ -60,26 +60,6 @@ public class Statistic implements Aggregable {
 
     }
 
-    public double[] getAverageTimeInState() {
-
-        double[] avgTimes = new double[3];
-
-        for(int[] time : totalTimeInState) {
-
-            avgTimes[0] += time[0];
-            avgTimes[1] += time[1];
-            avgTimes[2] += time[2];
-
-        }
-
-        for(int i =0; i < 3; i++){
-            avgTimes[i] /= numIters;
-        }
-
-        return avgTimes;
-
-    }
-
     public double getAverageLifeTime() {
 
         return Arrays.stream(lifeTimes).average().orElse(Double.NaN);

@@ -34,9 +34,9 @@ public class Visualisation extends Thread implements PlaceHomes, PlaceAgents {
         Instant start = Instant.now();
         for (int i = 0; i < 10000; i++) {
             int finalI = i;
-            envMap.getAgents().parallelStream().forEach(BatAgent::act);
-            envMap.getHomes().removeIf(h -> (h.getPollution() <= 0));
-            for(Home h : envMap.getHomes()){
+            loadedMap.getAgents().parallelStream().forEach(BatAgent::act);
+            loadedMap.getHomes().removeIf(h -> (h.getPollution() <= 0));
+            for(Home h : loadedMap.getHomes()){
                 h.incrementLifetime();
                 h.increasePollution(envparams.DYNAMIC_HOME_GROWTH_SIZE);
             }
@@ -49,11 +49,11 @@ public class Visualisation extends Thread implements PlaceHomes, PlaceAgents {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (envMap.getHomes().isEmpty()) {
+            if (loadedMap.getHomes().isEmpty()) {
                 System.out.println("Pocet iteracii: " + i);
                 break;
             }
-            if(envparams.DYNAMIC_HOME_CREATION && i % envparams.DYNAMIC_HOME_SPAWN_TIME == 0) envMap.addHome(i);
+            if(envparams.DYNAMIC_HOME_SPAWN_TIME > 0 && i % envparams.DYNAMIC_HOME_SPAWN_TIME == 0) loadedMap.addHome(i);
         }
         Instant end = Instant.now();
         System.out.println(Duration.between(start, end));

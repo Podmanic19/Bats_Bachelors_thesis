@@ -7,7 +7,7 @@ import model.serialization.Save;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static model.main.Main.envparams;
+import static model.main.Main.mapparams;
 
 public class Map extends Save {
     private ArrayList<BatAgent> agents = new ArrayList<>();
@@ -21,9 +21,15 @@ public class Map extends Save {
     }
 
     public Map(Map m) {
-        this.agents = new ArrayList<>(m.getAgents());
-        this.walls = new ArrayList<>(m.getWalls());
-        this.homes = new ArrayList<>(m.getHomes());
+        this.agents = new ArrayList<>();
+        for(BatAgent a : m.getAgents()){
+            agents.add(new BatAgent(a));
+        }
+        this.homes = new ArrayList<>();
+        for(Home h : m.getHomes()){
+            homes.add(new Home(h));
+        }
+        this.walls.addAll(m.getWalls());
     }
 
     private void generateHomes() {
@@ -32,7 +38,7 @@ public class Map extends Save {
         HashSet<Integer> possibleHomes = fillPossibleHomes(flatMap);
 
         for (int i = 0; i < flatMap.size(); i++) {
-            if (homes.size() == envparams.NUMBER_HOME)
+            if (homes.size() == mapparams.NUMBER_HOME)
                 break;
             if (possibleHomes.isEmpty())
                 break;
@@ -47,7 +53,7 @@ public class Map extends Save {
                 if (!possibleHomes.contains(j))
                     continue;
                 for (Home home : homes) {
-                    if (home.getCoords().cheapDistanceTo(flatMap.get(j)) < (int) Math.pow(envparams.MIN_DISTANCE, 2)) {
+                    if (home.getCoords().cheapDistanceTo(flatMap.get(j)) < (int) Math.pow(mapparams.MIN_DISTANCE, 2)) {
                         remove = true;
                         break;
                     }
@@ -61,13 +67,13 @@ public class Map extends Save {
     public void addHome(int spawn_time){
 
         Coordinate c = new Coordinate(
-                ThreadLocalRandom.current().nextInt(envparams.POINT_MIN, envparams.POINT_MAX + 1),
-                ThreadLocalRandom.current().nextInt(envparams.POINT_MIN, envparams.POINT_MAX + 1)
+                ThreadLocalRandom.current().nextInt(mapparams.POINT_MIN, mapparams.POINT_MAX + 1),
+                ThreadLocalRandom.current().nextInt(mapparams.POINT_MIN, mapparams.POINT_MAX + 1)
         );
 
         while(liesOnWall(c) || alreadyHome(c)){
-                c.setX(ThreadLocalRandom.current().nextInt(envparams.POINT_MIN, envparams.POINT_MAX + 1));
-                c.setY(ThreadLocalRandom.current().nextInt(envparams.POINT_MIN, envparams.POINT_MAX + 1));
+                c.setX(ThreadLocalRandom.current().nextInt(mapparams.POINT_MIN, mapparams.POINT_MAX + 1));
+                c.setY(ThreadLocalRandom.current().nextInt(mapparams.POINT_MIN, mapparams.POINT_MAX + 1));
         }
 
         createHome(c,Home.ID, spawn_time);
@@ -111,7 +117,7 @@ public class Map extends Save {
 
     private void createHome(Coordinate coord, int id, int spawn_time) {
 
-        int workNeeded = ThreadLocalRandom.current().nextInt(envparams.MIN_WORK,envparams.MAX_WORK + 1);
+        int workNeeded = ThreadLocalRandom.current().nextInt(mapparams.MIN_WORK, mapparams.MAX_WORK + 1);
         homes.add(new Home(id, workNeeded, spawn_time, coord));
 
     }
@@ -119,27 +125,27 @@ public class Map extends Save {
     private void generateAgents() {
         agents = new ArrayList<>();
 
-        for (int i = 0; i < envparams.AGENT_NUM; i++) {
+        for (int i = 0; i < mapparams.AGENT_NUM; i++) {
             agents.add(new BatAgent(BatAgent.ID++, generateRandPos()));
         }
     }
 
     private void generateWalls() {
-        walls.add(new LineSegment(new Coordinate(envparams.POINT_MIN, envparams.POINT_MIN),
-                new Coordinate(envparams.POINT_MIN, envparams.POINT_MAX)));
+        walls.add(new LineSegment(new Coordinate(mapparams.POINT_MIN, mapparams.POINT_MIN),
+                new Coordinate(mapparams.POINT_MIN, mapparams.POINT_MAX)));
 
-        walls.add(new LineSegment(new Coordinate(envparams.POINT_MAX, envparams.POINT_MIN),
-                new Coordinate(envparams.POINT_MAX, envparams.POINT_MAX)));
+        walls.add(new LineSegment(new Coordinate(mapparams.POINT_MAX, mapparams.POINT_MIN),
+                new Coordinate(mapparams.POINT_MAX, mapparams.POINT_MAX)));
 
-        walls.add(new LineSegment(new Coordinate(envparams.POINT_MIN, envparams.POINT_MIN),
-                new Coordinate(envparams.POINT_MAX, envparams.POINT_MIN)));
+        walls.add(new LineSegment(new Coordinate(mapparams.POINT_MIN, mapparams.POINT_MIN),
+                new Coordinate(mapparams.POINT_MAX, mapparams.POINT_MIN)));
 
-        walls.add(new LineSegment(new Coordinate(envparams.POINT_MIN, envparams.POINT_MAX),
-                new Coordinate(envparams.POINT_MAX, envparams.POINT_MAX)));
+        walls.add(new LineSegment(new Coordinate(mapparams.POINT_MIN, mapparams.POINT_MAX),
+                new Coordinate(mapparams.POINT_MAX, mapparams.POINT_MAX)));
 
         ArrayList<Coordinate> flatMap = flatten();
 
-        for (int i = 0; i < envparams.WALLS_NUM; i++) {
+        for (int i = 0; i < mapparams.WALLS_NUM; i++) {
             boolean didIntersect = false;
             int index = ThreadLocalRandom.current().nextInt(flatMap.size());
             Coordinate first = flatMap.get(index);
@@ -147,17 +153,17 @@ public class Map extends Save {
             double x1 = first.getX();
             double y1 = first.getY();
 
-            int wallLen = ThreadLocalRandom.current().nextInt(envparams.WALL_LENGTH_MAX + 1 - envparams.WALL_LENGTH_MIN)
-                    + envparams.WALL_LENGTH_MIN;
+            int wallLen = ThreadLocalRandom.current().nextInt(mapparams.WALL_LENGTH_MAX + 1 - mapparams.WALL_LENGTH_MIN)
+                    + mapparams.WALL_LENGTH_MIN;
             double angle = ThreadLocalRandom.current().nextDouble() * Math.PI * 2;
             double x2 = x1 + Math.cos(angle) * wallLen;
             double y2 = y1 + Math.sin(angle) * wallLen;
 
-            x2 = x2 > envparams.POINT_MIN ? x2 : envparams.POINT_MIN;
-            y2 = y2 > envparams.POINT_MIN ? y2 : envparams.POINT_MIN;
+            x2 = x2 > mapparams.POINT_MIN ? x2 : mapparams.POINT_MIN;
+            y2 = y2 > mapparams.POINT_MIN ? y2 : mapparams.POINT_MIN;
 
-            x2 = x2 < envparams.POINT_MAX ? x2 : envparams.POINT_MAX;
-            y2 = y2 < envparams.POINT_MAX ? y2 : envparams.POINT_MAX;
+            x2 = x2 < mapparams.POINT_MAX ? x2 : mapparams.POINT_MAX;
+            y2 = y2 < mapparams.POINT_MAX ? y2 : mapparams.POINT_MAX;
 
             Coordinate second = new Coordinate(x2, y2);
             LineSegment wall = new LineSegment(first, second);
@@ -179,8 +185,8 @@ public class Map extends Save {
     private Coordinate generateRandPos() {
         boolean generate = true;
         Coordinate c = new Coordinate(
-                ThreadLocalRandom.current().nextInt(envparams.POINT_MIN + 1, envparams.POINT_MAX),
-                ThreadLocalRandom.current().nextInt(envparams.POINT_MIN + 1, envparams.POINT_MAX));
+                ThreadLocalRandom.current().nextInt(mapparams.POINT_MIN + 1, mapparams.POINT_MAX),
+                ThreadLocalRandom.current().nextInt(mapparams.POINT_MIN + 1, mapparams.POINT_MAX));
 
         while (generate) {
             generate = false;
@@ -191,8 +197,8 @@ public class Map extends Save {
                 }
             }
             c = new Coordinate(
-                    ThreadLocalRandom.current().nextInt(envparams.POINT_MIN + 1, envparams.POINT_MAX),
-                    ThreadLocalRandom.current().nextInt(envparams.POINT_MIN + 1, envparams.POINT_MAX));
+                    ThreadLocalRandom.current().nextInt(mapparams.POINT_MIN + 1, mapparams.POINT_MAX),
+                    ThreadLocalRandom.current().nextInt(mapparams.POINT_MIN + 1, mapparams.POINT_MAX));
         }
 
         return c;
@@ -202,8 +208,8 @@ public class Map extends Save {
     private ArrayList<Coordinate> flatten() {
 
         ArrayList<Coordinate> flatMap = new ArrayList<>();
-        for (int i = envparams.POINT_MIN; i < envparams.POINT_MAX; i++) {
-            for (int j = 0; j < envparams.POINT_MAX; j++) {
+        for (int i = mapparams.POINT_MIN; i < mapparams.POINT_MAX; i++) {
+            for (int j = 0; j < mapparams.POINT_MAX; j++) {
                 Coordinate c = new Coordinate(i, j);
                 flatMap.add(c);
             }

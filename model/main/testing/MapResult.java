@@ -21,11 +21,6 @@ public class MapResult implements Aggregable{
     }
 
     @Override
-    public double[] getAverageTimeInState() {
-        return new double[0];
-    }
-
-    @Override
     public double getAverageWorkDone() {
         return 0;
     }
