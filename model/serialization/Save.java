@@ -1,11 +1,11 @@
 package model.serialization;
 
-import model.gui.IAlert;
+import model.gui.Popup;
 import model.map.Map;
 
 import java.io.*;
 
-public abstract class Save implements IAlert, Serializable {
+public abstract class Save implements Popup, Serializable {
 
     public static void save(Save s, File f){
         try {

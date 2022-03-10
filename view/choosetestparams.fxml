@@ -12,20 +12,19 @@
 
 <Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.test.ChooseAgentsAndEnvController">
    <children>
-      <TableView fx:id="agentsTable" layoutX="17.0" layoutY="449.0" prefHeight="256.0" prefWidth="969.0">
+      <TableView fx:id="agentsTable" editable="true" layoutX="17.0" layoutY="449.0" prefHeight="256.0" prefWidth="969.0">
          <columns>
             <TableColumn fx:id="nameCol" prefWidth="99.9999942779541" text="Name" />
-            <TableColumn fx:id="repulseCol" prefWidth="82.66658020019531" text="Repulsive call" />
-            <TableColumn fx:id="forwardCol" minWidth="8.26678466796875" prefWidth="62.400054931640625" text="Forward" />
-            <TableColumn fx:id="backCol" minWidth="2.933349609375" prefWidth="58.666656494140625" text="Back" />
-            <TableColumn fx:id="sightCol" prefWidth="74.39993286132812" text="Sight" />
-            <TableColumn fx:id="fovCol" prefWidth="70.40005493164062" text="FOV" />
-            <TableColumn fx:id="workCol" prefWidth="92.80001831054688" text="Work rate" />
-            <TableColumn fx:id="interestCol" prefWidth="116.79989624023438" text="Interest bound" />
-            <TableColumn fx:id="avoidCol" prefWidth="94.13336181640625" text="Avoids others" />
-            <TableColumn fx:id="decisiveCol" prefWidth="80.2667236328125" text="Decisive" />
-            <TableColumn fx:id="speedCol" prefWidth="79.199951171875" text="Speed dist" />
-            <TableColumn fx:id="chosenCol" prefWidth="55.39996337890625" text="Chosen" />
+            <TableColumn fx:id="forwardCol" minWidth="8.26678466796875" prefWidth="85.0" text="Forward" />
+            <TableColumn fx:id="backCol" minWidth="2.933349609375" prefWidth="75.0" text="Back" />
+            <TableColumn fx:id="sightCol" prefWidth="67.0" text="Sight" />
+            <TableColumn fx:id="fovCol" prefWidth="52.0" text="FOV" />
+            <TableColumn fx:id="workCol" prefWidth="93.0" text="Work rate" />
+            <TableColumn fx:id="interestCol" prefWidth="113.0" text="Interest bound" />
+            <TableColumn fx:id="avoidCol" prefWidth="120.0" text="Avoids others" />
+            <TableColumn fx:id="repulseCol" prefWidth="125.0" text="Repulsive call" />
+            <TableColumn fx:id="decisiveCol" prefWidth="76.0" text="Decisive" />
+            <TableColumn fx:id="chosenCol" prefWidth="62.0" text="Chosen" />
          </columns>
       </TableView>
       <Label layoutX="40.0" layoutY="404.0" text="Agent types">

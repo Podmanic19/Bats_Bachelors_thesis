@@ -7,7 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import model.agents.AgentParams;
-import model.gui.IAlert;
+import model.gui.Popup;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 import static model.main.Main.agentparams;
 
 
-public class AgentSettingsController implements Initializable, IAlert {
+public class AgentSettingsController implements Initializable, Popup {
 
     @FXML TextField nameTf;
     @FXML TextField rightTf;

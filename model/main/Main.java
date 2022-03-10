@@ -20,21 +20,35 @@ public class Main extends Application {
     public static boolean SHOW_ATTRACTION = false;
     public static boolean SHOW_SIGHT = false;
     public static Map loadedMap;
+    public static Stage primaryStage = new Stage();
 
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) {
+
+        try {
+            mainScene();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void mainScene() throws Exception {
 
         Parent root = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource("/view/mainscene.fxml")));
         Scene scene = new Scene(root);
+
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
         primaryStage.setTitle("Bat simulation");
         primaryStage.getIcons().add(new Image("/Image/images.jfif"));
         primaryStage.show();
+
     }
+
 }

@@ -2,11 +2,12 @@ package controller;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
 import model.agents.AgentParams;
+import model.gui.ChangeScene;
 import model.gui.Visualisation;
 import model.main.testing.Test;
 import model.map.Map;
 import model.map.LineSegment;
-import model.gui.IAlert;
+import model.gui.Popup;
 import model.gui.LoadToPane;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 
 import static model.main.Main.*;
 
-public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes, IAlert {
+public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes, Popup, ChangeScene {
     @FXML Button btnCreate;
     @FXML Button btnEnvSettings;
     @FXML Button btnAgentSettings;
@@ -105,7 +106,7 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
 
     public void btnLoad() {
         FileChooser fch = new FileChooser();
-        FileChooser.ExtensionFilter fileExtensions = new FileChooser.ExtensionFilter("KKT", "*.emap");
+        FileChooser.ExtensionFilter fileExtensions = new FileChooser.ExtensionFilter("Maps", "*.emap");
         fch.getExtensionFilters().add(fileExtensions);
         File file = fch.showOpenDialog(new Stage());
 
@@ -133,13 +134,19 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
 
     public void btnCreateTest() {
 
-        ArrayList<AgentParams> agenttypes = new ArrayList<>();
-        ArrayList<Map> maps = new ArrayList<>();
-        agenttypes.add(agentparams);
-        maps.add(new Map());
-
-
-        new Test("Timetest", mapparams, agenttypes, maps, envparams, 1, 20, 100 ).run();
+        try {
+            sceneChanger("choosetestparams");
+        } catch (IOException e) {
+            popup("Couldn't load 'view/choosetestparams.fxml'");
+            e.printStackTrace();
+        }
+//        ArrayList<AgentParams> agenttypes = new ArrayList<>();
+//        ArrayList<Map> maps = new ArrayList<>();
+//        agenttypes.add(agentparams);
+//        maps.add(new Map());
+//
+//
+//        new Test("Timetest", mapparams, agenttypes, maps, envparams, 1, 20, 100 ).run();
 
     }
 

@@ -11,7 +11,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.test.ChooseMapsController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e2e2e2" height="52.0" layoutX="21.0" layoutY="35.0" stroke="WHITE" strokeType="INSIDE" width="285.0" />
       <Label layoutX="58.0" layoutY="48.0" text="AGENTS AND ENVIRONMENT" textFill="WHITE">
@@ -33,14 +33,14 @@
       </Label>
       <Line endX="51.999969482421875" endY="7.62939453125E-6" fill="#e2e2e2" layoutX="306.0" layoutY="59.0" startX="-0.66668701171875" startY="7.62939453125E-6" stroke="#e2e2e2" />
       <Line endX="24.99993896484375" endY="7.62939453125E-6" layoutX="674.0" layoutY="59.0" startX="-31.00006103515625" startY="7.62939453125E-6" stroke="#e2e2e2" />
-      <TextField layoutX="403.0" layoutY="172.0" />
-      <TextField layoutX="403.0" layoutY="256.0" />
-      <Button layoutX="25.0" layoutY="742.0" mnemonicParsing="false" prefWidth="100.0" text="PREV">
+      <TextField fx:id="numMapsTf" layoutX="403.0" layoutY="172.0" />
+      <TextField fx:id="numItersTf" layoutX="402.0" layoutY="256.0" />
+      <Button layoutX="25.0" layoutY="742.0" mnemonicParsing="false" onAction="#btnPrevOnAction" prefWidth="100.0" text="PREV">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </Button>
-      <Button layoutX="875.0" layoutY="742.0" mnemonicParsing="false" prefWidth="100.0" text="NEXT">
+      <Button layoutX="875.0" layoutY="742.0" mnemonicParsing="false" onAction="#btnNextOnAction" prefWidth="100.0" text="NEXT">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
@@ -60,14 +60,19 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <CheckBox layoutX="407.0" layoutY="353.0" mnemonicParsing="false" />
+      <CheckBox fx:id="generateRandCb" layoutX="407.0" layoutY="353.0" mnemonicParsing="false" />
       <TableView layoutX="17.0" layoutY="449.0" prefHeight="256.0" prefWidth="969.0">
         <columns>
           <TableColumn prefWidth="910.399995803833" text="Name" />
           <TableColumn prefWidth="58.4000244140625" text="Chosen" />
         </columns>
       </TableView>
-      <Button layoutX="737.0" layoutY="404.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="214.0" text="Map generation settings...">
+      <Button layoutX="592.0" layoutY="347.0" mnemonicParsing="false" onAction="#btnMapSettingsOnAction" prefHeight="29.0" prefWidth="214.0" text="Map generation settings...">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Button>
+      <Button layoutX="871.0" layoutY="412.0" mnemonicParsing="false" onAction="#btnShowOnAction" prefHeight="29.0" prefWidth="109.0" text="Show selected">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>

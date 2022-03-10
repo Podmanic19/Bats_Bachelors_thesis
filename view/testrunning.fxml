@@ -9,8 +9,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.test.TestRunningController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b5b5b5" height="52.0" layoutX="699.0" layoutY="33.0" stroke="WHITE" strokeType="INSIDE" width="285.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e2e2e2" height="52.0" layoutX="358.0" layoutY="33.0" stroke="WHITE" strokeType="INSIDE" width="285.0" />
@@ -39,7 +38,7 @@
             <TableColumn minWidth="0.0" prefWidth="118.933349609375" text="Save" />
         </columns>
       </TableView>
-      <Button layoutX="25.0" layoutY="742.0" maxWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="BACK">
+      <Button layoutX="25.0" layoutY="742.0" maxWidth="100.0" mnemonicParsing="false" onAction="#btnPrevOnAction" prefWidth="100.0" text="BACK">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
