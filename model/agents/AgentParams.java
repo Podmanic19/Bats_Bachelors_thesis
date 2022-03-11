@@ -18,16 +18,15 @@ public class AgentParams extends Save {
     public boolean AVOID_OTHERS = false;
     public boolean REPULSIVE_CALL = false;
     public boolean DECISIVE = false;
-    public SpeedDistribution SPEED_TYPE = SpeedDistribution.GAUSSIAN;
 
-    private boolean selected = false;
+    public boolean SELECTED = false;
 
-    public SimpleBooleanProperty getSelected(){
+    public SimpleBooleanProperty getSELECTED(){
         return new SimpleBooleanProperty(false);
     }
 
-    public void setSelected(boolean selected){
-        this.selected = selected;
+    public void setSELECTED(boolean SELECTED){
+        this.SELECTED = SELECTED;
     }
 
     public String getNAME() {
@@ -86,7 +85,22 @@ public class AgentParams extends Save {
         return DECISIVE;
     }
 
-    public SpeedDistribution getSPEED_TYPE() {
-        return SPEED_TYPE;
+    @Override
+    public boolean equals(Object other){
+        AgentParams otherParam = (AgentParams) other;
+        if(AVOID_OTHERS == otherParam.AVOID_OTHERS &&
+                DECISIVE == otherParam.DECISIVE &&
+                REPULSIVE_CALL == otherParam.REPULSIVE_CALL &&
+                BACK == otherParam.BACK &&
+                FORWARD == otherParam.FORWARD &&
+                SIGHT == otherParam.SIGHT &&
+                FOV == otherParam.FOV &&
+                WORK_RATE == otherParam.WORK_RATE &&
+                INTEREST_BOUNDARY == otherParam.INTEREST_BOUNDARY &&
+                SPEED_MIN == otherParam.SPEED_MIN &&
+                SPEED_MAX == otherParam.SPEED_MAX){
+        }
+        return false;
     }
+
 }

@@ -1,4 +1,4 @@
-package model.main.testing;
+package model.testing;
 
 import model.agents.AgentParams;
 import model.agents.BatAgent;
@@ -30,6 +30,10 @@ public class Test implements Serializable {
     private int itersPerMap;
 
 
+    public Test() {
+
+    }
+
     public Test(String name, MapParameters mapparams, ArrayList<AgentParams> agentparams, ArrayList<Map> maps,
                 EnvironmentParameters envparams, int numMaps, int numAgents, int itersPerMap) {
         this.name = name;
@@ -54,15 +58,22 @@ public class Test implements Serializable {
 
         TestResult result = new TestResult();
         Instant start = Instant.now();
+        int agentIter = -1, mapIter, currentIter;
 
         for(AgentParams currentAgentParams : agentparams) {
+            ++agentIter;
+            mapIter = -1;
             AgentResult agentResult = new AgentResult();
             for (Map m : maps) {
+                ++mapIter;
+                currentIter = -1;
                 MapResult mapResult = new MapResult();
                 replaceAgents(m, currentAgentParams);
                 for (int i = 0; i < itersPerMap; i++) {
+                    ++currentIter;
                     loadedMap = new Map(m);
                     int j = -1;
+                    Statistic s = new Statistic();
                     Instant iterStart = Instant.now();
                     while (!terminate(loadedMap, ++j)) {
                         loadedMap.getAgents().parallelStream().forEach(BatAgent::act);
@@ -73,11 +84,13 @@ public class Test implements Serializable {
                         }
                         if (Main.envparams.DYNAMIC_HOME_SPAWN_TIME > 0 && j % Main.envparams.DYNAMIC_HOME_SPAWN_TIME == 0)
                             loadedMap.addHome(j);
+                        s.updatePollution(loadedMap.getHomes());
                     }
                     Instant iterEnd = Instant.now();
                     System.out.println("Iteration " + (i+1) + " runtime: " + Duration.between(iterStart, iterEnd) +
                             " iterations: " + j);
-                    mapResult.update(j, loadedMap.getAgents(), loadedMap.getHomes());
+                    s.aggregate(j, loadedMap.getAgents(), loadedMap.getHomes());
+                    mapResult.update(s);
                 }
                 agentResult.update(mapResult);
             }
@@ -110,4 +123,39 @@ public class Test implements Serializable {
 
     }
 
+    public void setMapparams(MapParameters mapparams) {
+        this.mapparams = mapparams;
+    }
+
+    public void setEnvparams(EnvironmentParameters envparams) {
+        this.envparams = envparams;
+    }
+
+    public void setAgentparams(ArrayList<AgentParams> agentparams) {
+        this.agentparams = agentparams;
+    }
+
+    public void setMaps(ArrayList<Map> maps) {
+        this.maps = maps;
+    }
+
+    public void setAllHomes(ArrayList<Home> allHomes) {
+        this.allHomes = allHomes;
+    }
+
+    public void setNumMaps(int numMaps) {
+        this.numMaps = numMaps;
+    }
+
+    public void setNumAgents(int numAgents) {
+        this.numAgents = numAgents;
+    }
+
+    public void setRunTime(int runTime) {
+        this.runTime = runTime;
+    }
+
+    public void setItersPerMap(int itersPerMap) {
+        this.itersPerMap = itersPerMap;
+    }
 }

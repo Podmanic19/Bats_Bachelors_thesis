@@ -1,4 +1,4 @@
-package model.main.testing;
+package model.testing;
 
 public interface Aggregable {
 

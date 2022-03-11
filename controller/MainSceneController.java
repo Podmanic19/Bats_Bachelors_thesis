@@ -1,10 +1,8 @@
 package controller;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
-import model.agents.AgentParams;
 import model.gui.ChangeScene;
 import model.gui.Visualisation;
-import model.main.testing.Test;
 import model.map.Map;
 import model.map.LineSegment;
 import model.gui.Popup;
@@ -21,7 +19,6 @@ import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 
 import static model.main.Main.*;

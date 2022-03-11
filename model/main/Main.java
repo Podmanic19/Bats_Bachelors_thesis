@@ -1,6 +1,6 @@
 package model.main;
 import model.agents.AgentParams;
-import model.main.testing.EnvironmentParameters;
+import model.testing.EnvironmentParameters;
 import model.map.Map;
 import model.map.MapParameters;
 import javafx.application.Application;
@@ -9,8 +9,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 import java.util.Objects;
 
 public class Main extends Application {

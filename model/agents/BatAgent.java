@@ -24,13 +24,11 @@ public class BatAgent implements Serializable {
     private State state; // the state the agent is in
     private double totalWork = 0;
     private int[] timeSpentInState;
-    private SpeedDistribution speedType;
 
     public BatAgent(int id, Coordinate position) {
         this.id = id;
         this.home = null;
         this.position = new Coordinate(500,500);//position;
-        this.speedType = agentparams.SPEED_TYPE;
         this.timeSpentInState = new int[3];
         generateRandSpeed();
         generateRandDir();
@@ -45,7 +43,6 @@ public class BatAgent implements Serializable {
         this.id = a.id;
         this.home = null;
         this.position = a.position;//position;
-        this.speedType = a.speedType;
         this.timeSpentInState = a.timeSpentInState;
         this.speed = a.speed;
         this.direction = a.direction;
@@ -57,7 +54,6 @@ public class BatAgent implements Serializable {
     }
 
     public void remake(AgentParams a) {
-        this.speedType = a.SPEED_TYPE;
         this.timeSpentInState = new int[3];
         this.sightDist = a.SIGHT;
         this.fov = a.FOV;
@@ -67,19 +63,10 @@ public class BatAgent implements Serializable {
     }
 
     private void generateRandSpeed() {
-        switch(speedType) {
-            case GAUSSIAN:
-                double rand_speed = (ThreadLocalRandom.current().nextGaussian() + 3.7);
-                rand_speed = Math.max(rand_speed, agentparams.SPEED_MIN);
-                rand_speed = Math.min(rand_speed, agentparams.SPEED_MAX);
-                this.speed = rand_speed;
-                break;
-            case UNIFORM:
-                this.speed = (ThreadLocalRandom.current().nextDouble(agentparams.SPEED_MIN, agentparams.SPEED_MAX));
-                break;
-            case STABLE:
-                this.speed = agentparams.SPEED_MAX;
-        }
+        double rand_speed = (ThreadLocalRandom.current().nextGaussian() + 3.7);
+        rand_speed = Math.max(rand_speed, agentparams.SPEED_MIN);
+        rand_speed = Math.min(rand_speed, agentparams.SPEED_MAX);
+        this.speed = rand_speed;
     }
 
     private void generateDir() {

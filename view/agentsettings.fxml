@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -46,7 +45,7 @@
       </Label>
       <TextField fx:id="fovTf" layoutX="538.0" layoutY="340.0" />
       <TextField fx:id="sightTf" layoutX="538.0" layoutY="290.0" />
-      <Button fx:id="btnSave" layoutX="274.0" layoutY="740.0" mnemonicParsing="false" onAction="#btnSaveOnAction" text="Save as..." />
+      <Button fx:id="btnSave" layoutX="276.0" layoutY="703.0" mnemonicParsing="false" onAction="#btnSaveOnAction" text="Save" />
       <Label layoutX="80.0" layoutY="40.0" text="Name">
          <font>
             <Font size="15.0" />
@@ -77,15 +76,9 @@
             <Font size="15.0" />
          </font>
       </Label>
-      <Label layoutX="80.0" layoutY="590.0" text="Speed distribution">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Label>
-      <ChoiceBox fx:id="speedDistCB" layoutX="540.0" layoutY="590.0" prefWidth="150.0" />
-      <CheckBox fx:id="avoidOthersCb" layoutX="153.0" layoutY="653.0" mnemonicParsing="false" text="Avoid others" />
-      <CheckBox fx:id="repulseCallCb" layoutX="544.0" layoutY="655.0" mnemonicParsing="false" text="Repulse call" />
-      <Button fx:id="btnSet" layoutX="460.0" layoutY="740.0" mnemonicParsing="false" onAction="#btnSetOnAction" text="Set" />
-      <CheckBox fx:id="decisiveCb" layoutX="370.0" layoutY="654.0" mnemonicParsing="false" text="Decisive" />
+      <CheckBox fx:id="avoidOthersCb" layoutX="146.0" layoutY="625.0" mnemonicParsing="false" text="Avoid others" />
+      <CheckBox fx:id="repulseCallCb" layoutX="537.0" layoutY="627.0" mnemonicParsing="false" text="Repulse call" />
+      <Button fx:id="btnSet" layoutX="462.0" layoutY="703.0" mnemonicParsing="false" onAction="#btnSetOnAction" text="Set" />
+      <CheckBox fx:id="decisiveCb" layoutX="363.0" layoutY="626.0" mnemonicParsing="false" text="Decisive" />
    </children>
 </AnchorPane>

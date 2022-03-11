@@ -1,14 +1,14 @@
-package model.main.testing;
+package model.testing;
 
 import java.util.ArrayList;
 
-public class TestResult implements Aggregable {
+public class AgentResult implements Aggregable{
 
-    ArrayList<AgentResult> agentResults = new ArrayList<>();
+    ArrayList<MapResult> mapResults = new ArrayList<>();
 
-    public void update(AgentResult a) {
+    public void update(MapResult m) {
 
-        agentResults.add(a);
+        mapResults.add(m);
 
     }
 
@@ -31,5 +31,4 @@ public class TestResult implements Aggregable {
     public int getNumIters() {
         return 0;
     }
-
 }

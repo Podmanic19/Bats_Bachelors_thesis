@@ -2,8 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
@@ -31,13 +30,6 @@
             <Font size="17.0" />
          </font>
       </Label>
-      <TableView layoutX="17.0" layoutY="189.0" prefHeight="493.0" prefWidth="969.0">
-        <columns>
-          <TableColumn prefWidth="485.0666198730469" text="Map" />
-          <TableColumn prefWidth="364.26666259765625" text="Progress" />
-            <TableColumn minWidth="0.0" prefWidth="118.933349609375" text="Save" />
-        </columns>
-      </TableView>
       <Button layoutX="25.0" layoutY="742.0" maxWidth="100.0" mnemonicParsing="false" onAction="#btnPrevOnAction" prefWidth="100.0" text="BACK">
          <font>
             <Font name="System Bold" size="13.0" />
@@ -53,5 +45,38 @@
             <Font name="System Bold" size="13.0" />
          </font>
       </Button>
+      <Label layoutX="60.0" layoutY="160.0" text="Tested Agent:">
+         <font>
+            <Font size="33.0" />
+         </font>
+      </Label>
+      <Label layoutX="60.0" layoutY="360.0" text="Tested Map:">
+         <font>
+            <Font size="33.0" />
+         </font>
+      </Label>
+      <Label layoutX="60.0" layoutY="560.0" text="Tested iteration:">
+         <font>
+            <Font size="33.0" />
+         </font>
+      </Label>
+      <Label layoutX="410.0" layoutY="160.0" text="Dummy text">
+         <font>
+            <Font size="33.0" />
+         </font>
+      </Label>
+      <Label layoutX="410.0" layoutY="360.0" text="Dummy text">
+         <font>
+            <Font size="33.0" />
+         </font>
+      </Label>
+      <Label layoutX="410.0" layoutY="560.0" text="Dummy text">
+         <font>
+            <Font size="33.0" />
+         </font>
+      </Label>
+      <ProgressBar layoutX="740.0" layoutY="175.0" prefWidth="200.0" progress="0.0" />
+      <ProgressBar layoutX="740.0" layoutY="376.0" prefWidth="200.0" progress="0.0" />
+      <ProgressBar layoutX="740.0" layoutY="574.0" prefWidth="200.0" progress="0.0" />
    </children>
 </Pane>

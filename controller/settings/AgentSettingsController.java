@@ -1,15 +1,16 @@
 package controller.settings;
 
-import model.agents.SpeedDistribution;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import model.agents.AgentParams;
 import model.gui.Popup;
+import model.serialization.AgentsManager;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static model.main.Main.agentparams;
@@ -28,17 +29,19 @@ public class AgentSettingsController implements Initializable, Popup {
     @FXML TextField interestTf;
     @FXML TextField speedMinTf;
     @FXML TextField speedMaxTf;
-    @FXML ChoiceBox<SpeedDistribution> speedDistCB;
     @FXML CheckBox avoidOthersCb;
     @FXML CheckBox repulseCallCb;
     @FXML CheckBox decisiveCb;
     @FXML Button btnSave;
-    AgentParams params;
 
+    AgentParams params;
 
     public void btnSaveOnAction(){
         try{
             setParams();
+            if(!alreadyExists()) {
+                new AgentsManager().updateAndSave(params);
+            }
         }
         catch (Exception e){
             e.printStackTrace();
@@ -50,7 +53,7 @@ public class AgentSettingsController implements Initializable, Popup {
         if(nameTf.getText().isEmpty() || rightTf.getText().isEmpty() || leftTf.getText().isEmpty() ||
         backTf.getText().isEmpty() || forwardTf.getText().isEmpty() || sightTf.getText().isEmpty() ||
         fovTf.getText().isEmpty() || workRateTf.getText().isEmpty() || interestTf.getText().isEmpty() ||
-        speedMinTf.getText().isEmpty() || speedMaxTf.getText().isEmpty() || speedDistCB.getValue() == null){
+        speedMinTf.getText().isEmpty() || speedMaxTf.getText().isEmpty()){
             popup("All fields must be filled in.");
         }
         setParams();
@@ -72,13 +75,11 @@ public class AgentSettingsController implements Initializable, Popup {
         speedMaxTf.setText(String.valueOf(agentparams.SPEED_MAX));
         avoidOthersCb.setSelected(agentparams.AVOID_OTHERS);
         repulseCallCb.setSelected(agentparams.REPULSIVE_CALL);
-        ObservableList<SpeedDistribution> priorities = FXCollections.observableArrayList(SpeedDistribution.values());
-        speedDistCB.getItems().setAll(priorities);
-        speedDistCB.setValue(SpeedDistribution.GAUSSIAN);
         decisiveCb.setSelected(agentparams.DECISIVE);
     }
 
     private void setParams(){
+
         params = new AgentParams();
         params.NAME = nameTf.getText();
         params.RIGHT = Double.parseDouble(rightTf.getText());
@@ -91,9 +92,29 @@ public class AgentSettingsController implements Initializable, Popup {
         params.INTEREST_BOUNDARY = Integer.parseInt(interestTf.getText());
         params.SPEED_MIN = Double.parseDouble(speedMinTf.getText());
         params.SPEED_MAX = Double.parseDouble(speedMaxTf.getText());
-        params.SPEED_TYPE = speedDistCB.getValue();
         params.AVOID_OTHERS = avoidOthersCb.isSelected();
         params.REPULSIVE_CALL = repulseCallCb.isSelected();
         params.DECISIVE = decisiveCb.isSelected();
     }
+
+    private boolean alreadyExists(){
+        ArrayList<AgentParams> aparams;
+        try {
+            aparams = new AgentsManager().getAgents();
+        } catch (IOException e) {
+            return false;
+        }
+        for(AgentParams a : aparams){
+            if(Objects.equals(a.NAME, params.NAME)) {
+                popup("Agent type with that name already exists");
+                return true;
+            }
+            else if (a.equals(params)) {
+                popup("This type of agent already exists under name " + a.NAME + ".");
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

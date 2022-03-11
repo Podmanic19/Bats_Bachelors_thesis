@@ -1,8 +1,5 @@
-package model.main.testing;
+package model.testing;
 
-
-import model.agents.BatAgent;
-import model.map.Home;
 
 import java.util.ArrayList;
 
@@ -14,9 +11,9 @@ public class MapResult implements Aggregable{
         iterations = new ArrayList<>();
     }
 
-    public void update(int iters, ArrayList<BatAgent> agents, ArrayList<Home> homes) {
+    public void update(Statistic s) {
 
-        iterations.add(new Statistic(iters, agents, homes));
+        iterations.add(s);
 
     }
 

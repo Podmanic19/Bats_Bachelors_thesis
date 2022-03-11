@@ -1,4 +1,4 @@
-package model.main.testing;
+package model.testing;
 
 import model.agents.BatAgent;
 import model.map.Home;
@@ -12,13 +12,18 @@ public class Statistic implements Aggregable {
     int[][] totalTimeInState;
     int[] lifeTimes;
     int[] spawnTimes;
+    ArrayList<Double> totalPollution;
     double[] homeSizes;
     double[] workDone;
 
+    public Statistic(){
+        totalPollution = new ArrayList<>();
+    }
 
-    Statistic(int iters, ArrayList<BatAgent> agents, ArrayList<Home> homes) {
+    public void aggregate(int iters, ArrayList<BatAgent> agents, ArrayList<Home> homes) {
 
         numIters = iters;
+        totalPollution = new ArrayList<>();
         totalTimeInState = new int[agents.size()][3];
         lifeTimes = new int[homes.size()];
         workDone = new double[agents.size()];
@@ -99,6 +104,15 @@ public class Statistic implements Aggregable {
 
     public int getNumIters(){
         return numIters;
+    }
+
+    public void updatePollution(ArrayList<Home> homes){
+
+        double sum = 0;
+        for(Home h : homes){
+            sum += h.getPollution();
+        }
+        this.totalPollution.add(sum);
     }
 
 }

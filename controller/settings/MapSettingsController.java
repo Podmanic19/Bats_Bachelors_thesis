@@ -2,10 +2,9 @@ package controller.settings;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import model.main.Main;
-import model.main.testing.EnvironmentParameters;
+import model.testing.EnvironmentParameters;
 import model.map.MapParameters;
 
 import java.net.URL;

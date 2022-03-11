@@ -33,7 +33,7 @@
       </Label>
       <Line endX="51.999969482421875" endY="7.62939453125E-6" fill="#e2e2e2" layoutX="306.0" layoutY="59.0" startX="-0.66668701171875" startY="7.62939453125E-6" stroke="#e2e2e2" />
       <Line endX="24.99993896484375" endY="7.62939453125E-6" layoutX="674.0" layoutY="59.0" startX="-31.00006103515625" startY="7.62939453125E-6" stroke="#e2e2e2" />
-      <TextField fx:id="numMapsTf" layoutX="403.0" layoutY="172.0" />
+      <TextField fx:id="numMapsTf" disable="true" layoutX="403.0" layoutY="172.0" />
       <TextField fx:id="numItersTf" layoutX="402.0" layoutY="256.0" />
       <Button layoutX="25.0" layoutY="742.0" mnemonicParsing="false" onAction="#btnPrevOnAction" prefWidth="100.0" text="PREV">
          <font>
@@ -60,7 +60,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <CheckBox fx:id="generateRandCb" layoutX="407.0" layoutY="353.0" mnemonicParsing="false" />
+      <CheckBox fx:id="generateRandCb" layoutX="407.0" layoutY="353.0" mnemonicParsing="false" onAction="#generateRandomOnAction" />
       <TableView layoutX="17.0" layoutY="449.0" prefHeight="256.0" prefWidth="969.0">
         <columns>
           <TableColumn prefWidth="910.399995803833" text="Name" />
