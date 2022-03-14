@@ -1,10 +1,10 @@
 package model.map;
 
-import model.serialization.Save;
+import java.io.Serializable;
 
-public class MapParameters extends Save {
+public class MapParameters implements Serializable {
     public String name = "DEFAULT";
-    public int AGENT_NUM = 20;
+    public int AGENT_NUM = 100;
     public int POINT_MAX = 1000;
     public int POINT_MIN = 0;
     public int MIN_DISTANCE = 50;

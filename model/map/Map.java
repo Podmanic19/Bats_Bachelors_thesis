@@ -1,20 +1,30 @@
 package model.map;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import model.agents.State;
 import model.agents.BatAgent;
-import model.serialization.Save;
 
+import java.io.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static model.main.Main.mapparams;
 
-public class Map extends Save {
-    private ArrayList<BatAgent> agents = new ArrayList<>();
-    private ArrayList<LineSegment> walls = new ArrayList<>();
-    private ArrayList<Home> homes = new ArrayList<>();
+public class Map implements Serializable{
+    private String name;
+    private final ArrayList<LineSegment> walls = new ArrayList<>();     //initial walls existing on the map
+    private Coordinate[] initialAgentPositions;                         //positions of future agent placements
+    private Coordinate[] initialHomePositions;                          //positions of future walls placements
+
+    private ArrayList<BatAgent> agents = new ArrayList<>();          //agents existing on the map
+    private ArrayList<Home> homes = new ArrayList<>();               //homes existing on the map
+
+
+    private boolean chosen;
 
     public Map() {
+        initialAgentPositions = new Coordinate[100];
+        chosen = false;
         generateWalls();
         generateHomes();
         generateAgents();
@@ -32,28 +42,44 @@ public class Map extends Save {
         this.walls.addAll(m.getWalls());
     }
 
+    public void fillWithElements(int numAgents, int numHomes) {
+
+        for(int i = 0; i < numHomes; i++) {
+            createHome(initialHomePositions[i], Home.ID++, 0);
+        }
+
+        for(int i = 0; i < numAgents; i++) {
+            agents.add(new BatAgent(BatAgent.ID++, initialAgentPositions[i]));
+        }
+
+    }
+
     private void generateHomes() {
+
+        initialHomePositions = new Coordinate[mapparams.NUMBER_HOME];
         ArrayList<Coordinate> flatMap = flatten();
         Collections.shuffle(flatMap);
         HashSet<Integer> possibleHomes = fillPossibleHomes(flatMap);
 
+        int addedCoords = 0;
         for (int i = 0; i < flatMap.size(); i++) {
-            if (homes.size() == mapparams.NUMBER_HOME)
+            if (addedCoords == mapparams.NUMBER_HOME)
                 break;
             if (possibleHomes.isEmpty())
                 break;
             if (!possibleHomes.contains(i))
                 continue;
 
-            createHome(flatMap.get(i), Home.ID++, 0);
+            initialHomePositions[addedCoords++] = flatMap.get(i);
             possibleHomes.remove(i);
 
             for (int j = 0; j < flatMap.size(); j++) {
                 boolean remove = false;
                 if (!possibleHomes.contains(j))
                     continue;
-                for (Home home : homes) {
-                    if (home.getCoords().cheapDistanceTo(flatMap.get(j)) < (int) Math.pow(mapparams.MIN_DISTANCE, 2)) {
+                for (int k = 0; k < addedCoords; k++) {
+                    Coordinate c = initialHomePositions[k];
+                    if (c.cheapDistanceTo(flatMap.get(j)) < (int) Math.pow(mapparams.MIN_DISTANCE, 2)) {
                         remove = true;
                         break;
                     }
@@ -81,8 +107,8 @@ public class Map extends Save {
     }
 
     private boolean alreadyHome(Coordinate c){
-        for(Home h: homes){
-            if(c.getX() == h.getCoords().getX() && c.getY() == h.getCoords().getY()) return true;
+        for(Coordinate other: initialHomePositions){
+            if(c.getX() == other.getX() && c.getY() == other.getY()) return true;
         }
         return false;
     }
@@ -123,10 +149,9 @@ public class Map extends Save {
     }
 
     private void generateAgents() {
-        agents = new ArrayList<>();
-
-        for (int i = 0; i < mapparams.AGENT_NUM; i++) {
-            agents.add(new BatAgent(BatAgent.ID++, generateRandPos()));
+        initialAgentPositions = new Coordinate[mapparams.AGENT_NUM];
+        for(int  i = 0 ; i < mapparams.AGENT_NUM; i++){
+            initialAgentPositions[i] = generateRandAgentPos();
         }
     }
 
@@ -182,7 +207,7 @@ public class Map extends Save {
 
     }
 
-    private Coordinate generateRandPos() {
+    private Coordinate generateRandAgentPos() {
         boolean generate = true;
         Coordinate c = new Coordinate(
                 ThreadLocalRandom.current().nextInt(mapparams.POINT_MIN + 1, mapparams.POINT_MAX),
@@ -202,7 +227,6 @@ public class Map extends Save {
         }
 
         return c;
-
     }
 
     private ArrayList<Coordinate> flatten() {
@@ -229,6 +253,10 @@ public class Map extends Save {
         return homes;
     }
 
+    public boolean isChosen() {
+        return chosen;
+    }
+
     public int traveling() {
         int i = 0;
         for (BatAgent a : agents) {
@@ -237,6 +265,57 @@ public class Map extends Save {
             }
         }
         return i;
+    }
+
+    public void save(File f) {
+        try {
+            FileOutputStream fos = new FileOutputStream(f.getAbsolutePath());
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            agents.clear();
+            homes.clear();
+            oos.writeObject(this);
+            oos.close();
+            fos.close();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
+
+    public static Map load(File inFile) {
+
+        Map m;
+
+        try {
+            FileInputStream fis = new FileInputStream(inFile);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            m = (Map) ois.readObject();
+            m.setName(inFile.getName().replace(".emap", ""));
+            ois.close();
+            fis.close();
+        } catch (IOException | ClassNotFoundException ioe) {
+            ioe.printStackTrace();
+            return null;
+        }
+
+        return m;
+
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public SimpleBooleanProperty getSELECTED(){
+        return new SimpleBooleanProperty(this.chosen);
+    }
+
+    public void setSELECTED(boolean selected){
+        this.chosen = selected;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public int working() {

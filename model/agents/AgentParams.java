@@ -1,9 +1,10 @@
 package model.agents;
 
 import javafx.beans.property.SimpleBooleanProperty;
-import model.serialization.Save;
 
-public class AgentParams extends Save {
+import java.io.Serializable;
+
+public class AgentParams implements Serializable {
     public String NAME = "Default";
     public double LEFT = 0.8;
     public double RIGHT = 0.8;

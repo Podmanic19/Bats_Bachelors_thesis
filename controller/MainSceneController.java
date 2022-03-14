@@ -23,7 +23,7 @@ import java.io.IOException;
 
 import static model.main.Main.*;
 
-public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes, Popup, ChangeScene {
+public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes, PlaceWalls, Popup, ChangeScene {
     @FXML Button btnCreate;
     @FXML Button btnEnvSettings;
     @FXML Button btnAgentSettings;
@@ -48,6 +48,7 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
         new Thread(() -> {
             disableButtons(true);
             loadedMap = new Map();
+            loadedMap.fillWithElements(mapparams.AGENT_NUM, mapparams.NUMBER_HOME);
             Platform.runLater(() -> {
                 showMap(paneMain);
                 disableButtons(false);
@@ -70,24 +71,9 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
         btnPlay.setDisable(true);
     }
 
-    private void placeWalls(Pane canvas) {
-        double coef_h = paneMain.getHeight() / mapparams.POINT_MAX;
-        double coef_w = paneMain.getWidth() / mapparams.POINT_MAX;
-        for (LineSegment w : loadedMap.getWalls()) {
-            Line l = new Line();
-            l.setFill((Color.BLACK));
-            l.setStartX(w.getA().getX() * coef_w);
-            l.setEndX(w.getB().getX() * coef_w);
-            l.setStartY(w.getA().getY() * coef_h);
-            l.setEndY(w.getB().getY() * coef_h);
-            l.setStrokeWidth(1);
-            canvas.getChildren().add(l);
-        }
-    }
-
     public void btnEnvSettings() {
         try {
-            load(paneMain, "envsettings");
+            load(paneMain, "mapsettings");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -106,8 +92,7 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
         FileChooser.ExtensionFilter fileExtensions = new FileChooser.ExtensionFilter("Maps", "*.emap");
         fch.getExtensionFilters().add(fileExtensions);
         File file = fch.showOpenDialog(new Stage());
-
-        loadedMap = (Map) loadedMap.load(file);
+        loadedMap = Map.load(file);
         btnPlay.setDisable(false);
         showMap(paneMain);
     }
@@ -117,8 +102,7 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
         fileChooser.setTitle("Save Map");
         fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Maps", "*.emap"));
         File file = fileChooser.showSaveDialog(new Stage());
-        loadedMap.save(loadedMap, file);
-
+        loadedMap.save(file);
     }
 
     public void showCallsOnAction(){

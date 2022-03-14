@@ -89,7 +89,8 @@ public class ChooseAgentsAndEnvController implements Initializable, NewWindowSce
     public void btnNextOnAction() {
 
         try {
-            if(!checkTest()) return;
+            if(!checkTest())
+                return;
             sendTest();
             sceneChanger("choosemaps");
         } catch (IOException e) {
@@ -154,7 +155,6 @@ public class ChooseAgentsAndEnvController implements Initializable, NewWindowSce
         ArrayList<AgentParams> testedAgents = new ArrayList<AgentParams>();
 
         for(AgentParams a : agentsTable.getItems()) {
-            check = false;
             if(a.SELECTED) testedAgents.add(a);
         }
 
