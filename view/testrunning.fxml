@@ -60,23 +60,23 @@
             <Font size="33.0" />
          </font>
       </Label>
-      <Label layoutX="410.0" layoutY="160.0" text="Dummy text">
+      <Label fx:id="agentLbl" layoutX="410.0" layoutY="160.0" text="Dummy text">
          <font>
             <Font size="33.0" />
          </font>
       </Label>
-      <Label layoutX="410.0" layoutY="360.0" text="Dummy text">
+      <Label fx:id="mapLbl" layoutX="410.0" layoutY="360.0" text="Dummy text">
          <font>
             <Font size="33.0" />
          </font>
       </Label>
-      <Label layoutX="410.0" layoutY="560.0" text="Dummy text">
+      <Label fx:id="iterLbl" layoutX="410.0" layoutY="560.0" text="Dummy text">
          <font>
             <Font size="33.0" />
          </font>
       </Label>
-      <ProgressBar layoutX="740.0" layoutY="175.0" prefWidth="200.0" progress="0.0" />
-      <ProgressBar layoutX="740.0" layoutY="376.0" prefWidth="200.0" progress="0.0" />
-      <ProgressBar layoutX="740.0" layoutY="574.0" prefWidth="200.0" progress="0.0" />
+      <ProgressBar fx:id="totalProgressPb" layoutX="740.0" layoutY="175.0" prefWidth="200.0" progress="0.0" />
+      <ProgressBar fx:id="agentProgressPb" layoutX="740.0" layoutY="376.0" prefWidth="200.0" progress="0.0" />
+      <ProgressBar fx:id="mapProgressPb" layoutX="740.0" layoutY="574.0" prefWidth="200.0" progress="0.0" />
    </children>
 </Pane>

@@ -163,6 +163,7 @@ public class ChooseAgentsAndEnvController implements Initializable, NewWindowSce
             popup("No selected agents to test.");
         }
 
+        test.setAgentparams(testedAgents);
         return check;
 
     }

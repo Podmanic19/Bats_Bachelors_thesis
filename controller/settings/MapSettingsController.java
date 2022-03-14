@@ -44,6 +44,7 @@ public class MapSettingsController implements Initializable {
 
     private void setParams(){
         this.mapparams = new MapParameters();
+        this.envparams = new EnvironmentParameters();
         this.mapparams.name = nameTf.getText();
         this.mapparams.POINT_MAX = Integer.parseInt(maxCoordTf.getText());
         this.mapparams.POINT_MIN = Integer.parseInt(minCoordTf.getText());

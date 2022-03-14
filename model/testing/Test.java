@@ -1,5 +1,8 @@
 package model.testing;
 
+import javafx.application.Platform;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import model.agents.AgentParams;
 import model.agents.BatAgent;
 import model.main.Main;
@@ -23,9 +26,9 @@ public class Test implements Serializable {
     private EnvironmentParameters envparams;
     private ArrayList<AgentParams> agentparams;
     private ArrayList<Map> maps;
-    private ArrayList<Home> allHomes;
     private int numMaps;
     private int numAgents;
+    private int numHomes;
     private int runTime;
     private int itersPerMap;
 
@@ -54,7 +57,7 @@ public class Test implements Serializable {
         this.name = "TEST " + dtf.format(now);
     }
 
-    public TestResult run(){
+    public TestResult run(Label agentLbl, Label mapLbl, Label iterLbl, ProgressBar totalProgressPb, ProgressBar agentProgressPb, ProgressBar mapProgressPb){
 
         TestResult result = new TestResult();
         Instant start = Instant.now();
@@ -62,15 +65,30 @@ public class Test implements Serializable {
 
         for(AgentParams currentAgentParams : agentparams) {
             ++agentIter;
+            int finalAgentIter = agentIter;
+            Platform.runLater(() -> {
+                agentLbl.setText(currentAgentParams.getNAME());
+                totalProgressPb.setProgress((double) finalAgentIter /agentparams.size());
+            });
             mapIter = -1;
             AgentResult agentResult = new AgentResult();
             for (Map m : maps) {
                 ++mapIter;
+                int finalMapIter = mapIter;
+                Platform.runLater(() -> {
+                    mapLbl.setText(m.getName());
+                    agentProgressPb.setProgress((double) finalMapIter /maps.size());
+                });
                 currentIter = -1;
                 MapResult mapResult = new MapResult();
                 replaceAgents(m, currentAgentParams);
                 for (int i = 0; i < itersPerMap; i++) {
                     ++currentIter;
+                    int finalCurrentIter = currentIter;
+                    Platform.runLater(() -> {
+                        iterLbl.setText(String.valueOf(finalCurrentIter));
+                        mapProgressPb.setProgress((double) finalCurrentIter / itersPerMap);
+                    });
                     loadedMap = new Map(m);
                     int j = -1;
                     Statistic s = new Statistic();
@@ -96,6 +114,10 @@ public class Test implements Serializable {
             }
             result.update(agentResult);
         }
+
+        Platform.runLater(() -> {
+            agentProgressPb.setProgress(100);
+        });
 
         Instant end = Instant.now();
         System.out.println("Total runtime: " + Duration.between(start, end));
@@ -139,10 +161,6 @@ public class Test implements Serializable {
         this.maps = maps;
     }
 
-    public void setAllHomes(ArrayList<Home> allHomes) {
-        this.allHomes = allHomes;
-    }
-
     public void setNumMaps(int numMaps) {
         this.numMaps = numMaps;
     }
@@ -157,5 +175,9 @@ public class Test implements Serializable {
 
     public void setItersPerMap(int itersPerMap) {
         this.itersPerMap = itersPerMap;
+    }
+
+    public void setNumHomes(int numHomes) {
+        this.numHomes = numHomes;
     }
 }

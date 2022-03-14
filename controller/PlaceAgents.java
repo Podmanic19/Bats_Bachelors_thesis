@@ -40,7 +40,7 @@ public interface PlaceAgents {
                 cir.setFill(Color.DARKRED);
                 cir.setStroke(Color.DARKRED);
             }
-            cir.setRadius(3);
+            cir.setRadius(3*coef_w);
             cir.setCenterX(a.getPosition().getX() * coef_w);
             cir.setCenterY(a.getPosition().getY() * coef_h);
             paneMain.getChildren().add(cir);

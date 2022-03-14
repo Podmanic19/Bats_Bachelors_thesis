@@ -28,7 +28,7 @@ public class BatAgent implements Serializable {
     public BatAgent(int id, Coordinate position) {
         this.id = id;
         this.home = null;
-        this.position = new Coordinate(500,500);//position;
+        this.position = position;
         this.timeSpentInState = new int[3];
         generateRandSpeed();
         generateRandDir();
@@ -42,7 +42,7 @@ public class BatAgent implements Serializable {
     public BatAgent(BatAgent a) {
         this.id = a.id;
         this.home = null;
-        this.position = a.position;//position;
+        this.position = a.position;
         this.timeSpentInState = a.timeSpentInState;
         this.speed = a.speed;
         this.direction = a.direction;

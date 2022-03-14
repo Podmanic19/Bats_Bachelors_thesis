@@ -13,7 +13,6 @@ import static model.main.Main.mapparams;
 public interface PlaceHomes {
 
     default void placeHomes(Pane paneMain){
-        int RADIUS = 6;
         double coef_h = paneMain.getHeight() / mapparams.POINT_MAX;
         double coef_w = paneMain.getWidth() / mapparams.POINT_MAX;
         for(Home h : loadedMap.getHomes()){
@@ -35,7 +34,7 @@ public interface PlaceHomes {
             }
             if(h.getCall() == CallType.NONE) cir.setStroke(Color.BLUE);
             else cir.setStroke(Color.GREEN);
-            cir.setRadius(RADIUS);
+            cir.setRadius(6*coef_h);
             cir.setCenterX(h.getCoords().getX() * coef_w);
             cir.setCenterY(h.getCoords().getY() * coef_h);
             paneMain.getChildren().add(cir);

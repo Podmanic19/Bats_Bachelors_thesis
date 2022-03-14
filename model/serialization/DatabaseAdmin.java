@@ -5,8 +5,7 @@ import java.util.ArrayList;
 
 public class DatabaseAdmin<T> implements Serializable{
 
-    public void upload(String path,ArrayList <T> uploaded ){
-
+    public void upload(String path, ArrayList <T> uploaded ){
         try
         {
             FileOutputStream fos = new FileOutputStream(path);

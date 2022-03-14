@@ -281,6 +281,25 @@ public class Map implements Serializable{
         }
     }
 
+    public void save(String directory) throws IOException {
+
+        File f = new File("maps\\" + directory);
+        if(f.mkdirs()){
+            try {
+                FileOutputStream fos = new FileOutputStream("maps\\" + directory + "\\" + this.getName() + ".emap");
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                oos.writeObject(this);
+                oos.close();
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            throw new IOException();
+        }
+    }
+
 
     public static Map load(File inFile) {
 
