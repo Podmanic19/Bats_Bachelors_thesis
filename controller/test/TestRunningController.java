@@ -1,14 +1,17 @@
 package controller.test;
 
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import model.gui.ChangeScene;
 import model.gui.Popup;
 import model.map.Map;
 import model.testing.Test;
+import model.testing.TestResult;
 
 import java.io.IOException;
 import java.net.URL;
@@ -18,6 +21,7 @@ import static model.main.Main.primaryStage;
 
 public class TestRunningController implements Initializable, ChangeScene, Popup {
 
+    @FXML Button btnShow;
     @FXML Label agentLbl;
     @FXML Label mapLbl;
     @FXML Label iterLbl;
@@ -26,6 +30,7 @@ public class TestRunningController implements Initializable, ChangeScene, Popup 
     @FXML ProgressBar mapProgressPb;
 
     Test test;
+    TestResult testResult;
 
     public void btnPrevOnAction() {
         try {
@@ -36,11 +41,70 @@ public class TestRunningController implements Initializable, ChangeScene, Popup 
         }
     }
 
+    public void btnShowOnAction() {
+
+        try {
+            sendResult();
+            sceneChanger("showtestresult");
+        } catch (IOException e) {
+            popup("Couldn't load file view/showtestresult.fxml");
+            e.printStackTrace();
+        }
+
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         test = (Test) primaryStage.getUserData();
+
         new Thread(() -> {
-            test.run(agentLbl, mapLbl, iterLbl, totalProgressPb, agentProgressPb, mapProgressPb);
+            test.run(this);
         }).start();
+    }
+
+    private void sendResult() {
+
+        primaryStage.setUserData(testResult);
+
+    }
+
+    public void setTestResult(TestResult testResult) {
+        this.testResult = testResult;
+    }
+
+    public Label getAgentLbl() {
+        return agentLbl;
+    }
+
+    public Label getMapLbl() {
+        return mapLbl;
+    }
+
+    public Label getIterLbl() {
+        return iterLbl;
+    }
+
+    public ProgressBar getTotalProgressPb() {
+        return totalProgressPb;
+    }
+
+    public ProgressBar getAgentProgressPb() {
+        return agentProgressPb;
+    }
+
+    public ProgressBar getMapProgressPb() {
+        return mapProgressPb;
+    }
+
+    public Test getTest() {
+        return test;
+    }
+
+    public TestResult getTestResult() {
+        return testResult;
+    }
+
+    public void setShow(boolean show){
+        btnShow.setDisable(!show);
     }
 }

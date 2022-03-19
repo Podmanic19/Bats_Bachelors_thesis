@@ -3,16 +3,19 @@ package model.testing;
 import model.agents.BatAgent;
 import model.map.Home;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Statistic implements Aggregable {
+public class Statistic implements Aggregable, Serializable {
 
     int numIters;
-    int[][] totalTimeInState;
     int[] lifeTimes;
     int[] spawnTimes;
     ArrayList<Double> totalPollution;
+    int timeSearching;
+    int timeTravelling;
+    int timeWorking;
     double[] homeSizes;
     double[] workDone;
 
@@ -23,20 +26,12 @@ public class Statistic implements Aggregable {
     public void aggregate(int iters, ArrayList<BatAgent> agents, ArrayList<Home> homes) {
 
         numIters = iters;
-        totalPollution = new ArrayList<>();
-        totalTimeInState = new int[agents.size()][3];
         lifeTimes = new int[homes.size()];
         workDone = new double[agents.size()];
         spawnTimes = new int[homes.size()];
         homeSizes = new double[homes.size()];
 
-        new Thread(() -> {
-            aggregateAgents(agents);
-        }).start();
-
-        new Thread(() -> {
-            aggregateHomes(homes);
-        }).start();
+        aggregateHomes(homes);
 
     }
 
@@ -47,19 +42,6 @@ public class Statistic implements Aggregable {
             spawnTimes[i] = h.getSpawnTime();
             lifeTimes[i] = h.getLifeTime();
             homeSizes[i] = h.getPollution();
-            ++i;
-        }
-
-    }
-
-    private void aggregateAgents(ArrayList<BatAgent> agents) {
-
-        int i = 0;
-        for(BatAgent a : agents) {
-            workDone[i] = a.getTotalWork();
-            for(int j = 0; j < 3; j++) {
-                totalTimeInState[i][j] = a.getTimeSpentInState()[j];
-            }
             ++i;
         }
 
@@ -113,6 +95,44 @@ public class Statistic implements Aggregable {
             sum += h.getPollution();
         }
         this.totalPollution.add(sum);
+
     }
 
+    public void updateTimeInState(Integer[] numInState) {
+        timeSearching += numInState[0];
+        timeTravelling += numInState[1];
+        timeWorking += numInState[2];
+    }
+
+    public int[] getLifeTimes() {
+        return lifeTimes;
+    }
+
+    public int[] getSpawnTimes() {
+        return spawnTimes;
+    }
+
+    public ArrayList<Double> getTotalPollution() {
+        return totalPollution;
+    }
+
+    public int getTimeSearching() {
+        return timeSearching;
+    }
+
+    public int getTimeTravelling() {
+        return timeTravelling;
+    }
+
+    public int getTimeWorking() {
+        return timeWorking;
+    }
+
+    public double[] getHomeSizes() {
+        return homeSizes;
+    }
+
+    public double[] getWorkDone() {
+        return workDone;
+    }
 }

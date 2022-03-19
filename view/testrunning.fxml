@@ -35,7 +35,7 @@
             <Font name="System Bold" size="13.0" />
          </font>
       </Button>
-      <Button layoutX="875.0" layoutY="742.0" maxWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="START">
+      <Button fx:id="btnShow" disable="true" layoutX="875.0" layoutY="742.0" maxWidth="100.0" mnemonicParsing="false" onAction="#btnShowOnAction" prefWidth="100.0" text="START">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>

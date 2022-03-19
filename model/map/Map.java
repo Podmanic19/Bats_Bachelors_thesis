@@ -8,6 +8,7 @@ import java.io.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static model.agents.State.working;
 import static model.main.Main.mapparams;
 
 public class Map implements Serializable{
@@ -257,16 +258,6 @@ public class Map implements Serializable{
         return chosen;
     }
 
-    public int traveling() {
-        int i = 0;
-        for (BatAgent a : agents) {
-            if (a.getState() == State.traveling) {
-                i++;
-            }
-        }
-        return i;
-    }
-
     public void save(File f) {
         try {
             FileOutputStream fos = new FileOutputStream(f.getAbsolutePath());
@@ -286,6 +277,8 @@ public class Map implements Serializable{
         File f = new File("maps\\" + directory);
         if(f.mkdirs()){
             try {
+                this.agents.clear();
+                this.homes.clear();
                 FileOutputStream fos = new FileOutputStream("maps\\" + directory + "\\" + this.getName() + ".emap");
                 ObjectOutputStream oos = new ObjectOutputStream(fos);
                 oos.writeObject(this);
@@ -337,23 +330,28 @@ public class Map implements Serializable{
         return name;
     }
 
-    public int working() {
-        int i = 0;
+    public Integer[] getAgentsInState() {
+
+        Integer[] numInState = new Integer[3];
+
+        for(int i = 0; i < 3; i++) numInState[i] = 0;
+
         for (BatAgent a : agents) {
-            if (a.getState() == State.working) {
-                i++;
+            switch (a.getState()) {
+                case searching:
+                    numInState[0]++;
+                    break;
+                case traveling:
+                    numInState[1]++;
+                    break;
+                case working:
+                    numInState[2]++;
+                    break;
             }
         }
-        return i;
+
+        return numInState;
+
     }
 
-    public int searching() {
-        int i = 0;
-        for (BatAgent a : agents) {
-            if (a.getState() == State.searching) {
-                i++;
-            }
-        }
-        return i;
-    }
 }

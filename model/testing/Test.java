@@ -1,6 +1,8 @@
 package model.testing;
 
+import controller.test.TestRunningController;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import model.agents.AgentParams;
@@ -19,7 +21,7 @@ import java.util.ArrayList;
 
 import static model.main.Main.loadedMap;
 
-public class Test implements Serializable {
+public class Test {
 
     private String name;
     private MapParameters mapparams;
@@ -57,7 +59,7 @@ public class Test implements Serializable {
         this.name = "TEST " + dtf.format(now);
     }
 
-    public TestResult run(Label agentLbl, Label mapLbl, Label iterLbl, ProgressBar totalProgressPb, ProgressBar agentProgressPb, ProgressBar mapProgressPb){
+    public void run(TestRunningController ctrlr){
 
         TestResult result = new TestResult();
         Instant start = Instant.now();
@@ -67,8 +69,8 @@ public class Test implements Serializable {
             ++agentIter;
             int finalAgentIter = agentIter;
             Platform.runLater(() -> {
-                agentLbl.setText(currentAgentParams.getNAME());
-                totalProgressPb.setProgress((double) finalAgentIter /agentparams.size());
+                ctrlr.getAgentLbl().setText(currentAgentParams.getNAME());
+                ctrlr.getTotalProgressPb().setProgress((double) finalAgentIter /agentparams.size());
             });
             mapIter = -1;
             AgentResult agentResult = new AgentResult();
@@ -76,18 +78,19 @@ public class Test implements Serializable {
                 ++mapIter;
                 int finalMapIter = mapIter;
                 Platform.runLater(() -> {
-                    mapLbl.setText(m.getName());
-                    agentProgressPb.setProgress((double) finalMapIter /maps.size());
+                    ctrlr.getMapLbl().setText(m.getName());
+                    ctrlr.getAgentProgressPb().setProgress((double) finalMapIter /maps.size());
                 });
                 currentIter = -1;
                 MapResult mapResult = new MapResult();
                 replaceAgents(m, currentAgentParams);
-                for (int i = 0; i < itersPerMap; i++) {
+                for (int i = 1; i <= itersPerMap; i++) {
+                    System.out.println("Number of agents: " + m.getAgents().size());
                     ++currentIter;
                     int finalCurrentIter = currentIter;
                     Platform.runLater(() -> {
-                        iterLbl.setText(String.valueOf(finalCurrentIter));
-                        mapProgressPb.setProgress((double) finalCurrentIter / itersPerMap);
+                        ctrlr.getIterLbl().setText(String.valueOf(finalCurrentIter));
+                        ctrlr.getMapProgressPb().setProgress((double) finalCurrentIter / itersPerMap);
                     });
                     loadedMap = new Map(m);
                     int j = -1;
@@ -103,6 +106,7 @@ public class Test implements Serializable {
                         if (Main.envparams.DYNAMIC_HOME_SPAWN_TIME > 0 && j % Main.envparams.DYNAMIC_HOME_SPAWN_TIME == 0)
                             loadedMap.addHome(j);
                         s.updatePollution(loadedMap.getHomes());
+                        s.updateTimeInState(loadedMap.getAgentsInState());
                     }
                     Instant iterEnd = Instant.now();
                     System.out.println("Iteration " + (i+1) + " runtime: " + Duration.between(iterStart, iterEnd) +
@@ -116,13 +120,14 @@ public class Test implements Serializable {
         }
 
         Platform.runLater(() -> {
-            agentProgressPb.setProgress(100);
+            ctrlr.getAgentProgressPb().setProgress(100);
         });
 
         Instant end = Instant.now();
         System.out.println("Total runtime: " + Duration.between(start, end));
 
-        return result;
+        ctrlr.setTestResult(result);
+        ctrlr.setShow(true);
 
     }
 

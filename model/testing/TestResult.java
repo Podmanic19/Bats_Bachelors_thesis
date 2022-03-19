@@ -1,8 +1,9 @@
 package model.testing;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class TestResult implements Aggregable {
+public class TestResult implements Aggregable, Serializable {
 
     ArrayList<AgentResult> agentResults = new ArrayList<>();
 
@@ -32,4 +33,7 @@ public class TestResult implements Aggregable {
         return 0;
     }
 
+    public ArrayList<AgentResult> getAgentResults() {
+        return agentResults;
+    }
 }
