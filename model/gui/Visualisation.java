@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import model.map.Home;
+import model.map.mapshell.Map;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -18,14 +19,16 @@ public class Visualisation extends Thread implements PlaceHomes, PlaceAgents {
 
     private final Pane paneMain;
     private final Label lblTicks;
+    private final Map visualisedMap;
 
-    private Visualisation(Pane pane, Label lblTicks) {
+    private Visualisation(Map visualisedMap, Pane pane, Label lblTicks) {
         this.lblTicks = lblTicks;
         this.paneMain = pane;
+        this.visualisedMap = visualisedMap;
     }
 
-    public static Visualisation getInstance(Pane pane, Label lblTicks) {
-        return new Visualisation(pane, lblTicks);
+    public static Visualisation getInstance(Map visualisedMap, Pane pane, Label lblTicks) {
+        return new Visualisation(visualisedMap, pane, lblTicks);
     }
 
     @Override
@@ -34,15 +37,15 @@ public class Visualisation extends Thread implements PlaceHomes, PlaceAgents {
         Instant start = Instant.now();
         for (int i = 0; i < 20000; i++) {
             int finalI = i;
-            loadedMap.getAgents().parallelStream().forEach(Agent::act);
-            loadedMap.getHomes().removeIf(h -> (h.getPollution() <= 0));
-            for(Home h : loadedMap.getHomes()){
+            visualisedMap.getAgents().parallelStream().forEach(Agent::act);
+            visualisedMap.getHomes().removeIf(h -> (h.getPollution() <= 0));
+            for(Home h : visualisedMap.getHomes()){
                 h.incrementLifetime();
                 h.increasePollution(envparams.DYNAMIC_HOME_GROWTH_SIZE);
             }
             Platform.runLater(this::refresh);
-            Platform.runLater(() -> placeHomes(paneMain));
-            Platform.runLater(() -> placeAgents(paneMain));
+            Platform.runLater(() -> placeHomes(visualisedMap.getHomes(), paneMain));
+            Platform.runLater(() -> placeAgents(visualisedMap.getAgents(), paneMain));
             Platform.runLater(() ->  updateTicks(finalI));
             try {
                 sleep(30);
@@ -53,7 +56,7 @@ public class Visualisation extends Thread implements PlaceHomes, PlaceAgents {
 //                System.out.println("Pocet iteracii: " + i);
 //                break;
 //            }
-            if(envparams.DYNAMIC_HOME_SPAWN_TIME > 0 && i % envparams.DYNAMIC_HOME_SPAWN_TIME == 0) loadedMap.addHome(i);
+            if(envparams.DYNAMIC_HOME_SPAWN_TIME > 0 && i % envparams.DYNAMIC_HOME_SPAWN_TIME == 0) visualisedMap.addHome(i);
         }
         Instant end = Instant.now();
         System.out.println(Duration.between(start, end));

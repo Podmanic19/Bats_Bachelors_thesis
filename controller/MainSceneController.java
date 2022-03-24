@@ -3,7 +3,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
 import model.gui.ChangeScene;
 import model.gui.Visualisation;
-import model.map.Map;
+import model.map.mapshell.Map;
 import model.gui.Popup;
 import model.gui.LoadToPane;
 import javafx.application.Platform;
@@ -14,6 +14,8 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
+import model.map.mapshell.MapShell;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -36,6 +38,8 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
     @FXML CheckBox cbShowCalls;
     @FXML Label lblTicks;
 
+    private MapShell mShell;
+    private Map shownMap;
 
     public static boolean playing = false;
 
@@ -44,9 +48,8 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
         btnCreate.setDefaultButton(false);
         new Thread(() -> {
             disableButtons(true);
-            loadedMap = new Map();
-            loadedMap.fillWithHomes(mapparams.NUMBER_HOME);
-            loadedMap.fillWithBats(mapparams.AGENT_NUM);
+            mShell = new MapShell();
+            shownMap = new Map(mShell, true, mapparams.AGENT_NUM,  mapparams.NUMBER_HOME);
             Platform.runLater(() -> {
                 showMap(paneMain);
                 disableButtons(false);
@@ -57,15 +60,15 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
 
     private void showMap(Pane paneMain) {
         paneMain.getChildren().clear();
-        placeHomes(paneMain);
-        placeWalls(paneMain);
-        placeAgents(paneMain);
+        placeHomes(shownMap.getHomes(), paneMain);
+        placeWalls(shownMap.getWalls(), paneMain);
+        placeAgents(shownMap.getAgents(), paneMain);
     }
 
     public void btnPlayOnAction(){
         lblTicks.setAlignment(Pos.CENTER);
         if(playing) return;
-        Visualisation.getInstance(paneMain, lblTicks).start();
+        Visualisation.getInstance(shownMap, paneMain, lblTicks).start();
         btnPlay.setDisable(true);
     }
 
@@ -90,7 +93,12 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
         FileChooser.ExtensionFilter fileExtensions = new FileChooser.ExtensionFilter("Maps", "*.emap");
         fch.getExtensionFilters().add(fileExtensions);
         File file = fch.showOpenDialog(new Stage());
-        loadedMap = Map.load(file);
+        mShell = MapShell.load(file);
+        if(file == null || mShell == null) {
+            popup("No map selected");
+            return;
+        }
+        shownMap = new Map(mShell, true, mapparams.AGENT_NUM,  mapparams.NUMBER_HOME);
         btnPlay.setDisable(false);
         showMap(paneMain);
     }
@@ -100,7 +108,7 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
         fileChooser.setTitle("Save Map");
         fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Maps", "*.emap"));
         File file = fileChooser.showSaveDialog(new Stage());
-        loadedMap.save(file);
+        mShell.save(file);
     }
 
     public void showCallsOnAction(){

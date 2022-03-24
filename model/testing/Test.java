@@ -6,8 +6,9 @@ import model.agents.AgentParams;
 import model.agents.Agent;
 import model.main.Main;
 import model.map.Home;
-import model.map.Map;
+import model.map.mapshell.Map;
 import model.map.MapParameters;
+import model.map.mapshell.MapShell;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -15,7 +16,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import static model.main.Main.loadedMap;
 
 public class Test {
 
@@ -23,25 +23,24 @@ public class Test {
     private MapParameters mapparams;
     private EnvironmentParameters envparams;
     private ArrayList<AgentParams> agentparams;
-    private ArrayList<Map> maps;
+    private ArrayList<MapShell> uninitializedMaps;
     private int numMaps;
     private int numAgents;
     private int numHomes;
     private int runTime;
     private int itersPerMap;
 
-
     public Test() {
 
     }
 
-    public Test(String name, MapParameters mapparams, ArrayList<AgentParams> agentparams, ArrayList<Map> maps,
+    public Test(String name, MapParameters mapparams, ArrayList<AgentParams> agentparams, ArrayList<MapShell> maps,
                 EnvironmentParameters envparams, int numMaps, int numAgents, int itersPerMap) {
         this.name = name;
         this.mapparams = mapparams;
         this.envparams = envparams;
         this.agentparams = agentparams;
-        this.maps = maps;
+        this.uninitializedMaps = maps;
         this.numMaps = numMaps;
         this.numAgents = numAgents;
         this.itersPerMap = itersPerMap;
@@ -61,6 +60,7 @@ public class Test {
         Instant start = Instant.now();
         int agentIter = -1, mapIter, currentIter;
 
+        //ITERATE OVER ALL AGENT TYPES
         for(AgentParams currentAgentParams : agentparams) {
             ++agentIter;
             int finalAgentIter = agentIter;
@@ -70,44 +70,45 @@ public class Test {
             });
             mapIter = -1;
             AgentResult agentResult = new AgentResult();
-            for (Map m : maps) {
+            //ITERATE OVER MAPS
+            for (MapShell shell : uninitializedMaps) {
                 ++mapIter;
                 int finalMapIter = mapIter;
                 Platform.runLater(() -> {
-                    ctrlr.getMapLbl().setText(m.getName());
-                    ctrlr.getAgentProgressPb().setProgress((double) finalMapIter /maps.size());
+                    ctrlr.getMapLbl().setText(shell.getName());
+                    ctrlr.getAgentProgressPb().setProgress((double) finalMapIter / uninitializedMaps.size());
                 });
                 currentIter = -1;
                 MapResult mapResult = new MapResult();
+                //TEST MAP NUMBER OF ITERATIONS PER MAP TIMES
                 for (int i = 1; i <= itersPerMap; i++) {
-                    System.out.println("Number of agents: " + m.getAgents().size());
                     ++currentIter;
                     int finalCurrentIter = currentIter;
                     Platform.runLater(() -> {
                         ctrlr.getIterLbl().setText(String.valueOf(finalCurrentIter));
                         ctrlr.getMapProgressPb().setProgress((double) finalCurrentIter / itersPerMap);
                     });
-                    loadedMap = new Map(m);
-                    loadedMap.fillWithBats(this.numAgents);
+                    Map testedMap = new Map(shell, true, numAgents, numHomes);
                     int j = -1;
                     Statistic s = new Statistic();
                     Instant iterStart = Instant.now();
-                    while (!terminate(loadedMap, ++j)) {
-                        loadedMap.getAgents().parallelStream().forEach(Agent::act);
-                        loadedMap.getHomes().removeIf(h -> (h.getPollution() <= 0));
-                        for (Home h : loadedMap.getHomes()) {
+                    //SOLVE MAP
+                    while (!terminate(testedMap, ++j)) {
+                        testedMap.getAgents().parallelStream().forEach(Agent::act);
+                        testedMap.getHomes().removeIf(h -> (h.getPollution() <= 0));
+                        for (Home h : testedMap.getHomes()) {
                             h.incrementLifetime();
                             h.increasePollution(Main.envparams.DYNAMIC_HOME_GROWTH_SIZE);
                         }
                         if (Main.envparams.DYNAMIC_HOME_SPAWN_TIME > 0 && j % Main.envparams.DYNAMIC_HOME_SPAWN_TIME == 0)
-                            loadedMap.addHome(j);
-                        s.updatePollution(loadedMap.getHomes());
-                        s.updateTimeInState(loadedMap.getAgentsInState());
+                            testedMap.addHome(j);
+                        s.updatePollution(testedMap.getHomes());
+                        s.updateTimeInState(testedMap.getAgentsInState());
                     }
                     Instant iterEnd = Instant.now();
                     System.out.println("Iteration " + (i+1) + " runtime: " + Duration.between(iterStart, iterEnd) +
                             " iterations: " + j);
-                    s.aggregate(j, loadedMap.getAgents(), loadedMap.getHomes());
+                    s.aggregate(j, testedMap.getAgents(), testedMap.getHomes());
                     mapResult.update(s);
                 }
                 agentResult.update(mapResult);
@@ -120,7 +121,7 @@ public class Test {
             ctrlr.getAgentProgressPb().setProgress(100);
             ctrlr.getMapProgressPb().setProgress(100);
             ctrlr.getIterLbl().setText("100");
-            ctrlr.getMapLbl().setText(maps.get(maps.size()-1).getName());
+            ctrlr.getMapLbl().setText(uninitializedMaps.get(uninitializedMaps.size()-1).getName());
             ctrlr.getAgentLbl().setText(agentparams.get(agentparams.size()-1).getNAME());
         });
 
@@ -147,16 +148,12 @@ public class Test {
         this.mapparams = mapparams;
     }
 
-    public void setEnvparams(EnvironmentParameters envparams) {
-        this.envparams = envparams;
-    }
-
     public void setAgentparams(ArrayList<AgentParams> agentparams) {
         this.agentparams = agentparams;
     }
 
-    public void setMaps(ArrayList<Map> maps) {
-        this.maps = maps;
+    public void setUninitializedMaps(ArrayList<MapShell> uninitializedMaps) {
+        this.uninitializedMaps = uninitializedMaps;
     }
 
     public void setNumMaps(int numMaps) {
@@ -165,10 +162,6 @@ public class Test {
 
     public void setNumAgents(int numAgents) {
         this.numAgents = numAgents;
-    }
-
-    public void setRunTime(int runTime) {
-        this.runTime = runTime;
     }
 
     public void setItersPerMap(int itersPerMap) {

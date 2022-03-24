@@ -7,15 +7,16 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-import static model.main.Main.loadedMap;
+import java.util.ArrayList;
+
 import static model.main.Main.mapparams;
 
 public interface PlaceHomes {
 
-    default void placeHomes(Pane paneMain){
+    default void placeHomes(ArrayList<Home> homes, Pane paneMain){
         double coef_h = paneMain.getHeight() / mapparams.POINT_MAX;
         double coef_w = paneMain.getWidth() / mapparams.POINT_MAX;
-        for(Home h : loadedMap.getHomes()){
+        for(Home h : homes){
             Circle cir = new Circle();
             if(h.getCall() == CallType.NONE) {
                 cir.setFill(Color.BLUE);

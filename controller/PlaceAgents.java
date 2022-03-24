@@ -9,14 +9,17 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
+
+import java.util.ArrayList;
+
 import static model.main.Main.*;
 import static model.main.Main.agentparams;
 
 public interface PlaceAgents {
-    default void placeAgents(Pane paneMain) {
+    default void placeAgents(ArrayList<Agent> agents, Pane paneMain) {
         double coef_h = paneMain.getHeight() / mapparams.POINT_MAX;
         double coef_w = paneMain.getWidth() / mapparams.POINT_MAX;
-        for (Agent a : loadedMap.getAgents()) {
+        for (Agent a : agents) {
             AgentCircle cir = new AgentCircle();
             if (Main.SHOW_SIGHT && a.getState() != State.working) {
                 Arc arc = new Arc();

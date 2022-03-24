@@ -42,7 +42,7 @@ public class BatAgent extends Agent {
         if (agentparams.AVOID_OTHERS && this.state == State.searching) {
             ArrayList<Vector> vectorsToOthers = new ArrayList<>();
 
-            for (Agent a : Main.loadedMap.getAgents()) {
+            for (Agent a : myMap.getAgents()) {
                 if (a == this)
                     continue;
                 if (a.getState() == State.working)
@@ -109,7 +109,7 @@ public class BatAgent extends Agent {
                     position.getX() + (c * (direction.getX())),
                     position.getY() + (c * (direction.getY())));
 
-            WallCollision collision = position.checkWalls(new_pos);
+            WallCollision collision = position.checkWalls(new_pos, myMap.getWalls());
 
             if (collision.getWall() == null) { // if there are no walls between this position and the new one
                 position = new_pos;

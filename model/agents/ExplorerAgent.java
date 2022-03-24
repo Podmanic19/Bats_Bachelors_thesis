@@ -1,6 +1,5 @@
 package model.agents;
 
-import model.main.Main;
 import model.map.*;
 
 
@@ -82,7 +81,7 @@ public class ExplorerAgent extends Agent {
                     position.getY() + (c * (direction.getY()))
             );
 
-            WallCollision collision = position.checkWalls(new_pos);
+            WallCollision collision = position.checkWalls(new_pos, myMap.getWalls());
 
             if (collision.getWall() == null) { // if there are no walls between this position and the new one
                 position = new_pos;
@@ -99,14 +98,14 @@ public class ExplorerAgent extends Agent {
                 this.speed -= 1;
                 c = sqrt(1/(Math.pow(horizontalDirection.getX(), 2) + Math.pow(horizontalDirection.getY(), 2)));
                 new_pos = positionInDirection(horizontalDirection, c);
-                collision = position.checkWalls(new_pos);
+                collision = position.checkWalls(new_pos, myMap.getWalls());
                 if(collision.getWall() == null){
                     this.position = new_pos;
                     this.speed -= 1;
                 }
                 else {
                     for(int i = 0; i < 4; i++) {
-                        if(collision.getWall() == Main.loadedMap.getWalls().get(i)) {
+                        if(collision.getWall() == myMap.getWalls().get(i)) {
                             this.horizontalDirection = horizontalDirection.reverse();
                         }
                     }
@@ -123,7 +122,7 @@ public class ExplorerAgent extends Agent {
                                 position.getX() + (c * (horizontalDirection.getX())),
                                 position.getY() + (c * (horizontalDirection.getY()))
                         );
-                        collision = position.checkWalls(new_pos);
+                        collision = position.checkWalls(new_pos, myMap.getWalls());
                         num /= 2;
                         this.speed -= new_pos.distanceTo(position);
                     }

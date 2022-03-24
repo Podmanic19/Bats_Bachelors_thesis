@@ -5,14 +5,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import model.map.LineSegment;
 
+import java.util.ArrayList;
+
 import static model.main.Main.*;
 
 public interface PlaceWalls {
 
-    default void placeWalls(Pane canvas) {
+    default void placeWalls(ArrayList<LineSegment> walls, Pane canvas) {
         double coef_h = canvas.getHeight() / mapparams.POINT_MAX;
         double coef_w = canvas.getWidth() / mapparams.POINT_MAX;
-        for (LineSegment w : loadedMap.getWalls()) {
+        for (LineSegment w : walls) {
             Line l = new Line();
             l.setFill((Color.BLACK));
             l.setStartX(w.getA().getX() * coef_w);

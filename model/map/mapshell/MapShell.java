@@ -1,72 +1,30 @@
-package model.map;
+package model.map.mapshell;
 
 import javafx.beans.property.SimpleBooleanProperty;
-import model.agents.Agent;
-import model.agents.BatAgent;
-import model.agents.ExplorerAgent;
-
+import model.map.Coordinate;
+import model.map.LineSegment;
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static model.main.Main.mapparams;
 
-public class Map implements Serializable{
+public class MapShell implements Serializable {
+
     private String name;
     private final ArrayList<LineSegment> walls = new ArrayList<>();     //initial walls existing on the map
     private Coordinate[] initialAgentPositions;                         //positions of future agent placements
     private Coordinate[] initialHomePositions;                          //positions of future walls placements
 
-    private ArrayList<Agent> agents = new ArrayList<>();          //agents existing on the map
-    private ArrayList<Home> homes = new ArrayList<>();               //homes existing on the map
-
-
     private boolean chosen;
 
-    public Map() {
+    public MapShell() {
         chosen = false;
         generateWalls();
         generateHomes();
         generateAgents();
-    }
-
-    public Map(Map m) {
-        initialHomePositions = new Coordinate[100];
-        initialAgentPositions = new Coordinate[100];
-        System.arraycopy(m.initialHomePositions, 0, initialHomePositions, 0, initialHomePositions.length);
-        System.arraycopy(m.initialAgentPositions, 0, initialAgentPositions, 0, initialAgentPositions.length);
-        this.walls.addAll(m.getWalls());
-        this.agents = new ArrayList<>();
-        this.homes = new ArrayList<>();
-    }
-
-    public void fillWithHomes(int numHomes) {
-
-        for(int i = 0; i < numHomes; i++) {
-            createHome(initialHomePositions[i], Home.ID++, 0);
-        }
-
-    }
-
-    public void fillWithExplorers(int numAgents) {
-
-        for(int i = 0; i < numAgents; i++) {
-            ExplorerAgent e = new ExplorerAgent(Agent.ID++, initialAgentPositions[i]);
-            agents.add(e);
-            e.setHorizontalDirection(new Vector(1,0));
-            e.setDirection(new Vector(0,1));
-            e.setVerticalDirection(new Vector(0,1));
-        }
-
-
-    }
-
-    public void fillWithBats(int numAgents) {
-
-        for(int i = 0; i < numAgents; i++) {
-            agents.add(new BatAgent(Agent.ID++, initialAgentPositions[i]));
-        }
-
     }
 
     private void generateHomes() {
@@ -105,29 +63,6 @@ public class Map implements Serializable{
         }
     }
 
-    public void addHome(int spawn_time){
-
-        Coordinate c = new Coordinate(
-                ThreadLocalRandom.current().nextInt(mapparams.POINT_MIN, mapparams.POINT_MAX + 1),
-                ThreadLocalRandom.current().nextInt(mapparams.POINT_MIN, mapparams.POINT_MAX + 1)
-        );
-
-        while(liesOnWall(c) || alreadyHome(c)){
-                c.setX(ThreadLocalRandom.current().nextInt(mapparams.POINT_MIN, mapparams.POINT_MAX + 1));
-                c.setY(ThreadLocalRandom.current().nextInt(mapparams.POINT_MIN, mapparams.POINT_MAX + 1));
-        }
-
-        createHome(c,Home.ID, spawn_time);
-
-    }
-
-    private boolean alreadyHome(Coordinate c){
-        for(Coordinate other: initialHomePositions){
-            if(c.getX() == other.getX() && c.getY() == other.getY()) return true;
-        }
-        return false;
-    }
-
     private boolean liesOnWall(Coordinate c){
         for(LineSegment w: walls){
             if(w.liesOnLine(c)) return true;
@@ -153,13 +88,6 @@ public class Map implements Serializable{
             }
         }
         return possibleHomes;
-
-    }
-
-    private void createHome(Coordinate coord, int id, int spawn_time) {
-
-        int workNeeded = ThreadLocalRandom.current().nextInt(mapparams.MIN_WORK, mapparams.MAX_WORK + 1);
-        homes.add(new Home(id, workNeeded, spawn_time, coord));
 
     }
 
@@ -256,28 +184,10 @@ public class Map implements Serializable{
         return flatMap;
     }
 
-    public ArrayList<Agent> getAgents() {
-        return agents;
-    }
-
-    public ArrayList<LineSegment> getWalls() {
-        return walls;
-    }
-
-    public ArrayList<Home> getHomes() {
-        return homes;
-    }
-
-    public boolean isChosen() {
-        return chosen;
-    }
-
     public void save(File f) {
         try {
             FileOutputStream fos = new FileOutputStream(f.getAbsolutePath());
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            agents.clear();
-            homes.clear();
             oos.writeObject(this);
             oos.close();
             fos.close();
@@ -288,8 +198,6 @@ public class Map implements Serializable{
 
     public void save(String directory) throws IOException {
 
-        this.agents.clear();
-        this.homes.clear();
         FileOutputStream fos = new FileOutputStream("maps\\" + directory + "\\" + this.getName() + ".emap");
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(this);
@@ -299,14 +207,14 @@ public class Map implements Serializable{
     }
 
 
-    public static Map load(File inFile) {
+    public static MapShell load(File inFile) {
 
-        Map m;
+        MapShell m;
 
         try {
             FileInputStream fis = new FileInputStream(inFile);
             ObjectInputStream ois = new ObjectInputStream(fis);
-            m = (Map) ois.readObject();
+            m = (MapShell) ois.readObject();
             m.setName(inFile.getName().replace(".emap", ""));
             ois.close();
             fis.close();
@@ -323,40 +231,32 @@ public class Map implements Serializable{
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public ArrayList<LineSegment> getWalls() {
+        return walls;
+    }
+
+    public Coordinate[] getInitialAgentPositions() {
+        return initialAgentPositions;
+    }
+
+    public Coordinate[] getInitialHomePositions() {
+        return initialHomePositions;
+    }
+
+    public boolean isChosen() {
+        return chosen;
+    }
+
     public SimpleBooleanProperty getSELECTED(){
         return new SimpleBooleanProperty(this.chosen);
     }
 
     public void setSELECTED(boolean selected){
         this.chosen = selected;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Integer[] getAgentsInState() {
-
-        Integer[] numInState = new Integer[3];
-
-        for(int i = 0; i < 3; i++) numInState[i] = 0;
-
-        for (Agent a : agents) {
-            switch (a.getState()) {
-                case searching:
-                    numInState[0]++;
-                    break;
-                case traveling:
-                    numInState[1]++;
-                    break;
-                case working:
-                    numInState[2]++;
-                    break;
-            }
-        }
-
-        return numInState;
-
     }
 
 }

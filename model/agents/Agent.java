@@ -1,6 +1,8 @@
 package model.agents;
 import model.main.Main;
 import model.map.*;
+import model.map.mapshell.Map;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
@@ -9,6 +11,7 @@ import static model.main.Main.agentparams;
 public abstract class Agent implements Serializable {
     public static int ID = 1;
     protected int id;
+    protected Map myMap;
     protected Home home;
     protected Coordinate position;
     protected Vector direction; // vector movement
@@ -126,7 +129,7 @@ public abstract class Agent implements Serializable {
         ArrayList<Home> attractingHomes = new ArrayList<>();
         ArrayList<Home> notAttractingHomes = new ArrayList<>();
 
-        for (Home home : Main.loadedMap.getHomes()) {
+        for (Home home : myMap.getHomes()) {
             if (home.getPollution() <= 0)
                 continue;
             double distance = this.position.distanceTo(home.getCoords());
@@ -154,7 +157,7 @@ public abstract class Agent implements Serializable {
     protected boolean isInAttractionDistance(double distance, Home home) {
         if (Double.compare(distance, home.getAttraction_distance()) > 0)
             return false;
-        for (LineSegment wall : Main.loadedMap.getWalls()) {
+        for (LineSegment wall :myMap.getWalls()) {
             if (wall.doIntersect(new LineSegment(position, home.getCoords()))) {
                 return false;
             }
@@ -165,7 +168,7 @@ public abstract class Agent implements Serializable {
     protected boolean isVisible(Coordinate c, double angle) {
         if (Double.compare(position.distanceTo(c), sightDist) > 0 || Double.compare(angle, fov / 2) > 0)
             return false;
-        for (LineSegment wall : Main.loadedMap.getWalls()) {
+        for (LineSegment wall : myMap.getWalls()) {
             if (wall.doIntersect(new LineSegment(position, c))) {
                 return false;
             }
@@ -238,5 +241,9 @@ public abstract class Agent implements Serializable {
 
     public int[] getTimeSpentInState() {
         return timeSpentInState;
+    }
+
+    public void giveMap(Map myMap) {
+        this.myMap = myMap;
     }
 }

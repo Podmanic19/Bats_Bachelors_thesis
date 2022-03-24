@@ -1,7 +1,5 @@
 package controller.test;
 
-import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -9,7 +7,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import model.gui.ChangeScene;
 import model.gui.Popup;
-import model.map.Map;
 import model.testing.Test;
 import model.testing.TestResult;
 

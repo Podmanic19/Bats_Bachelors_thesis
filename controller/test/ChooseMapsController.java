@@ -19,7 +19,8 @@ import javafx.stage.Stage;
 import model.gui.ChangeScene;
 import model.gui.Popup;
 import model.main.Main;
-import model.map.Map;
+import model.map.mapshell.Map;
+import model.map.mapshell.MapShell;
 import model.testing.Test;
 import java.io.File;
 import java.io.IOException;
@@ -35,9 +36,9 @@ import static model.main.Main.*;
 public class ChooseMapsController implements ChangeScene, Popup, Initializable, PlaceHomes, PlaceAgents, PlaceWalls {
 
     @FXML Pane previewPane;
-    @FXML TableView<Map> mapsTable;
-    @FXML TableColumn<Map, String> nameCol;
-    @FXML TableColumn<Map, Boolean> chosenCol;
+    @FXML TableView<MapShell> mapsTable;
+    @FXML TableColumn<MapShell, String> nameCol;
+    @FXML TableColumn<MapShell, Boolean> chosenCol;
     @FXML TextField numMapsTf;
     @FXML TextField numItersTf;
     @FXML TextField numAgentsTf;
@@ -51,6 +52,7 @@ public class ChooseMapsController implements ChangeScene, Popup, Initializable, 
     @FXML CheckBox  generateRandCb;
 
     private Test test;
+    private Map shownMap;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -61,17 +63,21 @@ public class ChooseMapsController implements ChangeScene, Popup, Initializable, 
 
     public void btnShowOnAction() {
 
-        if (mapsTable.getSelectionModel().getSelectedItem() != null) {
-            Main.loadedMap = mapsTable.getSelectionModel().getSelectedItem();
+        MapShell selected = mapsTable.getSelectionModel().getSelectedItem();
+
+        if (selected != null) {
+            int numAgents = Integer.parseInt(numAgentsTf.getText());
+            int numHomes = Integer.parseInt(numHomesTf.getText());
+            shownMap = new Map(selected, true, numAgents, numHomes);
             Pane pane = new Pane();
             Stage stage = new Stage();
             Scene scene = new Scene(pane, 1000, 1000);
             stage.setMaxHeight(1029);
             stage.setMaxWidth(1007);
-            placeElements(pane);
+            placeElements(shownMap, pane);
             stage.setResizable(false);
             stage.setScene(scene);
-            stage.setTitle(loadedMap.getName());
+            stage.setTitle(selected.getName());
             stage.getIcons().add(new Image("/Image/images.jfif"));
             stage.show();
         }
@@ -95,12 +101,10 @@ public class ChooseMapsController implements ChangeScene, Popup, Initializable, 
             }
             new Thread(() -> {
                 for(int i = 1; i <= num; i++){
-                    Map m = new Map();
-                    m.setName("Map_" + (mapsTable.getItems().size()));
-                    m.fillWithHomes(Integer.parseInt(numHomesTf.getText()));
-                    m.fillWithBats(Integer.parseInt(numAgentsTf.getText()));
+                    MapShell s = new MapShell();
+                    s.setName("Map_" + (mapsTable.getItems().size()));
                     Platform.runLater(() -> {
-                        mapsTable.getItems().add(m);
+                        mapsTable.getItems().add(s);
                         changeNumMaps(1);
                     });
                 }
@@ -132,14 +136,12 @@ public class ChooseMapsController implements ChangeScene, Popup, Initializable, 
         if (directoryListing != null) {
             for (File child : directoryListing) {
                 if(child.getName().contains(".emap")) {
-                    Map m = Map.load(child);
-                    if(m == null){
+                    MapShell s = MapShell.load(child);
+                    if(s == null){
                         popup("Unable to load map from file " + child.getName());
                         return;
                     }
-                    m.fillWithHomes(Integer.parseInt(numHomesTf.getText()));
-                    m.fillWithBats(Integer.parseInt(numAgentsTf.getText()));
-                    mapsTable.getItems().add(m);
+                    mapsTable.getItems().add(s);
                 }
             }
         }
@@ -162,11 +164,11 @@ public class ChooseMapsController implements ChangeScene, Popup, Initializable, 
 
         String timeStamp = new SimpleDateFormat("dd_MM_yyyy_HH_mm_ss").format(new Date());
 
-        for(Map m : mapsTable.getItems()){
+        for(MapShell s : mapsTable.getItems()){
             try {
                 File f = new File("maps\\" + timeStamp);
                 if(f.mkdirs() || f.exists()) {
-                    m.save(timeStamp);
+                    s.save(timeStamp);
                 }
             } catch (IOException e) {
                 popup("Couldn't save maps");
@@ -243,13 +245,13 @@ public class ChooseMapsController implements ChangeScene, Popup, Initializable, 
             e.printStackTrace();
         }
 
-        ArrayList<Map> testedMaps = new ArrayList<>();
+        ArrayList<MapShell> testedMaps = new ArrayList<>();
 
-        for(Map m : mapsTable.getItems()) {
-            if(m.isChosen()) testedMaps.add(m);
+        for(MapShell s : mapsTable.getItems()) {
+            if(s.isChosen()) testedMaps.add(s);
         }
 
-        test.setMaps(testedMaps);
+        test.setUninitializedMaps(testedMaps);
 
 
         return check;
@@ -260,17 +262,15 @@ public class ChooseMapsController implements ChangeScene, Popup, Initializable, 
 
         mapsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
-                Main.loadedMap = mapsTable.getSelectionModel().getSelectedItem();
                 showMap();
             }
         });
-
 
         mapsTable.getItems().clear();
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         chosenCol.setCellFactory(column -> new CheckBoxTableCell<>());
         chosenCol.setCellValueFactory(cellData -> {
-            Map cellValue = cellData.getValue();
+            MapShell cellValue = cellData.getValue();
             BooleanProperty property = cellValue.getSELECTED();
 
             property.addListener(((observable, oldValue, newValue) ->
@@ -286,13 +286,13 @@ public class ChooseMapsController implements ChangeScene, Popup, Initializable, 
 
     private void showMap() {
         previewPane.getChildren().clear();
-        placeElements(previewPane);
+        placeElements(shownMap, previewPane);
     }
 
-    private void placeElements(Pane pane) {
-        placeHomes(pane);
-        placeWalls(pane);
-        placeAgents(pane);
+    private void placeElements(Map map, Pane pane) {
+        placeHomes(map.getHomes(), pane);
+        placeWalls(map.getWalls(), pane);
+        placeAgents(map.getAgents(), pane);
     }
 
     private void changeNumMaps(int i) {

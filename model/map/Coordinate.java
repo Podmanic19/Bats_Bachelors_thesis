@@ -3,6 +3,7 @@ package model.map;
 import model.main.Main;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
@@ -56,14 +57,14 @@ public class Coordinate implements Serializable {
      * between these two coordinates or whether the provided coordinate is outside the environment boundaries
      *
      */
-    public WallCollision checkWalls(Coordinate b){
+    public WallCollision checkWalls(Coordinate b, ArrayList<LineSegment> walls){
 
         LineSegment AtoB = new LineSegment(this, b);            // A in line segment being current position
         LineSegment closestWall = null;
         Coordinate intersect = null;
         double distanceToWall = -1;
 
-        for(LineSegment w: Main.loadedMap.getWalls()){
+        for(LineSegment w: walls){
             if(w.doIntersect(AtoB)){
                 intersect = w.intersectPoint(AtoB);
                 double thisDistance = this.distanceTo(intersect);

@@ -13,9 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
 import javafx.scene.image.WritableImage;
-import model.agents.AgentParams;
 import model.gui.Popup;
-import model.map.Map;
 import model.testing.*;
 
 import javax.imageio.ImageIO;
