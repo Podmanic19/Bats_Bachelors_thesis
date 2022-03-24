@@ -4,7 +4,6 @@ import javafx.scene.control.CheckBox;
 import model.gui.ChangeScene;
 import model.gui.Visualisation;
 import model.map.Map;
-import model.map.LineSegment;
 import model.gui.Popup;
 import model.gui.LoadToPane;
 import javafx.application.Platform;
@@ -12,8 +11,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -48,7 +45,8 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
         new Thread(() -> {
             disableButtons(true);
             loadedMap = new Map();
-            loadedMap.fillWithElements(mapparams.AGENT_NUM, mapparams.NUMBER_HOME);
+            loadedMap.fillWithHomes(mapparams.NUMBER_HOME);
+            loadedMap.fillWithBats(mapparams.AGENT_NUM);
             Platform.runLater(() -> {
                 showMap(paneMain);
                 disableButtons(false);

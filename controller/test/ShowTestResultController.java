@@ -8,11 +8,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.*;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.Pane;
+import model.agents.AgentParams;
 import model.gui.Popup;
+import model.map.Map;
 import model.testing.*;
 
 import javax.imageio.ImageIO;
@@ -30,6 +33,14 @@ public class ShowTestResultController implements Initializable, Popup {
 
     @FXML private ScrollPane mainPane;
 
+    @FXML private ComboBox<AgentResult> agentTypeCb;
+    @FXML private ComboBox<MapResult> mapNameCb;
+    @FXML private ComboBox<Statistic> iterationCb;
+
+    @FXML private Label agentTypeLbl;
+    @FXML private Label mapNameLbl;
+    @FXML private Label iterationLbl;
+
     @FXML private TitledPane testResultPane;
     @FXML private TitledPane agentResultPane;
     @FXML private TitledPane mapResultPane;
@@ -38,6 +49,12 @@ public class ShowTestResultController implements Initializable, Popup {
     private AgentResult chosenAgent;
     private MapResult chosenMapResult;
     private Statistic chosenIteration;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        result = (TestResult) primaryStage.getUserData();
+
+    }
 
     public void btnShowsStatesOnAction() {
 
@@ -57,7 +74,7 @@ public class ShowTestResultController implements Initializable, Popup {
 
     }
 
-    public void searchingOnAction() {
+    public void btnSearchingOnAction() {
         final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
         final BarChart<String,Number> bc =
@@ -86,7 +103,7 @@ public class ShowTestResultController implements Initializable, Popup {
         mainPane.setContent(bc);
     }
 
-    public void travellingOnAction() {
+    public void btnTravellingOnAction() {
         final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
         final BarChart<String,Number> bc =
@@ -115,7 +132,7 @@ public class ShowTestResultController implements Initializable, Popup {
         mainPane.setContent(bc);
     }
 
-    public void workingOnAction() {
+    public void btnWorkingOnAction() {
         final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
         final BarChart<String,Number> bc =
@@ -159,7 +176,7 @@ public class ShowTestResultController implements Initializable, Popup {
         XYChart.Series series = new XYChart.Series();
         //populating the series with data
         Statistic s = result.getAgentResults().get(0).getMapResults().get(0).getIterations().get(0);
-        for(int i = 0; i < s.getNumIters(); i++){
+        for(int i = 0; i < s.getNumSeconds(); i++){
             series.getData().add(new XYChart.Data(i, s.getTotalPollution().get(i)));
         }
 
@@ -172,6 +189,55 @@ public class ShowTestResultController implements Initializable, Popup {
         lineChart.setTitle("Pollution progression");
         lineChart.setStyle("-fx-stroke-width: 1px;");
         lineChart.getData().add(series);
+    }
+
+    public void agentTypeOnAction() {
+
+        chosenAgent = agentTypeCb.getValue();
+
+        if (chosenAgent == null) {
+            agentTypeLbl.setText("UNSELECTED");
+            mapNameCb.setValue(null);
+            iterationCb.setValue(null);
+            return;
+        }
+
+        chosenMapResult = chosenAgent.getMapResults().get(0);
+        mapNameCb.setValue(chosenMapResult);
+
+        chosenIteration = chosenMapResult.getIterations().get(0);
+        iterationCb.setValue(chosenIteration);
+
+    }
+
+    public void mapNameOnAction() {
+
+        chosenMapResult = mapNameCb.getValue();
+
+        if (chosenMapResult == null) {
+            mapNameLbl.setText("UNSELECTED");
+            iterationCb.setValue(null);
+            return;
+        }
+
+        chosenIteration = chosenMapResult.getIterations().get(0);
+        iterationCb.setValue(chosenIteration);
+
+    }
+
+    public void iterNumOnAction() {
+
+        chosenIteration = iterationCb.getValue();
+
+        if(chosenIteration == null) {
+            iterationLbl.setText("UNSELECTED");
+            return;
+        }
+
+        int iterationNumber = iterationCb.getItems().indexOf(chosenIteration);
+        chosenIteration = chosenMapResult.getIterations().get(iterationNumber);
+        iterationLbl.setText(chosenIteration.getIterationNumber());
+
     }
 
     public void saveOnAction() {
@@ -190,8 +256,5 @@ public class ShowTestResultController implements Initializable, Popup {
             e.printStackTrace();
         }
     }
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        result = (TestResult) primaryStage.getUserData();
-    }
+
 }

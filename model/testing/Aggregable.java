@@ -5,6 +5,6 @@ public interface Aggregable {
     double getAverageWorkDone();
     double getBestAgentWork();
     double getWorstAgentWork();
-    int getNumIters();
+    int getNumSeconds();
 
 }

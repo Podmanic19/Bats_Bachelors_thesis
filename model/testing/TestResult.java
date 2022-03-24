@@ -29,9 +29,11 @@ public class TestResult implements Aggregable, Serializable {
     }
 
     @Override
-    public int getNumIters() {
+    public int getNumSeconds() {
         return 0;
     }
+
+
 
     public ArrayList<AgentResult> getAgentResults() {
         return agentResults;

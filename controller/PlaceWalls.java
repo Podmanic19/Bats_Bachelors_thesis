@@ -2,18 +2,10 @@ package controller;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Arc;
-import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Line;
-import model.agents.AgentCircle;
-import model.agents.BatAgent;
-import model.agents.State;
-import model.main.Main;
 import model.map.LineSegment;
-import model.map.Vector;
 
 import static model.main.Main.*;
-import static model.main.Main.agentparams;
 
 public interface PlaceWalls {
 

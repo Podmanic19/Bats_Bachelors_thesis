@@ -82,6 +82,16 @@ public class Coordinate implements Serializable {
         return ("(" + x + "," + y + ")");
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Coordinate)) {
+            return false;
+        }
+        Coordinate other = (Coordinate) o;
+        if(this == other) return true;
+
+        return this.x == other.x && this.y == other.y;
+    }
     public void setX(double x) {
         this.x = x;
     }

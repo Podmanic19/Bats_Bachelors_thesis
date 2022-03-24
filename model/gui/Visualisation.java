@@ -3,7 +3,7 @@ package model.gui;
 import controller.PlaceAgents;
 import controller.PlaceHomes;
 import javafx.scene.control.Label;
-import model.agents.BatAgent;
+import model.agents.Agent;
 import javafx.application.Platform;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
@@ -32,9 +32,9 @@ public class Visualisation extends Thread implements PlaceHomes, PlaceAgents {
     public void run() {
 
         Instant start = Instant.now();
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 20000; i++) {
             int finalI = i;
-            loadedMap.getAgents().parallelStream().forEach(BatAgent::act);
+            loadedMap.getAgents().parallelStream().forEach(Agent::act);
             loadedMap.getHomes().removeIf(h -> (h.getPollution() <= 0));
             for(Home h : loadedMap.getHomes()){
                 h.incrementLifetime();
@@ -49,10 +49,10 @@ public class Visualisation extends Thread implements PlaceHomes, PlaceAgents {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (loadedMap.getHomes().isEmpty()) {
-                System.out.println("Pocet iteracii: " + i);
-                break;
-            }
+//            if (loadedMap.getHomes().isEmpty()) {
+//                System.out.println("Pocet iteracii: " + i);
+//                break;
+//            }
             if(envparams.DYNAMIC_HOME_SPAWN_TIME > 0 && i % envparams.DYNAMIC_HOME_SPAWN_TIME == 0) loadedMap.addHome(i);
         }
         Instant end = Instant.now();

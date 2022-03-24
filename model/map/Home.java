@@ -1,6 +1,6 @@
 package model.map;
 
-import model.agents.BatAgent;
+import model.agents.Agent;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ public class Home implements Serializable {
     private int spawnTime = 0;
     private int lifeTime = 0;
     private final Coordinate coords;
-    private ArrayList<BatAgent> agents = new ArrayList<>();
+    private ArrayList<Agent> agents = new ArrayList<>();
     private double pollution;
     private double attraction_distance = mapparams.ATTRACTION_DISTANCE;
     private CallType call;
@@ -42,7 +42,7 @@ public class Home implements Serializable {
         return attraction_distance;
     }
 
-    public synchronized void addAgent(BatAgent a) {
+    public synchronized void addAgent(Agent a) {
         agents.add(a);
     }
 
@@ -50,11 +50,11 @@ public class Home implements Serializable {
         return id;
     }
 
-    public synchronized ArrayList<BatAgent> getAgents() {
+    public synchronized ArrayList<Agent> getAgents() {
         return agents;
     }
 
-    public synchronized boolean decreasePollution(BatAgent a) {
+    public synchronized boolean decreasePollution(Agent a) {
 
         if (pollution > 0) {
             pollution -= a.getWorkRate();

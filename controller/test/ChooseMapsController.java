@@ -21,7 +21,6 @@ import model.gui.Popup;
 import model.main.Main;
 import model.map.Map;
 import model.testing.Test;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -30,9 +29,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 import java.util.ResourceBundle;
-
 import static model.main.Main.*;
-import static model.main.Main.mapparams;
 
 
 public class ChooseMapsController implements ChangeScene, Popup, Initializable, PlaceHomes, PlaceAgents, PlaceWalls {
@@ -99,8 +96,9 @@ public class ChooseMapsController implements ChangeScene, Popup, Initializable, 
             new Thread(() -> {
                 for(int i = 1; i <= num; i++){
                     Map m = new Map();
-                    m.setName("Map_" + (mapsTable.getItems().size() + i));
-                    m.fillWithElements(Integer.parseInt(numAgentsTf.getText()),Integer.parseInt(numHomesTf.getText()));
+                    m.setName("Map_" + (mapsTable.getItems().size()));
+                    m.fillWithHomes(Integer.parseInt(numHomesTf.getText()));
+                    m.fillWithBats(Integer.parseInt(numAgentsTf.getText()));
                     Platform.runLater(() -> {
                         mapsTable.getItems().add(m);
                         changeNumMaps(1);
@@ -139,7 +137,8 @@ public class ChooseMapsController implements ChangeScene, Popup, Initializable, 
                         popup("Unable to load map from file " + child.getName());
                         return;
                     }
-                    m.fillWithElements(Integer.parseInt(numAgentsTf.getText()), Integer.parseInt(numHomesTf.getText()));
+                    m.fillWithHomes(Integer.parseInt(numHomesTf.getText()));
+                    m.fillWithBats(Integer.parseInt(numAgentsTf.getText()));
                     mapsTable.getItems().add(m);
                 }
             }
@@ -165,7 +164,10 @@ public class ChooseMapsController implements ChangeScene, Popup, Initializable, 
 
         for(Map m : mapsTable.getItems()){
             try {
-                m.save(timeStamp);
+                File f = new File("maps\\" + timeStamp);
+                if(f.mkdirs() || f.exists()) {
+                    m.save(timeStamp);
+                }
             } catch (IOException e) {
                 popup("Couldn't save maps");
                 e.printStackTrace();

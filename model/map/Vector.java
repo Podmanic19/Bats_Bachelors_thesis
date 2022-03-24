@@ -89,6 +89,14 @@ public class Vector implements Serializable {
         return y;
     }
 
+    public boolean goesUp() {
+        return this.y > 0;
+    }
+
+    public boolean goesRight() {
+        return this.x > 0;
+    }
+
     public void setX(Coordinate A, Coordinate B) {
 
         this.x = B.getX() - A.getX();

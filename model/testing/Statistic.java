@@ -1,6 +1,6 @@
 package model.testing;
 
-import model.agents.BatAgent;
+import model.agents.Agent;
 import model.map.Home;
 
 import java.io.Serializable;
@@ -9,7 +9,8 @@ import java.util.Arrays;
 
 public class Statistic implements Aggregable, Serializable {
 
-    int numIters;
+    String iterationNumber;
+    int numSeconds;
     int[] lifeTimes;
     int[] spawnTimes;
     ArrayList<Double> totalPollution;
@@ -23,9 +24,9 @@ public class Statistic implements Aggregable, Serializable {
         totalPollution = new ArrayList<>();
     }
 
-    public void aggregate(int iters, ArrayList<BatAgent> agents, ArrayList<Home> homes) {
+    public void aggregate(int iters, ArrayList<Agent> agents, ArrayList<Home> homes) {
 
-        numIters = iters;
+        numSeconds = iters;
         lifeTimes = new int[homes.size()];
         workDone = new double[agents.size()];
         spawnTimes = new int[homes.size()];
@@ -84,8 +85,8 @@ public class Statistic implements Aggregable, Serializable {
 
     }
 
-    public int getNumIters(){
-        return numIters;
+    public int getNumSeconds(){
+        return numSeconds;
     }
 
     public void updatePollution(ArrayList<Home> homes){
@@ -134,5 +135,14 @@ public class Statistic implements Aggregable, Serializable {
 
     public double[] getWorkDone() {
         return workDone;
+    }
+
+    public String getIterationNumber() {
+        return iterationNumber;
+    }
+
+    @Override
+    public String toString(){
+        return this.iterationNumber;
     }
 }

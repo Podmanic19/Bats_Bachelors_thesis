@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class AgentResult implements Aggregable, Serializable {
 
+    private String agentType;
     ArrayList<MapResult> mapResults = new ArrayList<>();
 
     public void update(MapResult m) {
@@ -29,11 +30,21 @@ public class AgentResult implements Aggregable, Serializable {
     }
 
     @Override
-    public int getNumIters() {
+    public int getNumSeconds() {
         return 0;
     }
 
     public ArrayList<MapResult> getMapResults() {
         return mapResults;
     }
+
+    public String getAgentType() {
+        return agentType;
+    }
+
+    @Override
+    public String toString(){
+        return this.agentType;
+    }
+
 }

@@ -20,6 +20,47 @@
       </ScrollPane>
       <Accordion>
         <panes>
+            <TitledPane animated="false" text="Chose agent map and iteration">
+               <content>
+                  <Pane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <ComboBox fx:id="iterationCb" layoutX="23.0" layoutY="574.0" onAction="#iterNumOnAction" prefWidth="150.0" promptText="Iteration number" />
+                        <Label layoutX="80.0" layoutY="244.0" text="MAP:" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="mapNameLbl" layoutX="32.0" layoutY="304.0" text="MAP NAME DUMMY" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Italic" size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="57.0" layoutY="454.0" text="ITERATION:" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="23.0" layoutY="34.0" text="CHOSEN AGENT TYPE" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="agentTypeLbl" layoutX="6.0" layoutY="94.0" text="AGENT TYPE NAME DUMMY" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Italic" size="15.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="agentTypeCb" layoutX="22.0" layoutY="154.0" onAction="#agentTypeOnAction" prefWidth="150.0" promptText="Agent type name" />
+                        <ComboBox fx:id="mapNameCb" layoutX="23.0" layoutY="364.0" onAction="#mapNameOnAction" prefWidth="150.0" promptText="Map name" />
+                        <Label fx:id="iterationLbl" layoutX="3.0" layoutY="514.0" text="ITERATION NUMBER DUMMY" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Italic" size="15.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+               </content>
+            </TitledPane>
           <TitledPane fx:id="testResultPane" animated="false" text="Test result">
                <content>
                   <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: WHITE;" />
@@ -35,68 +76,57 @@
                   <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: WHITE;" />
                </content>
           </TitledPane>
-            <TitledPane fx:id="mapIterationResultPane" animated="false" text="Map iterations">
+            <TitledPane fx:id="mapIterationResultPane" animated="false" text="Map iteration">
                <content>
                   <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: WHITE;">
                      <children>
-                        <ComboBox layoutX="33.0" layoutY="159.0" prefWidth="150.0" promptText="Iteration number" />
-                        <Button layoutX="55.0" layoutY="330.0" mnemonicParsing="false" text=" TIME IN STATE">
+                        <Button layoutX="27.0" layoutY="100.0" mnemonicParsing="false" onAction="#btnShowsStatesOnAction" prefWidth="150.0" text=" TIME IN STATE">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Button>
-                        <Button layoutX="34.0" layoutY="430.0" mnemonicParsing="false" text="POLLUTION PROGRESS">
+                        <Button layoutX="27.0" layoutY="380.0" mnemonicParsing="false" onAction="#btnShowPollutionOnAction" prefHeight="25.0" prefWidth="150.0" text="POLLUTION PROGRESS">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Button>
-                        <Button layoutX="53.0" layoutY="630.0" mnemonicParsing="false" text="HOMES AT END">
+                        <Button layoutX="27.0" layoutY="520.0" mnemonicParsing="false" prefWidth="150.0" text="HOMES AT END">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Button>
-                        <Button layoutX="62.0" layoutY="530.0" mnemonicParsing="false" text="WORK DONE">
+                        <Button layoutX="27.0" layoutY="450.0" mnemonicParsing="false" onAction="#btnWorkDoneOnAction" prefWidth="150.0" text="WORK DONE">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Button>
-                        <Label layoutX="89.0" layoutY="18.0" text="MAP:">
+                        <Label layoutX="40.0" layoutY="39.0" text="SHOW STATISTIC:">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
                         </Label>
-                        <Label layoutX="34.0" layoutY="60.0" text="MAP NAME DUMMY">
+                        <Button layoutX="27.0" layoutY="240.0" mnemonicParsing="false" onAction="#btnTravellingOnAction" prefWidth="150.0" text=" TIME TRAVELLING">
                            <font>
-                              <Font name="System Italic" size="15.0" />
+                              <Font name="System Bold" size="12.0" />
                            </font>
-                        </Label>
-                        <Label layoutX="69.0" layoutY="111.0" text="ITERATION:">
+                        </Button>
+                        <Button layoutX="27.0" layoutY="170.0" mnemonicParsing="false" onAction="#btnSearchingOnAction" prefWidth="150.0" text="TIME SEARCHING">
                            <font>
-                              <Font name="System Bold" size="15.0" />
+                              <Font name="System Bold" size="12.0" />
                            </font>
-                        </Label>
-                        <Label layoutX="38.0" layoutY="240.0" text="SHOW STATISTIC:">
+                        </Button>
+                        <Button layoutX="27.0" layoutY="310.0" mnemonicParsing="false" onAction="#btnWorkingOnAction" prefWidth="150.0" text=" TIME WROKING">
                            <font>
-                              <Font name="System Bold" size="15.0" />
+                              <Font name="System Bold" size="12.0" />
                            </font>
-                        </Label>
+                        </Button>
+                        <Button layoutX="27.0" layoutY="590.0" mnemonicParsing="false" onAction="#saveOnAction" prefWidth="150.0" text="SAVE AS PNG">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Button>
                      </children>
                   </Pane>
                </content>
-            </TitledPane>
-            <TitledPane animated="false" text="Map ">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <Button layoutX="46.0" layoutY="52.0" mnemonicParsing="false" onAction="#btnShowPollutionOnAction" text="SHOW POLLUTION" />
-                        <Button layoutX="56.0" layoutY="123.0" mnemonicParsing="false" onAction="#btnShowsStatesOnAction" text="SHOW STATES" />
-                        <Button layoutX="58.0" layoutY="238.0" mnemonicParsing="false" onAction="#travellingOnAction" text="travelling" />
-                        <Button layoutX="61.0" layoutY="456.0" mnemonicParsing="false" onAction="#workingOnAction" text="working" />
-                        <Button layoutX="61.0" layoutY="342.0" mnemonicParsing="false" onAction="#searchingOnAction" text="searching" />
-                        <Button layoutX="62.0" layoutY="546.0" mnemonicParsing="false" onAction="#saveOnAction" text="SAVE AS PNG" />
-                     </children>
-                  </AnchorPane>
-              </content>
             </TitledPane>
         </panes>
       </Accordion>

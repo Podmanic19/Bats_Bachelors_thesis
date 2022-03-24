@@ -1,14 +1,14 @@
 package model.map;
 
 import javafx.beans.property.SimpleBooleanProperty;
-import model.agents.State;
+import model.agents.Agent;
 import model.agents.BatAgent;
+import model.agents.ExplorerAgent;
 
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static model.agents.State.working;
 import static model.main.Main.mapparams;
 
 public class Map implements Serializable{
@@ -17,14 +17,13 @@ public class Map implements Serializable{
     private Coordinate[] initialAgentPositions;                         //positions of future agent placements
     private Coordinate[] initialHomePositions;                          //positions of future walls placements
 
-    private ArrayList<BatAgent> agents = new ArrayList<>();          //agents existing on the map
+    private ArrayList<Agent> agents = new ArrayList<>();          //agents existing on the map
     private ArrayList<Home> homes = new ArrayList<>();               //homes existing on the map
 
 
     private boolean chosen;
 
     public Map() {
-        initialAgentPositions = new Coordinate[100];
         chosen = false;
         generateWalls();
         generateHomes();
@@ -32,25 +31,40 @@ public class Map implements Serializable{
     }
 
     public Map(Map m) {
-        this.agents = new ArrayList<>();
-        for(BatAgent a : m.getAgents()){
-            agents.add(new BatAgent(a));
-        }
-        this.homes = new ArrayList<>();
-        for(Home h : m.getHomes()){
-            homes.add(new Home(h));
-        }
+        initialHomePositions = new Coordinate[100];
+        initialAgentPositions = new Coordinate[100];
+        System.arraycopy(m.initialHomePositions, 0, initialHomePositions, 0, initialHomePositions.length);
+        System.arraycopy(m.initialAgentPositions, 0, initialAgentPositions, 0, initialAgentPositions.length);
         this.walls.addAll(m.getWalls());
+        this.agents = new ArrayList<>();
+        this.homes = new ArrayList<>();
     }
 
-    public void fillWithElements(int numAgents, int numHomes) {
+    public void fillWithHomes(int numHomes) {
 
         for(int i = 0; i < numHomes; i++) {
             createHome(initialHomePositions[i], Home.ID++, 0);
         }
 
+    }
+
+    public void fillWithExplorers(int numAgents) {
+
         for(int i = 0; i < numAgents; i++) {
-            agents.add(new BatAgent(BatAgent.ID++, initialAgentPositions[i]));
+            ExplorerAgent e = new ExplorerAgent(Agent.ID++, initialAgentPositions[i]);
+            agents.add(e);
+            e.setHorizontalDirection(new Vector(1,0));
+            e.setDirection(new Vector(0,1));
+            e.setVerticalDirection(new Vector(0,1));
+        }
+
+
+    }
+
+    public void fillWithBats(int numAgents) {
+
+        for(int i = 0; i < numAgents; i++) {
+            agents.add(new BatAgent(Agent.ID++, initialAgentPositions[i]));
         }
 
     }
@@ -150,7 +164,7 @@ public class Map implements Serializable{
     }
 
     private void generateAgents() {
-        initialAgentPositions = new Coordinate[mapparams.AGENT_NUM];
+        initialAgentPositions = new Coordinate[100];
         for(int  i = 0 ; i < mapparams.AGENT_NUM; i++){
             initialAgentPositions[i] = generateRandAgentPos();
         }
@@ -242,7 +256,7 @@ public class Map implements Serializable{
         return flatMap;
     }
 
-    public ArrayList<BatAgent> getAgents() {
+    public ArrayList<Agent> getAgents() {
         return agents;
     }
 
@@ -274,23 +288,14 @@ public class Map implements Serializable{
 
     public void save(String directory) throws IOException {
 
-        File f = new File("maps\\" + directory);
-        if(f.mkdirs()){
-            try {
-                this.agents.clear();
-                this.homes.clear();
-                FileOutputStream fos = new FileOutputStream("maps\\" + directory + "\\" + this.getName() + ".emap");
-                ObjectOutputStream oos = new ObjectOutputStream(fos);
-                oos.writeObject(this);
-                oos.close();
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        else{
-            throw new IOException();
-        }
+        this.agents.clear();
+        this.homes.clear();
+        FileOutputStream fos = new FileOutputStream("maps\\" + directory + "\\" + this.getName() + ".emap");
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(this);
+        oos.close();
+        fos.close();
+
     }
 
 
@@ -336,7 +341,7 @@ public class Map implements Serializable{
 
         for(int i = 0; i < 3; i++) numInState[i] = 0;
 
-        for (BatAgent a : agents) {
+        for (Agent a : agents) {
             switch (a.getState()) {
                 case searching:
                     numInState[0]++;

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class MapResult implements Aggregable, Serializable {
 
+    private String mapName;
     private ArrayList<Statistic> iterations;
 
     public MapResult(){
@@ -34,11 +35,20 @@ public class MapResult implements Aggregable, Serializable {
     }
 
     @Override
-    public int getNumIters() {
+    public int getNumSeconds() {
         return 0;
     }
 
     public ArrayList<Statistic> getIterations() {
         return iterations;
+    }
+
+    public String getMapName() {
+        return mapName;
+    }
+
+    @Override
+    public String toString(){
+        return this.mapName;
     }
 }

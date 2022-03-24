@@ -2,17 +2,13 @@ package model.testing;
 
 import controller.test.TestRunningController;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import model.agents.AgentParams;
-import model.agents.BatAgent;
+import model.agents.Agent;
 import model.main.Main;
 import model.map.Home;
 import model.map.Map;
 import model.map.MapParameters;
 
-import java.io.Serializable;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -83,7 +79,6 @@ public class Test {
                 });
                 currentIter = -1;
                 MapResult mapResult = new MapResult();
-                replaceAgents(m, currentAgentParams);
                 for (int i = 1; i <= itersPerMap; i++) {
                     System.out.println("Number of agents: " + m.getAgents().size());
                     ++currentIter;
@@ -93,11 +88,12 @@ public class Test {
                         ctrlr.getMapProgressPb().setProgress((double) finalCurrentIter / itersPerMap);
                     });
                     loadedMap = new Map(m);
+                    loadedMap.fillWithBats(this.numAgents);
                     int j = -1;
                     Statistic s = new Statistic();
                     Instant iterStart = Instant.now();
                     while (!terminate(loadedMap, ++j)) {
-                        loadedMap.getAgents().parallelStream().forEach(BatAgent::act);
+                        loadedMap.getAgents().parallelStream().forEach(Agent::act);
                         loadedMap.getHomes().removeIf(h -> (h.getPollution() <= 0));
                         for (Home h : loadedMap.getHomes()) {
                             h.incrementLifetime();
@@ -120,7 +116,12 @@ public class Test {
         }
 
         Platform.runLater(() -> {
+            ctrlr.getTotalProgressPb().setProgress(100);
             ctrlr.getAgentProgressPb().setProgress(100);
+            ctrlr.getMapProgressPb().setProgress(100);
+            ctrlr.getIterLbl().setText("100");
+            ctrlr.getMapLbl().setText(maps.get(maps.size()-1).getName());
+            ctrlr.getAgentLbl().setText(agentparams.get(agentparams.size()-1).getNAME());
         });
 
         Instant end = Instant.now();
@@ -140,14 +141,6 @@ public class Test {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    private void replaceAgents(Map m, AgentParams params) {
-
-        for(BatAgent a : m.getAgents()){
-            a.remake(params);
-        }
-
     }
 
     public void setMapparams(MapParameters mapparams) {
