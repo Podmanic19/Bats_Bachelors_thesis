@@ -20,7 +20,6 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import static model.main.Main.primaryStage;
@@ -51,46 +50,42 @@ public class ShowTestResultController implements Initializable, Popup {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         result = (TestResult) primaryStage.getUserData();
-
+        initAgentTypeCombobox();
     }
 
     public void btnShowsStatesOnAction() {
 
-        Statistic s = result.getAgentResults().get(0).getMapResults().get(0).getIterations().get(0);
-
         ObservableList<PieChart.Data> pieChartData =
                 FXCollections.observableArrayList(
-                        new PieChart.Data("Working", s.getTimeWorking()),
-                        new PieChart.Data("Searching", s.getTimeSearching()),
-                        new PieChart.Data("Travelling", s.getTimeTravelling()));
+                        new PieChart.Data("Working", chosenIteration.getTimeWorking()),
+                        new PieChart.Data("Searching", chosenIteration.getTimeSearching()),
+                        new PieChart.Data("Travelling", chosenIteration.getTimeTravelling()));
         final PieChart chart = new PieChart(pieChartData);
         chart.setTitle("Time spent by agents in given states");
 
         chart.setPrefHeight(800);
         chart.setPrefWidth(800);
 
-
+        mainPane.setContent(chart);
     }
 
     public void btnSearchingOnAction() {
+
         final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
-        final BarChart<String,Number> bc =
-                new BarChart<String,Number>(xAxis,yAxis);
+        final BarChart<String,Number> bc = new BarChart<>(xAxis,yAxis);
         bc.setTitle("Country Summary");
         xAxis.setLabel("Country");
         yAxis.setLabel("Value");
-
-        ArrayList<XYChart.Series> mapIterations = new ArrayList<>();
 
         XYChart.Series series1 = new XYChart.Series();
 
         series1.setName("Searching");
 
-        int numIters = result.getAgentResults().get(0).getMapResults().get(0).getIterations().size();
+        int numIters = chosenMapResult.getIterations().size();
+
         for(int i = 0; i < numIters; i++) {
-            Statistic s = result.getAgentResults().get(0).getMapResults().get(0).getIterations().get(i);
-            series1.getData().add(new XYChart.Data(String.valueOf(i+1), s.getTimeSearching()));
+            series1.getData().add(new XYChart.Data(String.valueOf(i+1), chosenIteration.getTimeSearching()));
         }
 
         bc.getData().addAll(series1);
@@ -110,16 +105,13 @@ public class ShowTestResultController implements Initializable, Popup {
         xAxis.setLabel("Country");
         yAxis.setLabel("Value");
 
-        ArrayList<XYChart.Series> mapIterations = new ArrayList<>();
-
         XYChart.Series series1 = new XYChart.Series();
 
         series1.setName("Searching");
 
         int numIters = result.getAgentResults().get(0).getMapResults().get(0).getIterations().size();
         for(int i = 0; i < numIters; i++) {
-            Statistic s = result.getAgentResults().get(0).getMapResults().get(0).getIterations().get(i);
-            series1.getData().add(new XYChart.Data(String.valueOf(i+1), s.getTimeTravelling()));
+            series1.getData().add(new XYChart.Data(String.valueOf(i+1), chosenIteration.getTimeTravelling()));
         }
 
         bc.getData().addAll(series1);
@@ -139,16 +131,13 @@ public class ShowTestResultController implements Initializable, Popup {
         xAxis.setLabel("Country");
         yAxis.setLabel("Value");
 
-        ArrayList<XYChart.Series> mapIterations = new ArrayList<>();
-
         XYChart.Series series1 = new XYChart.Series();
 
         series1.setName("Searching");
 
         int numIters = result.getAgentResults().get(0).getMapResults().get(0).getIterations().size();
         for(int i = 0; i < numIters; i++) {
-            Statistic s = result.getAgentResults().get(0).getMapResults().get(0).getIterations().get(i);
-            series1.getData().add(new XYChart.Data(String.valueOf(i+1), s.getTimeWorking()));
+            series1.getData().add(new XYChart.Data(String.valueOf(i+1), chosenIteration.getTimeWorking()));
         }
 
         bc.getData().addAll(series1);
@@ -173,9 +162,8 @@ public class ShowTestResultController implements Initializable, Popup {
         //defining a series
         XYChart.Series series = new XYChart.Series();
         //populating the series with data
-        Statistic s = result.getAgentResults().get(0).getMapResults().get(0).getIterations().get(0);
-        for(int i = 0; i < s.getNumSeconds(); i++){
-            series.getData().add(new XYChart.Data(i, s.getTotalPollution().get(i)));
+        for(int i = 0; i < chosenIteration.getNumSeconds(); i++){
+            series.getData().add(new XYChart.Data(i, chosenIteration.getTotalPollution().get(i)));
         }
 
         xAxis.setAutoRanging(true);
@@ -187,6 +175,7 @@ public class ShowTestResultController implements Initializable, Popup {
         lineChart.setTitle("Pollution progression");
         lineChart.setStyle("-fx-stroke-width: 1px;");
         lineChart.getData().add(series);
+        mainPane.setContent(lineChart);
     }
 
     public void agentTypeOnAction() {
@@ -197,14 +186,12 @@ public class ShowTestResultController implements Initializable, Popup {
             agentTypeLbl.setText("UNSELECTED");
             mapNameCb.setValue(null);
             iterationCb.setValue(null);
+            mapNameCb.setDisable(true);
+            iterationCb.setDisable(true);
             return;
         }
 
-        chosenMapResult = chosenAgent.getMapResults().get(0);
-        mapNameCb.setValue(chosenMapResult);
-
-        chosenIteration = chosenMapResult.getIterations().get(0);
-        iterationCb.setValue(chosenIteration);
+        initMapNamesComboBox();
 
     }
 
@@ -215,11 +202,11 @@ public class ShowTestResultController implements Initializable, Popup {
         if (chosenMapResult == null) {
             mapNameLbl.setText("UNSELECTED");
             iterationCb.setValue(null);
+            iterationCb.setDisable(true);
             return;
         }
 
-        chosenIteration = chosenMapResult.getIterations().get(0);
-        iterationCb.setValue(chosenIteration);
+        initIterationsComboBox();
 
     }
 
@@ -238,6 +225,10 @@ public class ShowTestResultController implements Initializable, Popup {
 
     }
 
+    public void btnWorkDoneOnAction() {
+
+    }
+
     public void saveOnAction() {
         Node n = mainPane.getContent();
         saveAsPNG(n, "charts\\chart1.png");
@@ -253,6 +244,42 @@ public class ShowTestResultController implements Initializable, Popup {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    private void initAgentTypeCombobox() {
+
+        ObservableList<AgentResult> agentTypes = FXCollections.observableArrayList(result.getAgentResults());
+
+        agentTypeCb.getItems().setAll(agentTypes);
+        mapNameCb.setDisable(true);
+        iterationCb.setDisable(true);
+
+    }
+
+
+    private void initMapNamesComboBox() {
+
+        mapNameCb.setDisable(false);
+
+        ObservableList<MapResult> mapResults = FXCollections.observableArrayList(chosenAgent.getMapResults());
+
+        mapNameCb.getItems().setAll(mapResults);
+
+        iterationCb.setValue(null);
+        iterationCb.setDisable(true);
+
+    }
+
+
+    private void initIterationsComboBox() {
+
+        iterationCb.setDisable(false);
+
+        ObservableList<Statistic> iterations = FXCollections.observableArrayList(chosenMapResult.getIterations());
+
+        iterationCb.getItems().setAll(iterations);
+
     }
 
 }

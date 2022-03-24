@@ -12,7 +12,7 @@ public class MapParameters implements Serializable {
     public int MAX_WORK = 100;
     public int NUMBER_HOME = 100;
     public int ATTRACTION_DISTANCE = 100;
-    public int WALLS_NUM = 100;
+    public int WALLS_NUM = 50;
     public int WALL_LENGTH_MIN = 50;
     public int WALL_LENGTH_MAX = 150;
 

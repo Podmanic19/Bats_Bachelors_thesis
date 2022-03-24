@@ -1,6 +1,6 @@
 package model.testing;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 
 public class TestResult implements Aggregable, Serializable {
@@ -10,6 +10,16 @@ public class TestResult implements Aggregable, Serializable {
     public void update(AgentResult a) {
 
         agentResults.add(a);
+
+    }
+
+    public void save(File f) throws IOException {
+
+        FileOutputStream fos = new FileOutputStream(f);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(this);
+        oos.close();
+        fos.close();
 
     }
 
@@ -32,8 +42,6 @@ public class TestResult implements Aggregable, Serializable {
     public int getNumSeconds() {
         return 0;
     }
-
-
 
     public ArrayList<AgentResult> getAgentResults() {
         return agentResults;

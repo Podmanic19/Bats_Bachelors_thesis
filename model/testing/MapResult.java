@@ -9,7 +9,8 @@ public class MapResult implements Aggregable, Serializable {
     private String mapName;
     private ArrayList<Statistic> iterations;
 
-    public MapResult(){
+    public MapResult(String mapName){
+        this.mapName = mapName;
         iterations = new ArrayList<>();
     }
 

@@ -8,6 +8,10 @@ public class AgentResult implements Aggregable, Serializable {
     private String agentType;
     ArrayList<MapResult> mapResults = new ArrayList<>();
 
+    public AgentResult(String agentType) {
+        this.agentType = agentType;
+    }
+
     public void update(MapResult m) {
 
         mapResults.add(m);

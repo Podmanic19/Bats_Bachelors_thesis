@@ -47,7 +47,6 @@ public class Test {
         this.runTime = 10000;
     }
 
-
     private void setNameAsDate(){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd_MM_yyyy_HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
@@ -69,7 +68,7 @@ public class Test {
                 ctrlr.getTotalProgressPb().setProgress((double) finalAgentIter /agentparams.size());
             });
             mapIter = -1;
-            AgentResult agentResult = new AgentResult();
+            AgentResult agentResult = new AgentResult(currentAgentParams.getNAME());
             //ITERATE OVER MAPS
             for (MapShell shell : uninitializedMaps) {
                 ++mapIter;
@@ -79,7 +78,7 @@ public class Test {
                     ctrlr.getAgentProgressPb().setProgress((double) finalMapIter / uninitializedMaps.size());
                 });
                 currentIter = -1;
-                MapResult mapResult = new MapResult();
+                MapResult mapResult = new MapResult(shell.getName());
                 //TEST MAP NUMBER OF ITERATIONS PER MAP TIMES
                 for (int i = 1; i <= itersPerMap; i++) {
                     ++currentIter;
@@ -90,7 +89,7 @@ public class Test {
                     });
                     Map testedMap = new Map(shell, true, numAgents, numHomes);
                     int j = -1;
-                    Statistic s = new Statistic();
+                    Statistic s = new Statistic(String.valueOf(i));
                     Instant iterStart = Instant.now();
                     //SOLVE MAP
                     while (!terminate(testedMap, ++j)) {
@@ -106,7 +105,7 @@ public class Test {
                         s.updateTimeInState(testedMap.getAgentsInState());
                     }
                     Instant iterEnd = Instant.now();
-                    System.out.println("Iteration " + (i+1) + " runtime: " + Duration.between(iterStart, iterEnd) +
+                    System.out.println("Iteration " + i + " runtime: " + Duration.between(iterStart, iterEnd) +
                             " iterations: " + j);
                     s.aggregate(j, testedMap.getAgents(), testedMap.getHomes());
                     mapResult.update(s);

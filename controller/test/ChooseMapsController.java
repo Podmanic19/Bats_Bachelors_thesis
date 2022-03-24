@@ -18,7 +18,6 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import model.gui.ChangeScene;
 import model.gui.Popup;
-import model.main.Main;
 import model.map.mapshell.Map;
 import model.map.mapshell.MapShell;
 import model.testing.Test;
@@ -66,9 +65,7 @@ public class ChooseMapsController implements ChangeScene, Popup, Initializable, 
         MapShell selected = mapsTable.getSelectionModel().getSelectedItem();
 
         if (selected != null) {
-            int numAgents = Integer.parseInt(numAgentsTf.getText());
-            int numHomes = Integer.parseInt(numHomesTf.getText());
-            shownMap = new Map(selected, true, numAgents, numHomes);
+            shownMap = mapFromShell(selected);
             Pane pane = new Pane();
             Stage stage = new Stage();
             Scene scene = new Scene(pane, 1000, 1000);
@@ -102,7 +99,7 @@ public class ChooseMapsController implements ChangeScene, Popup, Initializable, 
             new Thread(() -> {
                 for(int i = 1; i <= num; i++){
                     MapShell s = new MapShell();
-                    s.setName("Map_" + (mapsTable.getItems().size()));
+                    s.setName("Map_" + (mapsTable.getItems().size() + 1));
                     Platform.runLater(() -> {
                         mapsTable.getItems().add(s);
                         changeNumMaps(1);
@@ -262,6 +259,7 @@ public class ChooseMapsController implements ChangeScene, Popup, Initializable, 
 
         mapsTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
+                shownMap = mapFromShell(mapsTable.getSelectionModel().getSelectedItem());
                 showMap();
             }
         });
@@ -304,6 +302,12 @@ public class ChooseMapsController implements ChangeScene, Popup, Initializable, 
 
         primaryStage.setUserData(test);
 
+    }
+
+    private Map mapFromShell(MapShell shell) {
+        int numAgents = Integer.parseInt(numAgentsTf.getText());
+        int numHomes = Integer.parseInt(numHomesTf.getText());
+        return new Map(shell, true, numAgents, numHomes);
     }
 
 }

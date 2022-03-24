@@ -1,7 +1,6 @@
 package model.main;
 import model.agents.AgentParams;
 import model.testing.EnvironmentParameters;
-import model.map.mapshell.Map;
 import model.map.MapParameters;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

@@ -20,7 +20,8 @@ public class Statistic implements Aggregable, Serializable {
     double[] homeSizes;
     double[] workDone;
 
-    public Statistic(){
+    public Statistic(String iterationNumber) {
+        this.iterationNumber = iterationNumber;
         totalPollution = new ArrayList<>();
     }
 
