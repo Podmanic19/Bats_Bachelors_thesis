@@ -29,17 +29,17 @@ public class TestResult implements Aggregable, Serializable {
     }
 
     @Override
-    public double getBestAgentWork() {
+    public double getMaxWorkDone() {
         return 0;
     }
 
     @Override
-    public double getWorstAgentWork() {
+    public double getMinimumWorkDone() {
         return 0;
     }
 
     @Override
-    public int getNumSeconds() {
+    public int getTakenTime() {
         return 0;
     }
 

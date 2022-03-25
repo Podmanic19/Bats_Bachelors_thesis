@@ -17,6 +17,7 @@ public class MapShell implements Serializable {
     private final ArrayList<LineSegment> walls = new ArrayList<>();     //initial walls existing on the map
     private Coordinate[] initialAgentPositions;                         //positions of future agent placements
     private Coordinate[] initialHomePositions;                          //positions of future walls placements
+    private double[] initialPollutions;
 
     private boolean chosen;
 
@@ -24,6 +25,7 @@ public class MapShell implements Serializable {
         chosen = false;
         generateWalls();
         generateHomes();
+        generatePollutions();
         generateAgents();
     }
 
@@ -63,6 +65,12 @@ public class MapShell implements Serializable {
         }
     }
 
+    private void generatePollutions() {
+        this.initialPollutions = new double[100];
+        for (int i = 0; i < 100; i++) {
+            initialPollutions[i] = ThreadLocalRandom.current().nextInt(mapparams.MIN_WORK, mapparams.MAX_WORK + 1);
+        }
+    }
     private boolean liesOnWall(Coordinate c){
         for(LineSegment w: walls){
             if(w.liesOnLine(c)) return true;
@@ -245,6 +253,10 @@ public class MapShell implements Serializable {
 
     public Coordinate[] getInitialHomePositions() {
         return initialHomePositions;
+    }
+
+    public double[] getInitialPollutions() {
+        return initialPollutions;
     }
 
     public boolean isChosen() {

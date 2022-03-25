@@ -6,11 +6,12 @@ import model.map.Home;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 
 public class Statistic implements Aggregable, Serializable {
 
     String iterationNumber;
-    int numSeconds;
+    int takenTime;
     int[] lifeTimes;
     int[] spawnTimes;
     ArrayList<Double> totalPollution;
@@ -25,19 +26,20 @@ public class Statistic implements Aggregable, Serializable {
         totalPollution = new ArrayList<>();
     }
 
-    public void aggregate(int iters, ArrayList<Agent> agents, ArrayList<Home> homes) {
+    public void aggregate(int iters, ArrayList<Agent> agents, HashSet<Home> homes) {
 
-        numSeconds = iters;
+        takenTime = iters;
         lifeTimes = new int[homes.size()];
         workDone = new double[agents.size()];
         spawnTimes = new int[homes.size()];
         homeSizes = new double[homes.size()];
 
         aggregateHomes(homes);
+        aggregateAgents(agents);
 
     }
 
-    private void aggregateHomes(ArrayList<Home> homes){
+    private void aggregateHomes(HashSet<Home> homes){
 
         int i = 0;
         for(Home h : homes) {
@@ -49,22 +51,24 @@ public class Statistic implements Aggregable, Serializable {
 
     }
 
+    public double getTotalWorkDone() {
+
+        return Arrays.stream(workDone).sum();
+
+    }
+    private void aggregateAgents(ArrayList<Agent> agents) {
+
+        int i = 0;
+        for(Agent a : agents) {
+            workDone[i] = a.getTotalWork();
+            ++i;
+        }
+
+    }
+
     public double getAverageLifeTime() {
 
         return Arrays.stream(lifeTimes).average().orElse(Double.NaN);
-
-    }
-
-    public double getAverageSpawnTimes() {
-
-        return Arrays.stream(spawnTimes).average().orElse(Double.NaN);
-
-
-    }
-
-    public double getAverageHomeSize() {
-
-        return Arrays.stream(homeSizes).average().orElse(Double.NaN);
 
     }
 
@@ -74,20 +78,29 @@ public class Statistic implements Aggregable, Serializable {
 
     }
 
-    public double getBestAgentWork() {
+    public double getMedianWorkDone() {
+
+        Arrays.sort(workDone);
+        int len = workDone.length;
+
+        return len % 2  == 0 ?  (workDone[len/2] + workDone[len/2 - 1])/2 : workDone[len/2];
+
+    }
+
+    public double getMaxWorkDone() {
 
         return Arrays.stream(workDone).max().orElse(Double.NaN);
 
     }
 
-    public double getWorstAgentWork() {
+    public double getMinimumWorkDone() {
 
         return Arrays.stream(workDone).min().orElse(Double.NaN);
 
     }
 
-    public int getNumSeconds(){
-        return numSeconds;
+    public int getTakenTime(){
+        return takenTime;
     }
 
     public void updatePollution(ArrayList<Home> homes){
@@ -106,14 +119,6 @@ public class Statistic implements Aggregable, Serializable {
         timeWorking += numInState[2];
     }
 
-    public int[] getLifeTimes() {
-        return lifeTimes;
-    }
-
-    public int[] getSpawnTimes() {
-        return spawnTimes;
-    }
-
     public ArrayList<Double> getTotalPollution() {
         return totalPollution;
     }
@@ -130,9 +135,6 @@ public class Statistic implements Aggregable, Serializable {
         return timeWorking;
     }
 
-    public double[] getHomeSizes() {
-        return homeSizes;
-    }
 
     public double[] getWorkDone() {
         return workDone;

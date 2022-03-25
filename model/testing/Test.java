@@ -12,14 +12,12 @@ import model.map.mapshell.MapShell;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 
 public class Test {
 
-    private String name;
     private MapParameters mapparams;
     private EnvironmentParameters envparams;
     private ArrayList<AgentParams> agentparams;
@@ -36,7 +34,6 @@ public class Test {
 
     public Test(String name, MapParameters mapparams, ArrayList<AgentParams> agentparams, ArrayList<MapShell> maps,
                 EnvironmentParameters envparams, int numMaps, int numAgents, int itersPerMap) {
-        this.name = name;
         this.mapparams = mapparams;
         this.envparams = envparams;
         this.agentparams = agentparams;
@@ -47,11 +44,6 @@ public class Test {
         this.runTime = 10000;
     }
 
-    private void setNameAsDate(){
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd_MM_yyyy_HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
-        this.name = "TEST " + dtf.format(now);
-    }
 
     public void run(TestRunningController ctrlr){
 
@@ -91,6 +83,10 @@ public class Test {
                     int j = -1;
                     Statistic s = new Statistic(String.valueOf(i));
                     Instant iterStart = Instant.now();
+                    HashSet<Home> allHomes = new HashSet<>();
+                    for(Home h : testedMap.getHomes()) {
+                        if(h.getPollution() >= 0) allHomes.add(h);
+                    }
                     //SOLVE MAP
                     while (!terminate(testedMap, ++j)) {
                         testedMap.getAgents().parallelStream().forEach(Agent::act);
@@ -104,12 +100,14 @@ public class Test {
                         s.updatePollution(testedMap.getHomes());
                         s.updateTimeInState(testedMap.getAgentsInState());
                     }
+                    allHomes.addAll(testedMap.getHomes());
                     Instant iterEnd = Instant.now();
                     System.out.println("Iteration " + i + " runtime: " + Duration.between(iterStart, iterEnd) +
                             " iterations: " + j);
-                    s.aggregate(j, testedMap.getAgents(), testedMap.getHomes());
+                    s.aggregate(j, testedMap.getAgents(), allHomes);
                     mapResult.update(s);
                 }
+                mapResult.aggregate();
                 agentResult.update(mapResult);
             }
             result.update(agentResult);
@@ -137,10 +135,6 @@ public class Test {
             return i >= runTime;
         }
         else return current.getHomes().isEmpty();
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void setMapparams(MapParameters mapparams) {

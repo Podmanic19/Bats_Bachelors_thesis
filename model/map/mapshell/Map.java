@@ -29,14 +29,14 @@ public class Map implements Serializable{
         if(bats) fillWithBats(numAgents, shell.getInitialAgentPositions());
         else fillWithExplorers(numAgents, shell.getInitialAgentPositions());
 
-        fillWithHomes(numHomes, shell.getInitialHomePositions());
+        fillWithHomes(numHomes, shell.getInitialHomePositions(), shell.getInitialPollutions());
         for(Agent a : agents) a.giveMap(this);
     }
 
-    private void fillWithHomes(int numHomes, Coordinate[] positions) {
+    private void fillWithHomes(int numHomes, Coordinate[] positions, double[] pollutions) {
 
         for(int i = 0; i < numHomes; i++) {
-            createHome(positions[i], Home.ID++, 0);
+            homes.add(new Home(Home.ID++, pollutions[i], 0, positions[i]));
         }
 
     }

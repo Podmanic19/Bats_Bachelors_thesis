@@ -92,4 +92,5 @@ public class Home implements Serializable {
     public int getLifeTime() {
         return lifeTime;
     }
+
 }
