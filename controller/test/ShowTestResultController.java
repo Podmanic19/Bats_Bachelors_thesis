@@ -19,7 +19,11 @@ import model.testing.*;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.AnnotatedType;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static model.main.Main.primaryStage;
@@ -53,388 +57,324 @@ public class ShowTestResultController implements Initializable, Popup {
         initAgentTypeCombobox();
     }
 
-    public void btnTimeSpentOnMap() {
-        final CategoryAxis xAxis = new CategoryAxis();
-        final NumberAxis yAxis = new NumberAxis();
-        final BarChart<String,Number> bc = new BarChart<>(xAxis,yAxis);
-        bc.setTitle("Total time spent on map");
-        xAxis.setLabel("Map");
-        yAxis.setLabel("Time spent");
+    /***
+     * Creates a barchart of the total time spent on each map by given agent type
+     */
+    public void btnTotalTimeSpentOnMap() {
+        BarChart<String,Number> bc =
+                createBarChart("Map", "Total time spent","Total time spent on each map by given agent");
 
-        XYChart.Series series1 = new XYChart.Series();
-
-        series1.setName("Total time spent cleaning given map by agent");
+        ArrayList<Integer> xAxis = new ArrayList<>();
 
         for(int i = 0; i < chosenAgent.getMapResults().size(); i++) {
             MapResult map = chosenAgent.getMapResults().get(i);
-            series1.getData().add(new XYChart.Data(String.valueOf(i+1), map.getTotalTimeSpent()));
+            xAxis.add(map.getTotalTimeSpent());
         }
 
-        bc.getData().addAll(series1);
-        bc.setPrefWidth(800);
-        bc.setPrefHeight(800);
-
+        XYChart.Series series = createSeries(createListOfMapNames(), xAxis);
+        bc.getData().addAll(series);
 
         mainPane.setContent(bc);
     }
 
+    /***
+     * Creates a barchart of the maximum time spent on each map by given agent type
+     */
     public void btnMaximumTimeSpent() {
 
-        final CategoryAxis xAxis = new CategoryAxis();
-        final NumberAxis yAxis = new NumberAxis();
-        final BarChart<String,Number> bc = new BarChart<>(xAxis,yAxis);
-        bc.setTitle("Maximum time spent on map");
-        xAxis.setLabel("Map");
-        yAxis.setLabel("Time spent");
+        BarChart<String,Number> bc =
+                createBarChart("Map", "Maximum time spent","Maximum time spent on each map by given agent");
 
-        XYChart.Series series1 = new XYChart.Series();
-
-        series1.setName("Maximum time spent cleaning given map by agent");
+        ArrayList<Integer> xAxis = new ArrayList<>();
 
         for(int i = 0; i < chosenAgent.getMapResults().size(); i++) {
             MapResult map = chosenAgent.getMapResults().get(i);
-            series1.getData().add(new XYChart.Data(String.valueOf(i+1), map.getMaximumTimeSpent()));
+            xAxis.add(map.getMaximumTimeSpent());
         }
 
-        bc.getData().addAll(series1);
-        bc.setPrefWidth(800);
-        bc.setPrefHeight(800);
-
+        XYChart.Series series = createSeries(createListOfMapNames(), xAxis);
+        bc.getData().addAll(series);
 
         mainPane.setContent(bc);
 
     }
 
+    /***
+     * Creates a barchart of the minimum time spent on each map by given agent type
+     */
     public void btnMinimumTimeSpent() {
 
-        final CategoryAxis xAxis = new CategoryAxis();
-        final NumberAxis yAxis = new NumberAxis();
-        final BarChart<String,Number> bc = new BarChart<>(xAxis,yAxis);
-        bc.setTitle("Minimum time spent on map");
-        xAxis.setLabel("Map");
-        yAxis.setLabel("Time spent");
+        BarChart<String,Number> bc =
+                createBarChart("Map", "Minimum time spent","Minimum time spent on each map by given agent");
 
-        XYChart.Series series1 = new XYChart.Series();
-
-        series1.setName("Minimum time spent cleaning given map by agent");
+        ArrayList<Integer> xAxis = new ArrayList<>();
 
         for(int i = 0; i < chosenAgent.getMapResults().size(); i++) {
             MapResult map = chosenAgent.getMapResults().get(i);
-            series1.getData().add(new XYChart.Data(String.valueOf(i+1), map.getMinimumTimeSpent()));
+            xAxis.add(map.getMinimumTimeSpent());
         }
 
-        bc.getData().addAll(series1);
-        bc.setPrefWidth(800);
-        bc.setPrefHeight(800);
-
+        XYChart.Series series = createSeries(createListOfMapNames(), xAxis);
+        bc.getData().addAll(series);
 
         mainPane.setContent(bc);
 
     }
 
+    /***
+     * Creates a barchart of the average time spent on each map by given agent type
+     */
     public void btnAverageTimeSpent() {
 
-        final CategoryAxis xAxis = new CategoryAxis();
-        final NumberAxis yAxis = new NumberAxis();
-        final BarChart<String,Number> bc = new BarChart<>(xAxis,yAxis);
-        bc.setTitle("Average time spent on map");
-        xAxis.setLabel("Map");
-        yAxis.setLabel("Average time spent");
+        BarChart<String,Number> bc =
+                createBarChart("Map", "Median time spent","Average time spent on each map by given agent");
 
-        XYChart.Series series1 = new XYChart.Series();
-
-        series1.setName("Average time spent cleaning given map by agent");
+        ArrayList<Double> xAxis = new ArrayList<>();
 
         for(int i = 0; i < chosenAgent.getMapResults().size(); i++) {
             MapResult map = chosenAgent.getMapResults().get(i);
-            series1.getData().add(new XYChart.Data(String.valueOf(i+1), map.getAverageTimeSpent()));
+            xAxis.add(map.getAverageTimeSpent());
         }
 
-        bc.getData().addAll(series1);
-        bc.setPrefWidth(800);
-        bc.setPrefHeight(800);
-
+        XYChart.Series series = createSeries(createListOfMapNames(), xAxis);
+        bc.getData().addAll(series);
 
         mainPane.setContent(bc);
 
     }
 
+    /***
+     * Creates a barchart of the median time spent on each map by given agent type
+     */
     public void btnMedianTimeSpent() {
 
-        final CategoryAxis xAxis = new CategoryAxis();
-        final NumberAxis yAxis = new NumberAxis();
-        final BarChart<String,Number> bc = new BarChart<>(xAxis,yAxis);
-        bc.setTitle("Median time spent on map");
-        xAxis.setLabel("Map");
-        yAxis.setLabel("Median of time spent");
+        BarChart<String,Number> bc =
+                createBarChart("Map", "Median time spent","Median of time spent on each map by given agent");
 
-        XYChart.Series series1 = new XYChart.Series();
-
-        series1.setName("Median of time spent cleaning given map by agent");
+        ArrayList<Double> xAxis = new ArrayList<>();
 
         for(int i = 0; i < chosenAgent.getMapResults().size(); i++) {
             MapResult map = chosenAgent.getMapResults().get(i);
-            series1.getData().add(new XYChart.Data(String.valueOf(i+1), map.getMedianTimeSpent()));
+            xAxis.add(map.getMedianTimeSpent());
         }
 
-        bc.getData().addAll(series1);
-        bc.setPrefWidth(800);
-        bc.setPrefHeight(800);
-
+        XYChart.Series series = createSeries(createListOfMapNames(), xAxis);
+        bc.getData().addAll(series);
 
         mainPane.setContent(bc);
 
     }
 
+    /***
+     * Creates a barchart of the total work done on each map by given agent type
+     */
     public void btnTotalWorkOnMap() {
-        final CategoryAxis xAxis = new CategoryAxis();
-        final NumberAxis yAxis = new NumberAxis();
-        final BarChart<String,Number> bc = new BarChart<>(xAxis,yAxis);
-        bc.setTitle("Total work done on map");
-        xAxis.setLabel("Map");
-        yAxis.setLabel("Work done");
 
-        XYChart.Series series1 = new XYChart.Series();
+        BarChart<String,Number> bc =
+                createBarChart("Map", "Total work done","Average work done by agents on maps");
 
-        series1.setName("Total work done by agents cleaning this map");
+        ArrayList<Double> xAxis = new ArrayList<>();
 
         for(int i = 0; i < chosenAgent.getMapResults().size(); i++) {
             MapResult map = chosenAgent.getMapResults().get(i);
-            series1.getData().add(new XYChart.Data(String.valueOf(i+1), map.getTotalWorkDone()));
+            xAxis.add(map.getTotalWorkDone());
         }
 
-        bc.getData().addAll(series1);
-        bc.setPrefWidth(800);
-        bc.setPrefHeight(800);
-
+        XYChart.Series series = createSeries(createListOfMapNames(), xAxis);
+        bc.getData().addAll(series);
 
         mainPane.setContent(bc);
+
     }
 
+    /***
+     * Creates a barchart of the averages of work done on each map by given agent type
+     */
     public void btnAverageWorkDoneOnMap() {
-        final CategoryAxis xAxis = new CategoryAxis();
-        final NumberAxis yAxis = new NumberAxis();
-        final BarChart<String,Number> bc = new BarChart<>(xAxis,yAxis);
-        bc.setTitle("Average work done on map");
-        xAxis.setLabel("Map");
-        yAxis.setLabel("Average work done");
 
-        XYChart.Series series1 = new XYChart.Series();
+        BarChart<String,Number> bc =
+                createBarChart("Map", "Average work done","Average work done by agents on maps");
 
-        series1.setName("Total work done by agents cleaning this map");
+        ArrayList<Double> yAxis = new ArrayList<>();
 
         for(int i = 0; i < chosenAgent.getMapResults().size(); i++) {
             MapResult map = chosenAgent.getMapResults().get(i);
-            series1.getData().add(new XYChart.Data(String.valueOf(i+1), map.getAverageWorkDone()));
+            yAxis.add(map.getAverageWorkDone());
         }
 
-        bc.getData().addAll(series1);
-        bc.setPrefWidth(800);
-        bc.setPrefHeight(800);
-
+        XYChart.Series series = createSeries(createListOfMapNames(), yAxis);
+        bc.getData().addAll(series);
 
         mainPane.setContent(bc);
 
     }
+
+    /***
+     * Creates a barchart of medians of work done on each map by given agent type
+     */
     public void btnMedianWorkDoneOnMap() {
-        final CategoryAxis xAxis = new CategoryAxis();
-        final NumberAxis yAxis = new NumberAxis();
-        final BarChart<String,Number> bc = new BarChart<>(xAxis,yAxis);
-        bc.setTitle("Average work done on map");
-        xAxis.setLabel("Map");
-        yAxis.setLabel("Average work done");
+        BarChart<String,Number> bc =
+                createBarChart("Map", "Median work done","Median work done by agents on maps");
 
-        XYChart.Series series1 = new XYChart.Series();
-
-        series1.setName("Total work done by agents cleaning this map");
+        ArrayList<Double> medianWork = new ArrayList<>();
 
         for(int i = 0; i < chosenAgent.getMapResults().size(); i++) {
             MapResult map = chosenAgent.getMapResults().get(i);
-            series1.getData().add(new XYChart.Data(String.valueOf(i+1), map.getMedianWorkDone()));
+            medianWork.add(map.getMedianWorkDone());
         }
 
-        bc.getData().addAll(series1);
-        bc.setPrefWidth(800);
-        bc.setPrefHeight(800);
-
+        XYChart.Series series = createSeries(createListOfMapNames(), medianWork);
+        bc.getData().addAll(series);
 
         mainPane.setContent(bc);
     }
 
 
+    /***
+     * Creates a barchart of total work done on a map over each iteration
+     */
     public void btnTotalWorkDone() {
-        final CategoryAxis xAxis = new CategoryAxis();
-        final NumberAxis yAxis = new NumberAxis();
-        final BarChart<String,Number> bc = new BarChart<>(xAxis,yAxis);
-        bc.setTitle("Maximum work done by an agent in this iteration");
-        xAxis.setLabel("Iteration");
-        yAxis.setLabel("Maximum work done");
 
-        XYChart.Series series1 = new XYChart.Series();
+        BarChart<String,Number> bc =
+                createBarChart("Iteration", "Total work done","Total work done by agents in this iteration");
 
-        series1.setName("Maximum work done by agent in given iteration");
+        ArrayList<Double> totalWork = new ArrayList<>();
 
         for(int i = 0; i < chosenMapResult.getIterations().size(); i++) {
             Statistic iteration = chosenMapResult.getIterations().get(i);
-            series1.getData().add(new XYChart.Data(String.valueOf(i+1), iteration.getTotalWorkDone()));
+            totalWork.add(iteration.getTotalWorkDone());
         }
 
-        bc.getData().addAll(series1);
-        bc.setPrefWidth(3000);
-        bc.setPrefHeight(800);
-
+        XYChart.Series series = createSeries(createListOfMapNames(), totalWork);
+        bc.getData().addAll(series);
 
         mainPane.setContent(bc);
+
     }
 
+    /***
+     * Creates a barchart of maximal work done by agents over each iteration on given map
+     */
     public void btnMaxWork() {
-        final CategoryAxis xAxis = new CategoryAxis();
-        final NumberAxis yAxis = new NumberAxis();
-        final BarChart<String,Number> bc = new BarChart<>(xAxis,yAxis);
-        bc.setTitle("Maximum work done by an agent in this iteration");
-        xAxis.setLabel("Iteration");
-        yAxis.setLabel("Maximum work done");
 
-        XYChart.Series series1 = new XYChart.Series();
+        BarChart<String,Number> bc =
+                createBarChart("Iteration", "Maximum work done","Maximum work done by agents in this iteration");
 
-        series1.setName("Maximum work done by agent in given iteration");
+        ArrayList<Double> maxWork = new ArrayList<>();
 
         for(int i = 0; i < chosenMapResult.getIterations().size(); i++) {
             Statistic iteration = chosenMapResult.getIterations().get(i);
-            series1.getData().add(new XYChart.Data(String.valueOf(i+1), iteration.getMaxWorkDone()));
+            maxWork.add(iteration.getMaxWorkDone());
         }
 
-        bc.getData().addAll(series1);
-        bc.setPrefWidth(3000);
-        bc.setPrefHeight(800);
-
+        XYChart.Series series = createSeries(createListOfNums(0, chosenMapResult.getIterations().size()), maxWork);
+        bc.getData().addAll(series);
 
         mainPane.setContent(bc);
-    }
 
+    }
+    /***
+     * Creates a barchart of minimal work done by agents over each iteration on given map
+     */
     public void btnMinWork() {
-        final CategoryAxis xAxis = new CategoryAxis();
-        final NumberAxis yAxis = new NumberAxis();
-        final BarChart<String,Number> bc = new BarChart<>(xAxis,yAxis);
-        bc.setTitle("Minimum work done by agents in this iteration");
-        xAxis.setLabel("Iteration");
-        yAxis.setLabel("Minimum work done");
 
-        XYChart.Series series1 = new XYChart.Series();
+        BarChart<String,Number> bc =
+                createBarChart("Iteration", "Minimum work done","Minimum work done by agents in this iteration");
 
-        series1.setName("Minimum work done by agent in given iteration");
+        ArrayList<Double> minWork = new ArrayList<>();
 
         for(int i = 0; i < chosenMapResult.getIterations().size(); i++) {
             Statistic iteration = chosenMapResult.getIterations().get(i);
-            series1.getData().add(new XYChart.Data(String.valueOf(i+1), iteration.getMinimumWorkDone()));
+            minWork.add(iteration.getMinimumWorkDone());
         }
 
-        bc.getData().addAll(series1);
-        bc.setPrefWidth(3000);
-        bc.setPrefHeight(800);
-
+        XYChart.Series series = createSeries(createListOfNums(0, chosenMapResult.getIterations().size()), minWork);
+        bc.getData().addAll(series);
 
         mainPane.setContent(bc);
+
     }
 
+    /***
+     * Creates a barchart of average work done by agents over each iteration on given map
+     */
     public void btnAverageWork() {
-        final CategoryAxis xAxis = new CategoryAxis();
-        final NumberAxis yAxis = new NumberAxis();
-        final BarChart<String,Number> bc = new BarChart<>(xAxis,yAxis);
-        bc.setTitle("Average work done by agents in this iteration");
-        xAxis.setLabel("Iteration");
-        yAxis.setLabel("Average work done");
 
-        XYChart.Series series1 = new XYChart.Series();
+        BarChart<String,Number> bc =
+                createBarChart("Iteration", "Average work done", "Average work done by agents in this iteration");
 
-        series1.setName("The average of work done by an agent in given iteration");
+        ArrayList<Double> averageWorkDone = new ArrayList<>();
 
         for(int i = 0; i < chosenMapResult.getIterations().size(); i++) {
             Statistic iteration = chosenMapResult.getIterations().get(i);
-            series1.getData().add(new XYChart.Data(String.valueOf(i+1), iteration.getAverageWorkDone()));
+            averageWorkDone.add(iteration.getAverageWorkDone());
         }
 
-        bc.getData().addAll(series1);
-        bc.setPrefWidth(3000);
-        bc.setPrefHeight(800);
+        XYChart.Series series = createSeries(createListOfNums(0,chosenMapResult.getIterations().size()), averageWorkDone);
 
+        bc.getData().addAll(series);
 
         mainPane.setContent(bc);
+
     }
 
+    /***
+     * Creates a barchart of medians of work done by agents over each iteration over given map
+     */
     public void btnMedWork() {
-        final CategoryAxis xAxis = new CategoryAxis();
-        final NumberAxis yAxis = new NumberAxis();
-        final BarChart<String,Number> bc = new BarChart<>(xAxis,yAxis);
-        bc.setTitle("Median of work done by agents in this iteration");
-        xAxis.setLabel("Iteration");
-        yAxis.setLabel("Median work done");
+        BarChart<String,Number> bc =
+                createBarChart("Iteration", "Median work done", "Median of work done by agents in this iteration");
 
-        XYChart.Series series1 = new XYChart.Series();
-
-        series1.setName("Median of wrok done by agents in given iteration");
-
+        ArrayList<Double> medWorkDone = new ArrayList<>();
         for(int i = 0; i < chosenMapResult.getIterations().size(); i++) {
             Statistic iteration = chosenMapResult.getIterations().get(i);
-            series1.getData().add(new XYChart.Data(String.valueOf(i+1), iteration.getMedianWorkDone()));
+            medWorkDone.add(iteration.getMedianWorkDone());
         }
 
-        bc.getData().addAll(series1);
-        bc.setPrefWidth(3000);
-        bc.setPrefHeight(800);
+        XYChart.Series series = createSeries(createListOfNums(0, chosenMapResult.getIterations().size()), medWorkDone);
 
+        bc.getData().addAll(series);
 
         mainPane.setContent(bc);
     }
 
 
+    /***
+     * shows the average lifetime of a home in each iteration over given map
+     */
     public void btnAverageLifetime() {
-        final CategoryAxis xAxis = new CategoryAxis();
-        final NumberAxis yAxis = new NumberAxis();
-        final BarChart<String,Number> bc = new BarChart<>(xAxis,yAxis);
-        bc.setTitle("Time spent cleaning the map in each iteration of test");
-        xAxis.setLabel("Iteration");
-        yAxis.setLabel("Time spent in seconds");
+        BarChart<String,Number> bc = createBarChart("Iteration", "Time spent in seconds", "Time spent cleaning the map in each iteration of test");
 
-        XYChart.Series series1 = new XYChart.Series();
-
-        series1.setName("Time spent");
+        ArrayList<Double> lifetimes = new ArrayList<>();
 
         for(int i = 0; i < chosenMapResult.getIterations().size(); i++) {
             Statistic iteration = chosenMapResult.getIterations().get(i);
-            series1.getData().add(new XYChart.Data(String.valueOf(i+1), iteration.getAverageLifeTime()));
+            lifetimes.add(iteration.getAverageLifeTime());
         }
 
-        bc.getData().addAll(series1);
-        bc.setPrefWidth(3000);
-        bc.setPrefHeight(800);
-
+        XYChart.Series series = createSeries(createListOfNums(0, chosenMapResult.getIterations().size()), lifetimes);
+        bc.getData().addAll(series);
 
         mainPane.setContent(bc);
     }
 
+    /***
+     * Creates a barchart of times taken to clean up a map by each iteration over given map
+     */
     public void btnTimePerIteration() {
 
-        final CategoryAxis xAxis = new CategoryAxis();
-        final NumberAxis yAxis = new NumberAxis();
-        final BarChart<String,Number> bc = new BarChart<>(xAxis,yAxis);
-        bc.setTitle("Time spent cleaning the map in each iteration of test");
-        xAxis.setLabel("Iteration");
-        yAxis.setLabel("Time spent in seconds");
+        BarChart<String,Number> bc =
+                createBarChart("Iteration", "Time spent in seconds", "Time spent cleaning the map in each iteration of test");
 
-        XYChart.Series series1 = new XYChart.Series();
-
-        series1.setName("Time spent");
+        ArrayList<Integer> iterationTimes = new ArrayList<>();
 
         for(int i = 0; i < chosenMapResult.getIterations().size(); i++) {
             Statistic iteration = chosenMapResult.getIterations().get(i);
-            series1.getData().add(new XYChart.Data(String.valueOf(i+1), iteration.getTakenTime()));
+            iterationTimes.add(iteration.getTakenTime());
         }
 
-        bc.getData().addAll(series1);
-        bc.setPrefWidth(3000);
-        bc.setPrefHeight(800);
-
+        XYChart.Series series = createSeries(createListOfNums(0, chosenMapResult.getIterations().size()), iterationTimes);
+        bc.getData().addAll(series);
 
         mainPane.setContent(bc);
 
@@ -447,7 +387,7 @@ public class ShowTestResultController implements Initializable, Popup {
                         new PieChart.Data("Working", chosenIteration.getTimeWorking()),
                         new PieChart.Data("Searching", chosenIteration.getTimeSearching()),
                         new PieChart.Data("Travelling", chosenIteration.getTimeTravelling()));
-        final PieChart chart = new PieChart(pieChartData);
+        PieChart chart = new PieChart(pieChartData);
         chart.setTitle("Time spent by agents in given states");
 
         chart.setPrefHeight(800);
@@ -456,34 +396,83 @@ public class ShowTestResultController implements Initializable, Popup {
         mainPane.setContent(chart);
     }
 
+    /***
+     * Craetes a linechart of pollution progression in given iteration over map
+     */
     public void btnShowPollutionOnAction() {
 
-        final NumberAxis xAxis = new NumberAxis();
-        final NumberAxis yAxis = new NumberAxis();
-        xAxis.setLabel("Seconds");
-        yAxis.setLabel("Total Pollution");
-        //creating the chart
-        final LineChart<Number,Number> lineChart = new LineChart<>(xAxis,yAxis);
+        LineChart<Number, Number> lChart =
+                createLineChart("Seconds", "Total pollution", "Pollution progression");
+        XYChart.Series series = createSeries(createListOfNums(0, chosenIteration.getTakenTime()), chosenIteration.getTotalPollution());
+        lChart.getData().add(series);
+        mainPane.setContent(lChart);
+    }
+
+    private BarChart<String,Number> createBarChart(String xLabel, String yLabel, String title) {
+        CategoryAxis xAxis = new CategoryAxis();
+        NumberAxis yAxis = new NumberAxis();
+        xAxis.setLabel(xLabel);
+        yAxis.setLabel(yLabel);
+        BarChart<String,Number> bc = new BarChart<>(xAxis,yAxis);
+
+        bc.setTitle(title);
+
+        bc.setPrefHeight(800);
+        bc.setPrefWidth(800);
+
+
+        return bc;
+    }
+
+    private LineChart<Number, Number> createLineChart(String xLabel, String yLabel, String title) {
+
+        NumberAxis xAxis = new NumberAxis();
+        NumberAxis yAxis = new NumberAxis();
+        xAxis.setLabel(xLabel);
+        yAxis.setLabel(yLabel);
+        LineChart<Number,Number> lineChart = new LineChart<>(xAxis,yAxis);
+
+        lineChart.setTitle(title);
 
         lineChart.setPrefHeight(800);
         lineChart.setPrefWidth(800);
-        //defining a series
+
+
+        return lineChart;
+
+    }
+
+    private XYChart.Series createSeries(List xAxis, List yAxis) {
         XYChart.Series series = new XYChart.Series();
-        //populating the series with data
-        for(int i = 0; i < chosenIteration.getTakenTime(); i++){
-            series.getData().add(new XYChart.Data(i, chosenIteration.getTotalPollution().get(i)));
+        for(int i = 0; i < xAxis.size(); i++){
+            series.getData().add(new XYChart.Data(xAxis.get(i),yAxis.get(i)));
         }
 
-        xAxis.setAutoRanging(true);
-        xAxis.setForceZeroInRange(false);
-        yAxis.setAutoRanging(true);
-        yAxis.setForceZeroInRange(false);
-        lineChart.autosize();
-        lineChart.applyCss();
-        lineChart.setTitle("Pollution progression");
-        lineChart.setStyle("-fx-stroke-width: 1px;");
-        lineChart.getData().add(series);
-        mainPane.setContent(lineChart);
+        return series;
+    }
+
+    private ArrayList<String> createListOfMapNames() {
+        ArrayList<String> mapNames = new ArrayList<>();
+        for(MapResult m : chosenAgent.getMapResults()) {
+            mapNames.add(m.getMapName());
+        }
+        return mapNames;
+    }
+
+    private ArrayList<String> createListOAgentNames(ArrayList<AgentResult> results) {
+        ArrayList<String> agentNames = new ArrayList<>();
+        for(AgentResult a : results) {
+            agentNames.add(a.getAgentType());
+        }
+        return agentNames;
+    }
+
+    private ArrayList<Integer> createListOfNums(int start, int end) {
+        ArrayList<Integer> listOfNums = new ArrayList<>();
+        for(int i = start; i < end; i++) {
+            listOfNums.add(i);
+        }
+        return listOfNums;
     }
 
     public void agentTypeOnAction() {

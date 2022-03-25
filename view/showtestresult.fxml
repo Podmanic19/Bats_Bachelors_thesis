@@ -14,14 +14,14 @@
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.test.ShowTestResultController">
    <children>
-      <ScrollPane fx:id="mainPane" prefHeight="800.0" prefWidth="800.0">
+      <ScrollPane fx:id="mainPane" prefHeight="800.0" prefWidth="800.0" style="-fx-background-color: white;">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
         </content>
       </ScrollPane>
       <VBox prefHeight="800.0" prefWidth="200.0">
          <children>
-            <AnchorPane prefHeight="400.0" prefWidth="200.0">
+            <AnchorPane prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: DFDFDF;">
                <children>
                   <Button layoutX="25.0" layoutY="38.0" mnemonicParsing="false" onAction="#saveOnAction" prefWidth="150.0" text="SAVE AS PNG">
                      <font>
@@ -52,14 +52,14 @@
               <panes>
                 <TitledPane fx:id="testResultPane" animated="false" text="Test result">
                      <content>
-                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: WHITE;" />
+                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: DFDFDF;" />
                      </content>
                 </TitledPane>
                 <TitledPane fx:id="agentResultPane" animated="false" text="Agent result">
                      <content>
-                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: WHITE;">
+                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: DFDFDF;">
                            <children>
-                              <Button layoutX="25.0" layoutY="40.0" mnemonicParsing="false" onAction="#btnTimeSpentOnMap" prefWidth="150.0" text="Total time spent">
+                              <Button layoutX="25.0" layoutY="40.0" mnemonicParsing="false" onAction="#btnTotalTimeSpentOnMap" prefWidth="150.0" text="Total time spent">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
@@ -119,7 +119,7 @@
                 </TitledPane>
                 <TitledPane fx:id="mapResultPane" animated="false" text="Map result">
                      <content>
-                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: WHITE;">
+                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: DFDFDF;">
                            <children>
                               <Label layoutX="38.0" layoutY="141.0" text="SHOW STATISTIC">
                                  <font>
@@ -141,7 +141,7 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Button>
-                              <Button layoutX="25.0" layoutY="260.0" mnemonicParsing="false" onAction="#btnMaxWork" prefWidth="150.0" text="Max work done">
+                              <Button layoutX="25.0" layoutY="340.0" mnemonicParsing="false" onAction="#btnMaxWork" prefWidth="150.0" text="Max work done">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
@@ -161,13 +161,18 @@
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Label>
+                              <Button layoutX="25.0" layoutY="260.0" mnemonicParsing="false" onAction="#btnMedWork" prefWidth="150.0" text="Median work done">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
                            </children>
                         </Pane>
                      </content>
                 </TitledPane>
                   <TitledPane fx:id="mapIterationResultPane" animated="false" prefHeight="0.0" prefWidth="198.0" text="Map iteration">
                      <content>
-                        <Pane prefHeight="691.0" prefWidth="196.0" style="-fx-background-color: WHITE;">
+                        <Pane prefHeight="691.0" prefWidth="196.0" style="-fx-background-color: DFDFDF;">
                            <children>
                               <Button layoutX="24.0" layoutY="129.0" mnemonicParsing="false" onAction="#btnShowsStatesOnAction" prefWidth="150.0" text=" TIME IN STATE">
                                  <font>
