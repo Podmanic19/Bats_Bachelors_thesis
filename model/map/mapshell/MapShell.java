@@ -101,7 +101,7 @@ public class MapShell implements Serializable {
 
     private void generateAgents() {
         initialAgentPositions = new Coordinate[100];
-        for(int  i = 0 ; i < mapparams.AGENT_NUM; i++){
+        for(int  i = 0 ; i < 100; i++){
             initialAgentPositions[i] = generateRandAgentPos();
         }
     }

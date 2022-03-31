@@ -48,7 +48,7 @@
             <Font size="15.0" />
          </font>
       </Label>
-      <Label layoutX="80.0" layoutY="390.0" text="Attraction distance">
+      <Label layoutX="80.0" layoutY="390.0" text="Number of agents">
          <font>
             <Font size="15.0" />
          </font>
@@ -82,7 +82,7 @@
       <TextField fx:id="maxWorkTf" layoutX="540.0" layoutY="290.0" />
       <TextField fx:id="seedTf4" layoutX="540.0" layoutY="340.0" />
       <TextField fx:id="numHomesTf" layoutX="540.0" layoutY="340.0" />
-      <TextField fx:id="attDistanceTf" layoutX="540.0" layoutY="390.0" />
+      <TextField fx:id="numAgentsTf" layoutX="540.0" layoutY="390.0" />
       <TextField fx:id="numWallsTf" layoutX="540.0" layoutY="441.0" />
       <TextField fx:id="wallLengthMinTf" layoutX="540.0" layoutY="490.0" />
       <TextField fx:id="homeSpawnTimeTf" layoutX="540.0" layoutY="590.0" />

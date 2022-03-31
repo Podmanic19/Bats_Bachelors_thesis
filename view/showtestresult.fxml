@@ -23,43 +23,106 @@
          <children>
             <AnchorPane prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: DFDFDF;">
                <children>
-                  <Button layoutX="25.0" layoutY="38.0" mnemonicParsing="false" onAction="#saveOnAction" prefWidth="150.0" text="SAVE AS PNG">
+                  <Button layoutX="25.0" layoutY="54.0" mnemonicParsing="false" onAction="#saveOnAction" prefWidth="150.0" text="SAVE AS PNG">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Button>
-                  <Label layoutX="25.0" layoutY="84.0" text="CHOSEN AGENT TYPE" textAlignment="CENTER">
+                  <Label layoutX="25.0" layoutY="85.0" text="CHOSEN AGENT TYPE" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="agentTypeCb" layoutX="27.0" layoutY="110.0" onAction="#agentTypeOnAction" prefWidth="150.0" promptText="Agent type name" />
-                  <Label layoutX="81.0" layoutY="153.0" text="MAP:" textAlignment="CENTER">
+                  <ComboBox fx:id="agentTypeCb" layoutX="27.0" layoutY="115.0" onAction="#agentTypeOnAction" prefWidth="150.0" promptText="Agent type name" />
+                  <Label layoutX="81.0" layoutY="150.0" text="MAP:" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="mapNameCb" layoutX="25.0" layoutY="181.0" onAction="#mapNameOnAction" prefWidth="150.0" promptText="Map name" />
-                  <Label layoutX="62.0" layoutY="234.0" text="ITERATION:" textAlignment="CENTER">
+                  <ComboBox fx:id="mapNameCb" layoutX="25.0" layoutY="180.0" onAction="#mapNameOnAction" prefWidth="150.0" promptText="Map name" />
+                  <Label layoutX="62.0" layoutY="215.0" text="ITERATION:" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="iterationCb" layoutX="26.0" layoutY="260.0" onAction="#iterNumOnAction" prefWidth="150.0" promptText="Iteration number" />
+                  <ComboBox fx:id="iterationCb" layoutX="26.0" layoutY="245.0" onAction="#iterNumOnAction" prefWidth="150.0" promptText="Iteration number" />
+                  <Button layoutX="25.0" layoutY="14.0" mnemonicParsing="false" onAction="#btnMainMenuOnAction" prefWidth="150.0" text="BACK TO MAIN MENU">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Button>
                </children>
             </AnchorPane>
             <Accordion prefHeight="600.0" prefWidth="200.0">
               <panes>
                 <TitledPane fx:id="testResultPane" animated="false" text="Test result">
                      <content>
-                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: DFDFDF;" />
+                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: DFDFDF;">
+                           <children>
+                              <Button layoutX="27.0" layoutY="40.0" mnemonicParsing="false" onAction="#btnTotalTimeComparison" prefWidth="150.0" text="Total time spent">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Button layoutX="25.0" layoutY="215.0" mnemonicParsing="false" onAction="#btnTotalWorkComparison" prefWidth="150.0" text="Total work done">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Button layoutX="25.0" layoutY="320.0" mnemonicParsing="false" onAction="#btnAverageWorkComparison" prefWidth="150.0" text="Average work done">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Button layoutX="25.0" layoutY="355.0" mnemonicParsing="false" onAction="#btnMedianWorkComparison" prefWidth="150.0" text="Median work done">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Label layoutX="23.0" layoutY="5.0" text="OVERALL STATISTICS:" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <Button layoutX="25.0" layoutY="250.0" mnemonicParsing="false" onAction="#btnMinimumWorkComparison" prefWidth="150.0" text="Minimum work done">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Button layoutX="25.0" layoutY="285.0" mnemonicParsing="false" onAction="#btnMaximumWorkComparison" prefWidth="150.0" text="Maximum work done">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Button layoutX="25.0" layoutY="75.0" mnemonicParsing="false" onAction="#btnMinimumTimeComparison" prefWidth="150.0" text="Minimum time spent">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Button layoutX="25.0" layoutY="110.0" mnemonicParsing="false" onAction="#btnMaximumTimeComparison" prefWidth="150.0" text="Maximum time spent">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Button layoutX="25.0" layoutY="145.0" mnemonicParsing="false" onAction="#btnAverageTimeComparison" prefWidth="150.0" text="Average time spent">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Button layoutX="25.0" layoutY="180.0" mnemonicParsing="false" onAction="#btnMedianTimeComparison" prefWidth="150.0" text="Median time spent">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </Pane>
                      </content>
                 </TitledPane>
                 <TitledPane fx:id="agentResultPane" animated="false" text="Agent result">
                      <content>
                         <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: DFDFDF;">
                            <children>
-                              <Button layoutX="25.0" layoutY="40.0" mnemonicParsing="false" onAction="#btnTotalTimeSpentOnMap" prefWidth="150.0" text="Total time spent">
+                              <Button layoutX="25.0" layoutY="40.0" mnemonicParsing="false" onAction="#btnTotalTimeSpent" prefWidth="150.0" text="Total time spent">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
@@ -69,27 +132,27 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Button>
-                              <Button layoutX="27.0" layoutY="250.0" mnemonicParsing="false" onAction="#btnAverageWorkDoneOnMap" prefWidth="150.0" text="Average work done">
+                              <Button layoutX="25.0" layoutY="320.0" mnemonicParsing="false" onAction="#btnAverageWorkDoneOnMap" prefWidth="150.0" text="Average work done">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Button>
-                              <Button layoutX="25.0" layoutY="285.0" mnemonicParsing="false" onAction="#btnMedianWorkDoneOnMap" prefWidth="150.0" text="Median work done">
+                              <Button layoutX="25.0" layoutY="355.0" mnemonicParsing="false" onAction="#btnMedianWorkDoneOnMap" prefWidth="150.0" text="Median work done">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Button>
-                              <Label layoutX="24.0" layoutY="17.0" text="PER MAP STATISTICS:" textAlignment="CENTER">
+                              <Label layoutX="25.0" layoutY="5.0" text="PER MAP STATISTICS:" textAlignment="CENTER">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <Button layoutX="25.0" layoutY="320.0" mnemonicParsing="false" onAction="#btnMedianWorkDoneOnMap" prefWidth="150.0" text="Minimum work done">
+                              <Button layoutX="25.0" layoutY="250.0" mnemonicParsing="false" onAction="#btnMinimumWorkDoneOnMap" prefWidth="150.0" text="Minimum work done">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Button>
-                              <Button layoutX="25.0" layoutY="355.0" mnemonicParsing="false" onAction="#btnMedianWorkDoneOnMap" prefWidth="150.0" text="Maximum work done">
+                              <Button layoutX="25.0" layoutY="285.0" mnemonicParsing="false" onAction="#btnMaximumWorkDoneOnMap" prefWidth="150.0" text="Maximum work done">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>

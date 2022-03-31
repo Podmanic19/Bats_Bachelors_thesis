@@ -19,7 +19,7 @@ public class MapSettingsController implements Initializable {
     @FXML TextField minWorkTf;
     @FXML TextField maxWorkTf;
     @FXML TextField numHomesTf;
-    @FXML TextField attDistanceTf;
+    @FXML TextField numAgentsTf;
     @FXML TextField numWallsTf;
     @FXML TextField wallLengthMinTf;
     @FXML TextField wallLengthMaxTf;
@@ -52,12 +52,12 @@ public class MapSettingsController implements Initializable {
         this.mapparams.MIN_WORK = Integer.parseInt(minWorkTf.getText());
         this.mapparams.MAX_WORK = Integer.parseInt(maxWorkTf.getText());
         this.mapparams.NUMBER_HOME = Integer.parseInt(numHomesTf.getText());
-        this.mapparams.ATTRACTION_DISTANCE = Integer.parseInt(attDistanceTf.getText());
         this.mapparams.WALLS_NUM = Integer.parseInt(numWallsTf.getText());
         this.mapparams.WALL_LENGTH_MIN = Integer.parseInt(wallLengthMinTf.getText());
         this.mapparams.WALL_LENGTH_MAX= Integer.parseInt(wallLengthMaxTf.getText());
+        this.mapparams.AGENT_NUM = Integer.parseInt(numAgentsTf.getText());
         this.envparams.DYNAMIC_HOME_SPAWN_TIME= Integer.parseInt(homeSpawnTimeTf.getText());
-        this.envparams.DYNAMIC_HOME_GROWTH_SIZE = Integer.parseInt(homeGrowthSizeTf.getText());
+        this.envparams.DYNAMIC_HOME_GROWTH_SIZE = Double.parseDouble(homeGrowthSizeTf.getText());
     }
 
     @Override
@@ -70,7 +70,6 @@ public class MapSettingsController implements Initializable {
          minWorkTf.setText(String.valueOf(Main.mapparams.MIN_WORK));
          maxWorkTf.setText(String.valueOf(Main.mapparams.MAX_WORK));
          numHomesTf.setText(String.valueOf(Main.mapparams.NUMBER_HOME));
-         attDistanceTf.setText(String.valueOf(Main.mapparams.ATTRACTION_DISTANCE));
          numWallsTf.setText(String.valueOf(Main.mapparams.WALLS_NUM));
          wallLengthMinTf.setText(String.valueOf(Main.mapparams.WALL_LENGTH_MIN));
          wallLengthMaxTf.setText(String.valueOf(Main.mapparams.WALL_LENGTH_MAX));

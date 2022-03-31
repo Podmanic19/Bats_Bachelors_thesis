@@ -1,5 +1,7 @@
 package model.testing;
 
+import model.map.mapshell.MapShell;
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -20,6 +22,26 @@ public class TestResult implements Aggregable, Serializable {
         oos.writeObject(this);
         oos.close();
         fos.close();
+
+    }
+
+    public static TestResult load(File f) throws IOException {
+
+
+        TestResult tr;
+
+        try {
+            FileInputStream fis = new FileInputStream(f);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            tr = (TestResult) ois.readObject();
+            ois.close();
+            fis.close();
+        } catch (IOException | ClassNotFoundException ioe) {
+            ioe.printStackTrace();
+            return null;
+        }
+
+        return tr;
 
     }
 

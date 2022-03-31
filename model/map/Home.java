@@ -15,7 +15,6 @@ public class Home implements Serializable {
     private final Coordinate coords;
     private ArrayList<Agent> agents = new ArrayList<>();
     private double pollution;
-    private double attraction_distance = mapparams.ATTRACTION_DISTANCE;
     private CallType call;
 
     public Home(int id, double pollution, int spawn_time, Coordinate coords) {
@@ -36,10 +35,6 @@ public class Home implements Serializable {
 
     public synchronized CallType getCall() {
         return call;
-    }
-
-    public double getAttraction_distance() {
-        return attraction_distance;
     }
 
     public synchronized void addAgent(Agent a) {
@@ -69,7 +64,7 @@ public class Home implements Serializable {
         lifeTime++;
     }
 
-    public void increasePollution(int pollution){
+    public void increasePollution(double pollution){
         this.pollution += pollution;
     }
 

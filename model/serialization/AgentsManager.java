@@ -4,6 +4,7 @@ import model.agents.AgentParams;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class AgentsManager {
 
@@ -19,6 +20,11 @@ public class AgentsManager {
 
     public void updateAndSave(AgentParams ap) {
         update(ap);
+        new DatabaseAdmin<AgentParams>().upload("Agents\\agent_array", agents);
+    }
+
+    public void delete(AgentParams ap) {
+        agents.remove(ap);
         new DatabaseAdmin<AgentParams>().upload("Agents\\agent_array", agents);
     }
 

@@ -9,7 +9,7 @@ import javafx.scene.shape.Circle;
 
 import java.util.ArrayList;
 
-import static model.main.Main.mapparams;
+import static model.main.Main.*;
 
 public interface PlaceHomes {
 
@@ -26,7 +26,7 @@ public interface PlaceHomes {
                 if(Main.SHOW_ATTRACTION){
                     Circle att = new Circle();
                     att.setFill(Color.TRANSPARENT);
-                    att.setRadius(mapparams.ATTRACTION_DISTANCE * coef_w);
+                    att.setRadius(agentparams.HEARING_DISTANCE * coef_w);
                     att.setCenterX(h.getCoords().getX() * coef_w);
                     att.setCenterY(h.getCoords().getY() * coef_h);
                     att.setStroke(Color.GREEN);

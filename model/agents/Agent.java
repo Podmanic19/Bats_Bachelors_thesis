@@ -17,6 +17,7 @@ public abstract class Agent implements Serializable {
     protected Vector direction; // vector movement
     protected double speed; // speed - between 2 and 11.5
     protected double sightDist; // how far the agent can see
+    protected double hearingDist; // how far the agent can see
     protected double fov; // field of view
     protected double workRate; // how much work the agent performs per unit of time
     protected double interestBound; // may not be needed
@@ -85,6 +86,7 @@ public abstract class Agent implements Serializable {
         this.workRate = agentparams.WORK_RATE;
         this.interestBound = agentparams.INTEREST_BOUNDARY;
         this.state = State.searching;
+        this.hearingDist = agentparams.HEARING_DISTANCE;
         generateRandSpeed();
         generateRandDir();
     }
@@ -101,6 +103,7 @@ public abstract class Agent implements Serializable {
         this.workRate = a.workRate;
         this.interestBound = a.interestBound;
         this.state = State.searching;
+        this.hearingDist = a.hearingDist;
         generateRandSpeed();
         generateRandDir();
     }
@@ -155,7 +158,7 @@ public abstract class Agent implements Serializable {
     }
 
     protected boolean isInAttractionDistance(double distance, Home home) {
-        if (Double.compare(distance, home.getAttraction_distance()) > 0)
+        if (Double.compare(distance, hearingDist) > 0)
             return false;
         for (LineSegment wall :myMap.getWalls()) {
             if (wall.doIntersect(new LineSegment(position, home.getCoords()))) {
@@ -211,24 +214,8 @@ public abstract class Agent implements Serializable {
         return direction;
     }
 
-    public double getSpeed() {
-        return speed;
-    }
-
-    public double getSightDist() {
-        return sightDist;
-    }
-
-    public double getFov() {
-        return fov;
-    }
-
     public double getWorkRate() {
         return workRate;
-    }
-
-    public double getInterestBound() {
-        return interestBound;
     }
 
     public State getState() {
@@ -237,10 +224,6 @@ public abstract class Agent implements Serializable {
 
     public double getTotalWork() {
         return totalWork;
-    }
-
-    public int[] getTimeSpentInState() {
-        return timeSpentInState;
     }
 
     public void giveMap(Map myMap) {

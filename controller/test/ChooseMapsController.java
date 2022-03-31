@@ -17,6 +17,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import model.gui.ChangeScene;
+import model.gui.NewWindowScene;
 import model.gui.Popup;
 import model.map.mapshell.Map;
 import model.map.mapshell.MapShell;
@@ -32,7 +33,7 @@ import java.util.ResourceBundle;
 import static model.main.Main.*;
 
 
-public class ChooseMapsController implements ChangeScene, Popup, Initializable, PlaceHomes, PlaceAgents, PlaceWalls {
+public class ChooseMapsController implements ChangeScene, Popup, Initializable, PlaceHomes, PlaceAgents, PlaceWalls, NewWindowScene {
 
     @FXML Pane previewPane;
     @FXML TableView<MapShell> mapsTable;
@@ -122,7 +123,7 @@ public class ChooseMapsController implements ChangeScene, Popup, Initializable, 
     }
 
     public void btnMapSettingsOnAction() {
-
+        createScene("mapsettings");
     }
 
     public void btnLoadOnAction() {
@@ -205,14 +206,6 @@ public class ChooseMapsController implements ChangeScene, Popup, Initializable, 
 
 
         try {
-            if (Objects.equals(numMapsTf.getText(), "0")) {
-                check = false;
-                popup("Invalid number of maps.");
-            }
-            else {
-                test.setNumMaps(Integer.parseInt(numMapsTf.getText()));
-            }
-
             if (Integer.parseInt(numAgentsTf.getText()) <= 0 || Integer.parseInt(numAgentsTf.getText()) > 100) {
                 check = false;
                 popup("Please set the number of agents between 1 and 100");

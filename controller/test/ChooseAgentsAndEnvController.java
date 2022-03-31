@@ -17,6 +17,7 @@ import model.gui.ChangeScene;
 import model.gui.NewWindowScene;
 import model.gui.Popup;
 import model.serialization.AgentsManager;
+import model.testing.EnvironmentParameters;
 import model.testing.Test;
 
 import java.io.IOException;
@@ -31,16 +32,15 @@ public class ChooseAgentsAndEnvController implements Initializable, NewWindowSce
 
     @FXML private TextField spawnTimeTf;
     @FXML private TextField homeGrowthTf;
-    @FXML private CheckBox homeSpawningCb;
-    @FXML private CheckBox homeGrowthCb;
+    @FXML private TextField simulationLengthTf;
+    @FXML private CheckBox dynamicEnvCb;
     @FXML private TableView<AgentParams> agentsTable;
     @FXML private TableColumn<AgentParams, String> nameCol;
     @FXML private TableColumn<AgentParams, Double> forwardCol;
     @FXML private TableColumn<AgentParams, Double> backCol;
     @FXML private TableColumn<AgentParams, Integer> sightCol;
     @FXML private TableColumn<AgentParams, Double> fovCol;
-    @FXML private TableColumn<AgentParams, Double> workCol;
-    @FXML private TableColumn<AgentParams, Integer> interestCol;
+    @FXML private TableColumn<AgentParams, Integer> hearingCol;
     @FXML private TableColumn<AgentParams, Boolean> avoidCol;
     @FXML private TableColumn<AgentParams, Boolean> decisiveCol;
     @FXML private TableColumn<AgentParams, Boolean> repulseCol;
@@ -67,20 +67,42 @@ public class ChooseAgentsAndEnvController implements Initializable, NewWindowSce
 
     }
 
-    public void homeGrowthOnAction() {
-        homeGrowthTf.setDisable(!homeGrowthCb.isSelected());
+    public void btnDeleteOnAction() {
+
+        AgentParams ap = agentsTable.getSelectionModel().getSelectedItem();
+        if(ap == null) {
+            popup("No agent type selected");
+            return;
+        }
+
+        agentsTable.getItems().remove(ap);
+        try {
+            new AgentsManager().delete(ap);
+        } catch (IOException e) {
+            popup("Couldn't delete given agent type.");
+            e.printStackTrace();
+        }
+
+
     }
 
-    public void homeSpawningOnAction() {
-        spawnTimeTf.setDisable(!homeSpawningCb.isSelected());
+    public void dynamicEnvOnAction() {
+        spawnTimeTf.setDisable(!dynamicEnvCb.isSelected());
+        simulationLengthTf.setDisable(!dynamicEnvCb.isSelected());
+        if(!dynamicEnvCb.isSelected()){
+            simulationLengthTf.setText("until all POIs are cleared");
+        }
+        else{
+            simulationLengthTf.setText("10000");
+        }
     }
 
     public void btnPrevOnAction() {
 
         try {
-            sceneChanger("mainscene");
+            sceneChanger("startingscene");
         } catch (IOException e) {
-            popup("Unable to load file 'view/choosetestparams.fxml");
+            popup("Unable to load file 'view/startingscene.fxml");
             e.printStackTrace();
         }
 
@@ -108,8 +130,7 @@ public class ChooseAgentsAndEnvController implements Initializable, NewWindowSce
         backCol.setCellValueFactory(new PropertyValueFactory<>("BACK"));
         sightCol.setCellValueFactory(new PropertyValueFactory<>("SIGHT"));
         fovCol.setCellValueFactory(new PropertyValueFactory<>("FOV"));
-        workCol.setCellValueFactory(new PropertyValueFactory<>("WORK_RATE"));
-        interestCol.setCellValueFactory(new PropertyValueFactory<>("INTEREST_BOUNDARY"));
+        hearingCol.setCellValueFactory(new PropertyValueFactory<>("HEARING_DISTANCE"));
         avoidCol.setCellValueFactory(new PropertyValueFactory<>("AVOID_OTHERS"));
         decisiveCol.setCellValueFactory(new PropertyValueFactory<>("DECISIVE"));
         chosenCol.setCellFactory(column -> new CheckBoxTableCell<>());
@@ -141,18 +162,42 @@ public class ChooseAgentsAndEnvController implements Initializable, NewWindowSce
     private boolean checkTest() {
 
         boolean check = true;
+        double growthSize = 0;
+        int spawnTime = 0;
+        int simLength = 0;
 
-        if(!homeGrowthTf.isDisable() && Objects.equals(homeGrowthTf.getText(), "0")) {
-            check = false;
-            popup("Invalid home growth rate.");
+        growthSize = Double.parseDouble(homeGrowthTf.getText());
+
+        try {
+            growthSize = Double.parseDouble(homeGrowthTf.getText());
+            if(Double.compare(growthSize, 0) < 0) throw new NumberFormatException();
+        }
+        catch(NumberFormatException e) {
+            popup("Invalid growth rate.");
+            e.printStackTrace();
         }
 
-        if(!spawnTimeTf.isDisable() && Objects.equals(spawnTimeTf.getText(), "0")) {
-            check = false;
+        try {
+            spawnTime = Integer.parseInt(spawnTimeTf.getText());
+            if(spawnTime < 0) throw new NumberFormatException();
+        }
+        catch(NumberFormatException e) {
             popup("Invalid spawn time rate.");
+            e.printStackTrace();
         }
 
-        ArrayList<AgentParams> testedAgents = new ArrayList<AgentParams>();
+        if(!simulationLengthTf.isDisable()) {
+            try {
+                simLength = Integer.parseInt(simulationLengthTf.getText());
+                if(simLength <= 0) throw new NumberFormatException();
+            }
+            catch (NumberFormatException e) {
+                popup("Invalid number in simulation length textfield, please enter a positive number");
+                check = false;
+            }
+        }
+
+        ArrayList<AgentParams> testedAgents = new ArrayList<>();
 
         for(AgentParams a : agentsTable.getItems()) {
             if(a.SELECTED) testedAgents.add(a);
@@ -163,8 +208,14 @@ public class ChooseAgentsAndEnvController implements Initializable, NewWindowSce
             popup("No selected agents to test.");
         }
 
+        if(!check) {
+            return false;
+        }
+
+        test.setRunTime(simLength);
+        test.setEnvparams(new EnvironmentParameters(spawnTime,growthSize));
         test.setAgentparams(testedAgents);
-        return check;
+        return true;
 
     }
 

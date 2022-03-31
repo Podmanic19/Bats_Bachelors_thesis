@@ -20,24 +20,24 @@
       <Pane fx:id="paneBtn" maxHeight="800.0" maxWidth="200.0" minHeight="200.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: DFDFDF;">
          <children>
             <Button fx:id="btnHelp" layoutX="81.0" layoutY="14.0" mnemonicParsing="false" opacity="0.0" text="Button" />
-            <Button fx:id="btnCreate" layoutX="36.0" layoutY="60.0" mnemonicParsing="false" onAction="#btnCreateEnv" prefHeight="25.0" prefWidth="128.0" style=": ;" text="GENERATE MAP" textAlignment="CENTER">
+            <Button fx:id="btnCreate" layoutX="36.0" layoutY="115.0" mnemonicParsing="false" onAction="#btnCreateEnv" prefHeight="25.0" prefWidth="128.0" style=": ;" text="GENERATE MAP" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <Button fx:id="btnEnvSettings" layoutX="36.0" layoutY="140.0" mnemonicParsing="false" onAction="#btnEnvSettings" prefHeight="25.0" prefWidth="128.0" text="MAP SETTINGS" textAlignment="CENTER">
+            <Button fx:id="btnEnvSettings" layoutX="36.0" layoutY="195.0" mnemonicParsing="false" onAction="#btnEnvSettings" prefHeight="25.0" prefWidth="128.0" text="MAP SETTINGS" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Button>
-            <Button fx:id="btnAgentSettings" layoutX="36.0" layoutY="220.0" mnemonicParsing="false" onAction="#btnAgentSettings" prefHeight="25.0" prefWidth="128.0" text="AGENT SETTINGS" textAlignment="CENTER">
+            <Button fx:id="btnAgentSettings" layoutX="36.0" layoutY="275.0" mnemonicParsing="false" onAction="#btnAgentSettings" prefHeight="25.0" prefWidth="128.0" text="AGENT SETTINGS" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Button>
-            <Button fx:id="btnLoadEnv" layoutX="36.0" layoutY="300.0" mnemonicParsing="false" onAction="#btnLoad" prefHeight="25.0" prefWidth="128.0" text="LOAD MAP" textAlignment="CENTER">
+            <Button fx:id="btnLoadEnv" layoutX="36.0" layoutY="355.0" mnemonicParsing="false" onAction="#btnLoad" prefHeight="25.0" prefWidth="128.0" text="LOAD MAP" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Button>
-            <Button fx:id="btnSave" disable="true" layoutX="36.0" layoutY="380.0" mnemonicParsing="false" onAction="#btnSave" prefHeight="25.0" prefWidth="128.0" text="SAVE MAP" textAlignment="CENTER">
+            <Button fx:id="btnSave" disable="true" layoutX="36.0" layoutY="435.0" mnemonicParsing="false" onAction="#btnSave" prefHeight="25.0" prefWidth="128.0" text="SAVE MAP" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -46,13 +46,8 @@
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Button>
-            <Button fx:id="btnCreateTest" layoutX="36.0" layoutY="460.0" mnemonicParsing="false" onAction="#btnCreateTest" prefHeight="25.0" prefWidth="128.0" text="CREATE TESTS" textAlignment="CENTER">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Button>
-            <CheckBox fx:id="cbShowCalls" layoutX="36.0" layoutY="540.0" mnemonicParsing="false" onAction="#showCallsOnAction" text="SHOW CALLS" />
-            <CheckBox fx:id="cbShowVision" layoutX="36.0" layoutY="580.0" mnemonicParsing="false" onAction="#showVisionOnAction" text="SHOW VISION" />
+            <CheckBox fx:id="cbShowCalls" layoutX="32.0" layoutY="510.0" mnemonicParsing="false" onAction="#showCallsOnAction" text="SHOW CALLS" />
+            <CheckBox fx:id="cbShowVision" layoutX="32.0" layoutY="550.0" mnemonicParsing="false" onAction="#showVisionOnAction" text="SHOW VISION" />
             <Label fx:id="lblTicks" layoutX="36.0" layoutY="746.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="128.0" textAlignment="CENTER" />
          </children>
       </Pane>

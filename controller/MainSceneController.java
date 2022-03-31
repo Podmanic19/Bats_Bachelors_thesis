@@ -23,6 +23,7 @@ import java.io.IOException;
 import static model.main.Main.*;
 
 public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes, PlaceWalls, Popup, ChangeScene {
+
     @FXML Button btnCreate;
     @FXML Button btnEnvSettings;
     @FXML Button btnAgentSettings;
@@ -30,7 +31,6 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
     @FXML Button btnPlay;
     @FXML Button btnSave;
     @FXML Button btnHelp;
-    @FXML Button btnCreateTest;
     @FXML Pane paneMain;
     @FXML Pane paneBtn;
     @FXML Label lblLoading;
@@ -119,24 +119,6 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
         SHOW_SIGHT = cbShowVision.isSelected();
     }
 
-    public void btnCreateTest() {
-
-        try {
-            sceneChanger("choosetestparams");
-        } catch (IOException e) {
-            popup("Couldn't load 'view/choosetestparams.fxml'");
-            e.printStackTrace();
-        }
-//        ArrayList<AgentParams> agenttypes = new ArrayList<>();
-//        ArrayList<Map> maps = new ArrayList<>();
-//        agenttypes.add(agentparams);
-//        maps.add(new Map());
-//
-//
-//        new Test("Timetest", mapparams, agenttypes, maps, envparams, 1, 20, 100 ).run();
-
-    }
-
     private void disableButtons(boolean disable){
         btnPlay.setDisable(disable);
         btnAgentSettings.setDisable(disable);
@@ -144,7 +126,6 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
         btnLoadEnv.setDisable(disable);
         btnSave.setDisable(disable);
         btnEnvSettings.setDisable(disable);
-        btnCreateTest.setDisable(disable);
     }
 
 }

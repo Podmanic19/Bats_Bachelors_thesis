@@ -15,17 +15,16 @@
    <children>
       <TableView fx:id="agentsTable" editable="true" layoutX="17.0" layoutY="449.0" prefHeight="256.0" prefWidth="969.0">
          <columns>
-            <TableColumn fx:id="nameCol" prefWidth="99.9999942779541" text="Name" />
-            <TableColumn fx:id="forwardCol" minWidth="8.26678466796875" prefWidth="85.0" text="Forward" />
-            <TableColumn fx:id="backCol" minWidth="2.933349609375" prefWidth="75.0" text="Back" />
-            <TableColumn fx:id="sightCol" prefWidth="67.0" text="Sight" />
-            <TableColumn fx:id="fovCol" prefWidth="52.0" text="FOV" />
-            <TableColumn fx:id="workCol" prefWidth="93.0" text="Work rate" />
-            <TableColumn fx:id="interestCol" prefWidth="113.0" text="Interest bound" />
-            <TableColumn fx:id="avoidCol" prefWidth="120.0" text="Avoids others" />
-            <TableColumn fx:id="repulseCol" prefWidth="125.0" text="Repulsive call" />
-            <TableColumn fx:id="decisiveCol" prefWidth="76.0" text="Decisive" />
-            <TableColumn fx:id="chosenCol" prefWidth="62.0" text="Chosen" />
+            <TableColumn fx:id="nameCol" prefWidth="139.46667671203613" text="Name" />
+            <TableColumn fx:id="forwardCol" minWidth="8.26678466796875" prefWidth="74.13334655761719" text="Forward" />
+            <TableColumn fx:id="backCol" minWidth="2.933349609375" prefWidth="65.86660766601562" text="Back" />
+            <TableColumn fx:id="sightCol" prefWidth="82.666748046875" text="Sight" />
+            <TableColumn fx:id="fovCol" prefWidth="74.933349609375" text="FOV" />
+            <TableColumn fx:id="hearingCol" prefWidth="146.93328857421875" text="Hearing distance" />
+            <TableColumn fx:id="avoidCol" prefWidth="103.46673583984375" text="Avoids others" />
+            <TableColumn fx:id="repulseCol" prefWidth="121.33331298828125" text="Repulsive call" />
+            <TableColumn fx:id="decisiveCol" prefWidth="94.40008544921875" text="Decisive" />
+            <TableColumn fx:id="chosenCol" prefWidth="61.00006103515625" text="Chosen" />
          </columns>
       </TableView>
       <Label layoutX="40.0" layoutY="404.0" text="Agent types">
@@ -33,7 +32,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="40.0" layoutY="168.0" text="Dynamic home spawn time:">
+      <Label layoutX="40.0" layoutY="148.0" text="Dynamic home spawn time:">
          <font>
             <Font size="20.0" />
          </font>
@@ -78,17 +77,29 @@
       </Label>
       <Line endX="51.999969482421875" endY="7.62939453125E-6" fill="#e2e2e2" layoutX="306.0" layoutY="59.0" startX="-0.66668701171875" startY="7.62939453125E-6" stroke="#e2e2e2" />
       <Line endX="24.99993896484375" endY="7.62939453125E-6" layoutX="674.0" layoutY="59.0" startX="-31.00006103515625" startY="7.62939453125E-6" stroke="#e2e2e2" />
-      <TextField fx:id="spawnTimeTf" disable="true" layoutX="403.0" layoutY="171.0" text="0" />
-      <TextField fx:id="homeGrowthTf" disable="true" layoutX="403.0" layoutY="270.0" text="0" />
-      <CheckBox fx:id="homeSpawningCb" layoutX="740.0" layoutY="170.0" mnemonicParsing="false" onAction="#homeSpawningOnAction" text="Dynamic home spawning">
+      <TextField fx:id="spawnTimeTf" alignment="CENTER" disable="true" layoutX="400.0" layoutY="150.0" text="0" />
+      <TextField fx:id="homeGrowthTf" alignment="CENTER" layoutX="400.0" layoutY="270.0" text="0" />
+      <CheckBox fx:id="dynamicEnvCb" layoutX="620.0" layoutY="210.0" mnemonicParsing="false" onAction="#dynamicEnvOnAction" text="Dynamic environment">
          <font>
             <Font size="16.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="homeGrowthCb" layoutX="740.0" layoutY="268.0" mnemonicParsing="false" onAction="#homeGrowthOnAction" text="Dynamic home growth">
+      <Button layoutX="309.0" layoutY="403.0" mnemonicParsing="false" onAction="#btnDeleteOnAction" prefHeight="29.0" prefWidth="136.0" text="DELETE SELECTED">
          <font>
-            <Font size="16.0" />
+            <Font name="System Bold" size="13.0" />
          </font>
-      </CheckBox>
+      </Button>
+      <Label layoutX="40.0" layoutY="330.0" text="Attraction distance:">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="attDistanceTf" alignment="CENTER" layoutX="400.0" layoutY="330.0" text="0" />
+      <Label layoutX="40.0" layoutY="208.0" text="Length of simulation:">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="simulationLengthTf" alignment="CENTER" disable="true" layoutX="400.0" layoutY="210.0" text="until all POIs are cleared" />
    </children>
 </Pane>

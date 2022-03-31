@@ -33,7 +33,7 @@
       <TextField fx:id="forwardTf" layoutX="538.0" layoutY="190.0" />
       <TextField fx:id="backTf" layoutX="538.0" layoutY="240.0" />
       <TextField fx:id="rightTf" layoutX="540.0" layoutY="140.0" />
-      <Label layoutX="80.0" layoutY="340.0" text="Field of view">
+      <Label layoutX="80.0" layoutY="390.0" text="Hearing distance">
          <font>
             <Font size="15.0" />
          </font>
@@ -43,7 +43,7 @@
             <Font size="15.0" />
          </font>
       </Label>
-      <TextField fx:id="fovTf" layoutX="538.0" layoutY="340.0" />
+      <TextField fx:id="hearingTf" layoutX="539.0" layoutY="390.0" />
       <TextField fx:id="sightTf" layoutX="538.0" layoutY="290.0" />
       <Button fx:id="btnSave" layoutX="276.0" layoutY="703.0" mnemonicParsing="false" onAction="#btnSaveOnAction" text="Save" />
       <Label layoutX="80.0" layoutY="40.0" text="Name">
@@ -52,33 +52,39 @@
          </font>
       </Label>
       <TextField fx:id="nameTf" layoutX="540.0" layoutY="40.0" />
-      <Label layoutX="80.0" layoutY="390.0" text="Work rate">
+      <Label layoutX="80.0" layoutY="440.0" text="Work rate">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <TextField fx:id="workRateTf" layoutX="540.0" layoutY="390.0" />
-      <Label layoutX="80.0" layoutY="440.0" text="Interest rate">
+      <TextField fx:id="workRateTf" layoutX="541.0" layoutY="440.0" />
+      <Label layoutX="80.0" layoutY="490.0" text="Interest rate">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <TextField fx:id="interestTf" layoutX="540.0" layoutY="440.0" />
-      <Label layoutX="80.0" layoutY="490.0" text="Speed min">
+      <TextField fx:id="interestTf" layoutX="541.0" layoutY="490.0" />
+      <Label layoutX="80.0" layoutY="540.0" text="Speed min">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <TextField fx:id="speedMinTf" layoutX="540.0" layoutY="490.0" />
-      <TextField fx:id="speedMaxTf" layoutX="540.0" layoutY="540.0" />
-      <Label layoutX="80.0" layoutY="540.0" text="Speed max">
+      <TextField fx:id="speedMinTf" layoutX="541.0" layoutY="540.0" />
+      <TextField fx:id="speedMaxTf" layoutX="541.0" layoutY="590.0" />
+      <Label layoutX="80.0" layoutY="590.0" text="Speed max">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <CheckBox fx:id="avoidOthersCb" layoutX="146.0" layoutY="625.0" mnemonicParsing="false" text="Avoid others" />
-      <CheckBox fx:id="repulseCallCb" layoutX="537.0" layoutY="627.0" mnemonicParsing="false" text="Repulse call" />
+      <CheckBox fx:id="avoidOthersCb" layoutX="146.0" layoutY="658.0" mnemonicParsing="false" text="Avoid others" />
+      <CheckBox fx:id="repulseCallCb" layoutX="537.0" layoutY="660.0" mnemonicParsing="false" text="Repulse call" />
       <Button fx:id="btnSet" layoutX="462.0" layoutY="703.0" mnemonicParsing="false" onAction="#btnSetOnAction" text="Set" />
-      <CheckBox fx:id="decisiveCb" layoutX="363.0" layoutY="626.0" mnemonicParsing="false" text="Decisive" />
+      <CheckBox fx:id="decisiveCb" layoutX="363.0" layoutY="659.0" mnemonicParsing="false" text="Decisive" />
+      <TextField fx:id="fovTf" layoutX="538.0" layoutY="340.0" />
+      <Label layoutX="78.0" layoutY="342.0" text="Field of view">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

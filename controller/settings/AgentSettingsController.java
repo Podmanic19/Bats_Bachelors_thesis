@@ -25,6 +25,7 @@ public class AgentSettingsController implements Initializable, Popup {
     @FXML TextField forwardTf;
     @FXML TextField sightTf;
     @FXML TextField fovTf;
+    @FXML TextField hearingTf;
     @FXML TextField workRateTf;
     @FXML TextField interestTf;
     @FXML TextField speedMinTf;
@@ -53,7 +54,7 @@ public class AgentSettingsController implements Initializable, Popup {
         if(nameTf.getText().isEmpty() || rightTf.getText().isEmpty() || leftTf.getText().isEmpty() ||
         backTf.getText().isEmpty() || forwardTf.getText().isEmpty() || sightTf.getText().isEmpty() ||
         fovTf.getText().isEmpty() || workRateTf.getText().isEmpty() || interestTf.getText().isEmpty() ||
-        speedMinTf.getText().isEmpty() || speedMaxTf.getText().isEmpty()){
+        speedMinTf.getText().isEmpty() || speedMaxTf.getText().isEmpty() || hearingTf.getText().isEmpty()){
             popup("All fields must be filled in.");
         }
         setParams();
@@ -69,6 +70,7 @@ public class AgentSettingsController implements Initializable, Popup {
         forwardTf.setText(String.valueOf(agentparams.FORWARD));
         sightTf.setText(String.valueOf(agentparams.SIGHT));
         fovTf.setText(String.valueOf(agentparams.FOV));
+        hearingTf.setText(String.valueOf(agentparams.HEARING_DISTANCE));
         workRateTf.setText(String.valueOf(agentparams.WORK_RATE));
         interestTf.setText(String.valueOf(agentparams.INTEREST_BOUNDARY));
         speedMinTf.setText(String.valueOf(agentparams.SPEED_MIN));
@@ -92,6 +94,7 @@ public class AgentSettingsController implements Initializable, Popup {
         params.INTEREST_BOUNDARY = Integer.parseInt(interestTf.getText());
         params.SPEED_MIN = Double.parseDouble(speedMinTf.getText());
         params.SPEED_MAX = Double.parseDouble(speedMaxTf.getText());
+        params.HEARING_DISTANCE = Integer.parseInt(hearingTf.getText());
         params.AVOID_OTHERS = avoidOthersCb.isSelected();
         params.REPULSIVE_CALL = repulseCallCb.isSelected();
         params.DECISIVE = decisiveCb.isSelected();

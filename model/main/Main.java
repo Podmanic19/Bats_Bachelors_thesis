@@ -35,14 +35,14 @@ public class Main extends Application {
 
     public static void mainScene() throws Exception {
 
-        Parent root = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource("/view/mainscene.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource("/view/startingscene.fxml")));
         Scene scene = new Scene(root);
 
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
         primaryStage.setTitle("Bat simulation");
-        primaryStage.getIcons().add(new Image("/Image/images.jfif"));
+        primaryStage.getIcons().add(new Image("/Image/SKYBAT.png"));
         primaryStage.show();
 
     }

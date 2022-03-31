@@ -7,7 +7,6 @@ import model.agents.Agent;
 import model.main.Main;
 import model.map.Home;
 import model.map.mapshell.Map;
-import model.map.MapParameters;
 import model.map.mapshell.MapShell;
 
 import java.time.Duration;
@@ -18,11 +17,9 @@ import java.util.HashSet;
 
 public class Test {
 
-    private MapParameters mapparams;
-    private EnvironmentParameters envparams;
     private ArrayList<AgentParams> agentparams;
     private ArrayList<MapShell> uninitializedMaps;
-    private int numMaps;
+    private EnvironmentParameters envparams;
     private int numAgents;
     private int numHomes;
     private int runTime;
@@ -32,21 +29,9 @@ public class Test {
 
     }
 
-    public Test(String name, MapParameters mapparams, ArrayList<AgentParams> agentparams, ArrayList<MapShell> maps,
-                EnvironmentParameters envparams, int numMaps, int numAgents, int itersPerMap) {
-        this.mapparams = mapparams;
-        this.envparams = envparams;
-        this.agentparams = agentparams;
-        this.uninitializedMaps = maps;
-        this.numMaps = numMaps;
-        this.numAgents = numAgents;
-        this.itersPerMap = itersPerMap;
-        this.runTime = 10000;
-    }
-
-
     public void run(TestRunningController ctrlr){
 
+        Main.envparams = this.envparams;
         TestResult result = new TestResult();
         Instant start = Instant.now();
         int agentIter = -1, mapIter, currentIter;
@@ -137,9 +122,6 @@ public class Test {
         else return current.getHomes().isEmpty();
     }
 
-    public void setMapparams(MapParameters mapparams) {
-        this.mapparams = mapparams;
-    }
 
     public void setAgentparams(ArrayList<AgentParams> agentparams) {
         this.agentparams = agentparams;
@@ -147,10 +129,6 @@ public class Test {
 
     public void setUninitializedMaps(ArrayList<MapShell> uninitializedMaps) {
         this.uninitializedMaps = uninitializedMaps;
-    }
-
-    public void setNumMaps(int numMaps) {
-        this.numMaps = numMaps;
     }
 
     public void setNumAgents(int numAgents) {
@@ -163,5 +141,13 @@ public class Test {
 
     public void setNumHomes(int numHomes) {
         this.numHomes = numHomes;
+    }
+
+    public void setEnvparams(EnvironmentParameters envparams) {
+        this.envparams = envparams;
+    }
+
+    public void setRunTime(int runTime) {
+        this.runTime = runTime;
     }
 }

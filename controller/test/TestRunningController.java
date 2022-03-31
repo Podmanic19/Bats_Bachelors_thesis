@@ -121,10 +121,6 @@ public class TestRunningController implements Initializable, ChangeScene, Popup 
         return test;
     }
 
-    public TestResult getTestResult() {
-        return testResult;
-    }
-
     public void setShow(boolean show){
         btnShow.setDisable(!show);
     }

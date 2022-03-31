@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
 import javafx.scene.image.WritableImage;
+import model.gui.ChangeScene;
 import model.gui.Popup;
 import model.testing.*;
 
@@ -28,7 +29,7 @@ import java.util.ResourceBundle;
 
 import static model.main.Main.primaryStage;
 
-public class ShowTestResultController implements Initializable, Popup {
+public class ShowTestResultController implements Initializable, Popup, ChangeScene {
 
     private TestResult result;
 
@@ -37,10 +38,6 @@ public class ShowTestResultController implements Initializable, Popup {
     @FXML private ComboBox<AgentResult> agentTypeCb;
     @FXML private ComboBox<MapResult> mapNameCb;
     @FXML private ComboBox<Statistic> iterationCb;
-
-    @FXML private Label agentTypeLbl;
-    @FXML private Label mapNameLbl;
-    @FXML private Label iterationLbl;
 
     @FXML private TitledPane testResultPane;
     @FXML private TitledPane agentResultPane;
@@ -57,10 +54,264 @@ public class ShowTestResultController implements Initializable, Popup {
         initAgentTypeCombobox();
     }
 
+    public void btnMainMenuOnAction() {
+        try {
+            sceneChanger("startingscene");
+        } catch (IOException e) {
+            popup("Couldn't load file view/startingscene.fxml");
+            e.printStackTrace();
+        }
+    }
+
     /***
-     * Creates a barchart of the total time spent on each map by given agent type
+     * Creates a barchart of the total time spent on each map comparison across agent types
      */
-    public void btnTotalTimeSpentOnMap() {
+    public void btnTotalTimeComparison() {
+        BarChart<String,Number> bc =
+                createBarChart("Agent", "Total time spent on maps","Total time spent on each map by given agent comparison");
+
+        int size = result.getAgentResults().get(0).getMapResults().size();
+        XYChart.Series<String,Number>[] mapSeries = new XYChart.Series[size];
+        for(int i = 0; i < size; i++) {
+            mapSeries[i] = new XYChart.Series<>();
+        }
+
+        for(AgentResult a : result.getAgentResults()) {
+            int i = 0;
+            for(MapResult m : a.getMapResults()) {
+                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType(), m.getTotalTimeSpent()));
+            }
+        }
+
+        bc.getData().addAll(mapSeries);
+
+        mainPane.setContent(bc);
+    }
+    /***
+     * Creates a barchart of the minimum time spent on each map comparison across agent types
+     */
+    public void btnMinimumTimeComparison() {
+        BarChart<String,Number> bc =
+                createBarChart("Agent", "Minimum time spent on maps","Minimum time spent on each map by given agent comparison");
+
+        int size = result.getAgentResults().get(0).getMapResults().size();
+        XYChart.Series<String,Number>[] mapSeries = new XYChart.Series[size];
+        for(int i = 0; i < size; i++) {
+            mapSeries[i] = new XYChart.Series<>();
+        }
+
+        for(AgentResult a : result.getAgentResults()) {
+            int i = 0;
+            for(MapResult m : a.getMapResults()) {
+                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType(), m.getMinimumTimeSpent()));
+            }
+        }
+
+        bc.getData().addAll(mapSeries);
+
+        mainPane.setContent(bc);
+    }
+    /***
+     * Creates a barchart of the maximum time spent on each map comparison across agent types
+     */
+    public void btnMaximumTimeComparison() {
+        BarChart<String,Number> bc =
+                createBarChart("Agent", "Maximum time spent on maps","Maximum time spent on each map by given agent comparison");
+
+        int size = result.getAgentResults().get(0).getMapResults().size();
+        XYChart.Series<String,Number>[] mapSeries = new XYChart.Series[size];
+        for(int i = 0; i < size; i++) {
+            mapSeries[i] = new XYChart.Series<>();
+        }
+
+        for(AgentResult a : result.getAgentResults()) {
+            int i = 0;
+            for(MapResult m : a.getMapResults()) {
+                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType(), m.getMaximumTimeSpent()));
+            }
+        }
+
+        bc.getData().addAll(mapSeries);
+
+        mainPane.setContent(bc);
+    }
+
+    /***
+     * Creates a barchart of the average time spent on each map comparison across agent types
+     */
+    public void btnAverageTimeComparison() {
+        BarChart<String,Number> bc =
+                createBarChart("Agent", "Average time spent on maps","Average time spent on each map by given agent comparison");
+
+        int size = result.getAgentResults().get(0).getMapResults().size();
+        XYChart.Series<String,Number>[] mapSeries = new XYChart.Series[size];
+        for(int i = 0; i < size; i++) {
+            mapSeries[i] = new XYChart.Series<>();
+        }
+
+        for(AgentResult a : result.getAgentResults()) {
+            int i = 0;
+            for(MapResult m : a.getMapResults()) {
+                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType(), m.getAverageTimeSpent()));
+            }
+        }
+
+        bc.getData().addAll(mapSeries);
+
+        mainPane.setContent(bc);
+    }
+
+    /***
+     * Creates a barchart of the median time spent on each map comparison across agent types
+     */
+    public void btnMedianTimeComparison() {
+        BarChart<String,Number> bc =
+                createBarChart("Agent", "Median time spent on maps","Median time spent on each map by given agent comparison");
+
+        int size = result.getAgentResults().get(0).getMapResults().size();
+        XYChart.Series<String,Number>[] mapSeries = new XYChart.Series[size];
+        for(int i = 0; i < size; i++) {
+            mapSeries[i] = new XYChart.Series<>();
+        }
+
+        for(AgentResult a : result.getAgentResults()) {
+            int i = 0;
+            for(MapResult m : a.getMapResults()) {
+                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType(), m.getMedianTimeSpent()));
+            }
+        }
+
+        bc.getData().addAll(mapSeries);
+
+        mainPane.setContent(bc);
+    }
+
+    /***
+     * Creates a barchart of the total work done on each map comparison across agent types
+     */
+    public void btnTotalWorkComparison() {
+        BarChart<String,Number> bc =
+                createBarChart("Agent", "Total work done on maps","Total work done on each map by given agent comparison");
+
+        int size = result.getAgentResults().get(0).getMapResults().size();
+        XYChart.Series<String,Number>[] mapSeries = new XYChart.Series[size];
+        for(int i = 0; i < size; i++) {
+            mapSeries[i] = new XYChart.Series<>();
+        }
+
+        for(AgentResult a : result.getAgentResults()) {
+            int i = 0;
+            for(MapResult m : a.getMapResults()) {
+                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType(), m.getTotalWorkDone()));
+            }
+        }
+
+        bc.getData().addAll(mapSeries);
+
+        mainPane.setContent(bc);
+    }
+    /***
+     * Creates a barchart of the minimum work done on each map comparison across agent types
+     */
+    public void btnMinimumWorkComparison() {
+        BarChart<String,Number> bc =
+                createBarChart("Agent", "Minimum work done on maps","Minimum work done on each map by given agent comparison");
+
+        int size = result.getAgentResults().get(0).getMapResults().size();
+        XYChart.Series<String,Number>[] mapSeries = new XYChart.Series[size];
+        for(int i = 0; i < size; i++) {
+            mapSeries[i] = new XYChart.Series<>();
+        }
+
+        for(AgentResult a : result.getAgentResults()) {
+            int i = 0;
+            for(MapResult m : a.getMapResults()) {
+                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType(), m.getMinimumWorkDone()));
+            }
+        }
+
+        bc.getData().addAll(mapSeries);
+
+        mainPane.setContent(bc);
+    }
+    /***
+     * Creates a barchart of the maximum total work done on each map comparison across agent types
+     */
+    public void btnMaximumWorkComparison() {
+        BarChart<String,Number> bc =
+                createBarChart("Agent", "Maximum work done on maps","Maximum work done on each map by given agent comparison");
+
+        int size = result.getAgentResults().get(0).getMapResults().size();
+        XYChart.Series<String,Number>[] mapSeries = new XYChart.Series[size];
+        for(int i = 0; i < size; i++) {
+            mapSeries[i] = new XYChart.Series<>();
+        }
+
+        for(AgentResult a : result.getAgentResults()) {
+            int i = 0;
+            for(MapResult m : a.getMapResults()) {
+                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType(), m.getMaxWorkDone()));
+            }
+        }
+
+        bc.getData().addAll(mapSeries);
+
+        mainPane.setContent(bc);
+    }
+    /***
+     * Creates a barchart of the average work done on each map comparison across agent types
+     */
+    public void btnAverageWorkComparison() {
+        BarChart<String,Number> bc =
+                createBarChart("Agent", "Average work done on maps","Average done on each map by given agent comparison");
+
+        int size = result.getAgentResults().get(0).getMapResults().size();
+        XYChart.Series<String,Number>[] mapSeries = new XYChart.Series[size];
+        for(int i = 0; i < size; i++) {
+            mapSeries[i] = new XYChart.Series<>();
+        }
+
+        for(AgentResult a : result.getAgentResults()) {
+            int i = 0;
+            for(MapResult m : a.getMapResults()) {
+                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType(), m.getAverageWorkDone()));
+            }
+        }
+
+        bc.getData().addAll(mapSeries);
+
+        mainPane.setContent(bc);
+    }
+    /***
+     * Creates a barchart of the median work done on each map comparison across agent types
+     */
+    public void btnMedianWorkComparison() {
+        BarChart<String,Number> bc =
+                createBarChart("Agent", "Median work done on maps","Median work done on each map by given agent comparison");
+
+        int size = result.getAgentResults().get(0).getMapResults().size();
+        XYChart.Series<String,Number>[] mapSeries = new XYChart.Series[size];
+        for(int i = 0; i < size; i++) {
+            mapSeries[i] = new XYChart.Series<>();
+        }
+
+        for(AgentResult a : result.getAgentResults()) {
+            int i = 0;
+            for(MapResult m : a.getMapResults()) {
+                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType(), m.getMedianWorkDone()));
+            }
+        }
+
+        bc.getData().addAll(mapSeries);
+
+        mainPane.setContent(bc);
+    }
+
+    /***
+     * Creates a barchart of the maximum time spent on each map by given agent type
+     */
+    public void btnTotalTimeSpent() {
+
         BarChart<String,Number> bc =
                 createBarChart("Map", "Total time spent","Total time spent on each map by given agent");
 
@@ -75,6 +326,7 @@ public class ShowTestResultController implements Initializable, Popup {
         bc.getData().addAll(series);
 
         mainPane.setContent(bc);
+
     }
 
     /***
@@ -229,6 +481,42 @@ public class ShowTestResultController implements Initializable, Popup {
         mainPane.setContent(bc);
     }
 
+    /***
+     * Creates a barchart of medians of work done on each map by given agent type
+     */
+    public void btnMaximumWorkDoneOnMap() {
+        BarChart<String,Number> bc =
+                createBarChart("Map", "Maximum work done","Maximum work done by agents on maps");
+
+        ArrayList<Double> medianWork = new ArrayList<>();
+
+        for(int i = 0; i < chosenAgent.getMapResults().size(); i++) {
+            MapResult map = chosenAgent.getMapResults().get(i);
+            medianWork.add(map.getMaxWorkDone());
+        }
+
+        XYChart.Series series = createSeries(createListOfMapNames(), medianWork);
+        bc.getData().addAll(series);
+
+        mainPane.setContent(bc);
+    }
+
+    public void btnMinimumWorkDoneOnMap() {
+        BarChart<String,Number> bc =
+                createBarChart("Map", "Minimum work done","Minimum work done by agents on maps");
+
+        ArrayList<Double> medianWork = new ArrayList<>();
+
+        for(int i = 0; i < chosenAgent.getMapResults().size(); i++) {
+            MapResult map = chosenAgent.getMapResults().get(i);
+            medianWork.add(map.getMinimumWorkDone());
+        }
+
+        XYChart.Series series = createSeries(createListOfMapNames(), medianWork);
+        bc.getData().addAll(series);
+
+        mainPane.setContent(bc);
+    }
 
     /***
      * Creates a barchart of total work done on a map over each iteration
@@ -480,7 +768,6 @@ public class ShowTestResultController implements Initializable, Popup {
         chosenAgent = agentTypeCb.getValue();
 
         if (chosenAgent == null) {
-            agentTypeLbl.setText("UNSELECTED");
             mapNameCb.setValue(null);
             iterationCb.setValue(null);
             mapNameCb.setDisable(true);
@@ -497,7 +784,6 @@ public class ShowTestResultController implements Initializable, Popup {
         chosenMapResult = mapNameCb.getValue();
 
         if (chosenMapResult == null) {
-            mapNameLbl.setText("UNSELECTED");
             iterationCb.setValue(null);
             iterationCb.setDisable(true);
             return;
@@ -512,13 +798,11 @@ public class ShowTestResultController implements Initializable, Popup {
         chosenIteration = iterationCb.getValue();
 
         if(chosenIteration == null) {
-            iterationLbl.setText("UNSELECTED");
             return;
         }
 
         int iterationNumber = iterationCb.getItems().indexOf(chosenIteration);
         chosenIteration = chosenMapResult.getIterations().get(iterationNumber);
-        iterationLbl.setText(chosenIteration.getIterationNumber());
 
     }
 

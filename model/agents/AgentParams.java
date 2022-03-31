@@ -11,6 +11,7 @@ public class AgentParams implements Serializable {
     public double FORWARD = 4;
     public double BACK = 1;
     public int SIGHT = 100;
+    public int HEARING_DISTANCE = 100;
     public double FOV = 60;
     public double WORK_RATE = 0.5;
     public int INTEREST_BOUNDARY = 40;
@@ -86,22 +87,27 @@ public class AgentParams implements Serializable {
         return DECISIVE;
     }
 
+    public int getHEARING_DISTANCE() {
+        return HEARING_DISTANCE;
+    }
+
     @Override
     public boolean equals(Object other){
         AgentParams otherParam = (AgentParams) other;
-        if(AVOID_OTHERS == otherParam.AVOID_OTHERS &&
-                DECISIVE == otherParam.DECISIVE &&
-                REPULSIVE_CALL == otherParam.REPULSIVE_CALL &&
-                BACK == otherParam.BACK &&
-                FORWARD == otherParam.FORWARD &&
-                SIGHT == otherParam.SIGHT &&
-                FOV == otherParam.FOV &&
-                WORK_RATE == otherParam.WORK_RATE &&
-                INTEREST_BOUNDARY == otherParam.INTEREST_BOUNDARY &&
-                SPEED_MIN == otherParam.SPEED_MIN &&
-                SPEED_MAX == otherParam.SPEED_MAX){
-        }
-        return false;
+        if (AVOID_OTHERS != otherParam.AVOID_OTHERS) return false;
+        if (DECISIVE != otherParam.DECISIVE) return false;
+        if (REPULSIVE_CALL != otherParam.REPULSIVE_CALL) return false;
+        if (Double.compare(BACK,otherParam.BACK) != 0) return false;
+        if (Double.compare(FORWARD,otherParam.FORWARD) != 0) return false;
+        if (SIGHT != otherParam.SIGHT) return false;
+        if (HEARING_DISTANCE != otherParam.HEARING_DISTANCE) return false;
+        if (Double.compare(FOV, otherParam.FOV) != 0) return false;
+        if (Double.compare(WORK_RATE, otherParam.WORK_RATE) != 0) return false;
+        if (Double.compare(INTEREST_BOUNDARY,otherParam.INTEREST_BOUNDARY) != 0) return false;
+        if (Double.compare(SPEED_MIN,otherParam.SPEED_MIN) != 0) return false;
+        if (Double.compare(SPEED_MAX,otherParam.SPEED_MAX) != 0) return false;
+
+        return true;
     }
 
 }
