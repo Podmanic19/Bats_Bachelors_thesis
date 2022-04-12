@@ -1,25 +1,21 @@
 package model.map;
 
-import model.agents.Agent;
+import model.agents.BatAgent;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import static model.main.Main.*;
-
 public class Home implements Serializable {
     public static int ID = 1;
     private final int id;
-    private int spawnTime = 0;
     private int lifeTime = 0;
     private final Coordinate coords;
-    private ArrayList<Agent> agents = new ArrayList<>();
+    private ArrayList<BatAgent> agents = new ArrayList<>();
     private double pollution;
     private CallType call;
 
-    public Home(int id, double pollution, int spawn_time, Coordinate coords) {
+    public Home(int id, double pollution, Coordinate coords) {
         this.id = id;
-        this.spawnTime = spawn_time;
         this.pollution = pollution;
         this.coords = coords;
         this.call = CallType.NONE;
@@ -27,7 +23,6 @@ public class Home implements Serializable {
 
     public Home(Home h){
         this.id = h.id;
-        this.spawnTime = h.spawnTime;
         this.pollution = h.pollution;
         this.coords = h.coords;
         this.call = h.call;
@@ -37,7 +32,7 @@ public class Home implements Serializable {
         return call;
     }
 
-    public synchronized void addAgent(Agent a) {
+    public synchronized void addAgent(BatAgent a) {
         agents.add(a);
     }
 
@@ -45,11 +40,11 @@ public class Home implements Serializable {
         return id;
     }
 
-    public synchronized ArrayList<Agent> getAgents() {
+    public synchronized ArrayList<BatAgent> getAgents() {
         return agents;
     }
 
-    public synchronized boolean decreasePollution(Agent a) {
+    public synchronized boolean decreasePollution(BatAgent a) {
 
         if (pollution > 0) {
             pollution -= a.getWorkRate();
@@ -78,10 +73,6 @@ public class Home implements Serializable {
 
     public synchronized Coordinate getCoords() {
         return coords;
-    }
-
-    public int getSpawnTime() {
-        return spawnTime;
     }
 
     public int getLifeTime() {

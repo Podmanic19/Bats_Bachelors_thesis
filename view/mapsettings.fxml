@@ -8,86 +8,54 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.settings.MapSettingsController">
    <children>
-      <Label layoutX="80.0" layoutY="40.0" text="Name">
+      <Label layoutX="80.0" layoutY="240.0" text="Min distance">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Label layoutX="80.0" layoutY="190.0" text="Min distance">
+      <Label layoutX="80.0" layoutY="163.0" text="Point Min">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Label layoutX="80.0" layoutY="140.0" text="Point Min">
+      <Label layoutX="80.0" layoutY="80.0" text="Point Max">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Label layoutX="80.0" layoutY="90.0" text="Point Max">
+      <Button layoutX="383.0" layoutY="719.0" mnemonicParsing="false" onAction="#btnSetOnAction" text="Set" />
+      <Label layoutX="80.0" layoutY="320.0" text="Min work">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Button layoutX="460.0" layoutY="740.0" mnemonicParsing="false" onAction="#btnSetOnAction" text="Set" />
-      <Label layoutX="80.0" layoutY="240.0" text="Min work">
+      <TextField fx:id="minCoordTf" layoutX="540.0" layoutY="160.0" />
+      <TextField fx:id="minDistanceTf" layoutX="541.0" layoutY="240.0" />
+      <TextField fx:id="maxCoordTf" layoutX="540.0" layoutY="80.0" />
+      <Label layoutX="80.0" layoutY="404.0" text="Max work">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <TextField fx:id="nameTf" layoutX="540.0" layoutY="40.0" />
-      <TextField fx:id="minCoordTf" layoutX="540.0" layoutY="140.0" />
-      <TextField fx:id="minDistanceTf" layoutX="540.0" layoutY="190.0" />
-      <TextField fx:id="maxCoordTf" layoutX="540.0" layoutY="90.0" />
-      <Label layoutX="80.0" layoutY="290.0" text="Max work">
+      <Label layoutX="80.0" layoutY="480.0" text="Number of walls">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Label layoutX="80.0" layoutY="340.0" text="Number of homes">
+      <Label layoutX="80.0" layoutY="562.0" text="Wall length minimum">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Label layoutX="80.0" layoutY="390.0" text="Number of agents">
+      <Label layoutX="80.0" layoutY="642.0" text="Wall length maximum">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Label layoutX="80.0" layoutY="440.0" text="Number of walls">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Label>
-      <Label layoutX="80.0" layoutY="490.0" text="Wall length minimum">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Label>
-      <Label layoutX="80.0" layoutY="540.0" text="Wall length maximum">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Label>
-      <Label layoutX="80.0" layoutY="590.0" text="Dynamic home spawn time">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Label>
-      <Label layoutX="80.0" layoutY="640.0" text="Dynamic home growth size">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Label>
-      <TextField fx:id="minWorkTf" layoutX="540.0" layoutY="240.0" />
-      <TextField fx:id="maxWorkTf" layoutX="540.0" layoutY="290.0" />
-      <TextField fx:id="seedTf4" layoutX="540.0" layoutY="340.0" />
-      <TextField fx:id="numHomesTf" layoutX="540.0" layoutY="340.0" />
-      <TextField fx:id="numAgentsTf" layoutX="540.0" layoutY="390.0" />
-      <TextField fx:id="numWallsTf" layoutX="540.0" layoutY="441.0" />
-      <TextField fx:id="wallLengthMinTf" layoutX="540.0" layoutY="490.0" />
-      <TextField fx:id="homeSpawnTimeTf" layoutX="540.0" layoutY="590.0" />
-      <TextField fx:id="wallLengthMaxTf" layoutX="540.0" layoutY="540.0" />
-      <TextField fx:id="homeGrowthSizeTf" layoutX="540.0" layoutY="640.0" />
-      <Button layoutX="274.0" layoutY="740.0" mnemonicParsing="false" onAction="#btnSaveOnAction" text="Save as..." />
+      <TextField fx:id="minWorkTf" layoutX="541.0" layoutY="320.0" />
+      <TextField fx:id="maxWorkTf" layoutX="541.0" layoutY="400.0" />
+      <TextField fx:id="numWallsTf" layoutX="540.0" layoutY="480.0" />
+      <TextField fx:id="wallLengthMinTf" layoutX="540.0" layoutY="560.0" />
+      <TextField fx:id="wallLengthMaxTf" layoutX="540.0" layoutY="640.0" />
    </children>
 </AnchorPane>

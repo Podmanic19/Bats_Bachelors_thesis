@@ -1,14 +1,16 @@
 package model.testing;
 
+import model.agents.AgentParams;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class AgentResult implements Aggregable, Serializable {
 
-    private String agentType;
+    private AgentParams agentType;
     ArrayList<MapResult> mapResults = new ArrayList<>();
 
-    public AgentResult(String agentType) {
+    public AgentResult(AgentParams agentType) {
         this.agentType = agentType;
     }
 
@@ -42,13 +44,13 @@ public class AgentResult implements Aggregable, Serializable {
         return mapResults;
     }
 
-    public String getAgentType() {
+    public AgentParams getAgentType() {
         return agentType;
     }
 
     @Override
     public String toString(){
-        return this.agentType;
+        return this.agentType.NAME;
     }
 
 }

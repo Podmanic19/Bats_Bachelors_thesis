@@ -12,7 +12,7 @@ public class AgentParams implements Serializable {
     public double BACK = 1;
     public int SIGHT = 100;
     public int HEARING_DISTANCE = 100;
-    public double FOV = 60;
+    public double FOV = 360;
     public double WORK_RATE = 0.5;
     public int INTEREST_BOUNDARY = 40;
     public double SPEED_MIN = 2.5;

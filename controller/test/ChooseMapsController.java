@@ -43,13 +43,13 @@ public class ChooseMapsController implements ChangeScene, Popup, Initializable, 
     @FXML TextField numItersTf;
     @FXML TextField numAgentsTf;
     @FXML TextField numRandomMapsTf;
-    @FXML TextField numHomesTf;
     @FXML Label generatingMapsLbl;
     @FXML Button generateBtn;
     @FXML Button saveBtn;
     @FXML Button mapSettingsBtn;
     @FXML Button nextBtn;
-    @FXML CheckBox  generateRandCb;
+    @FXML CheckBox generateRandCb;
+    @FXML CheckBox singleStartingPosition;
 
     private Test test;
     private Map shownMap;
@@ -120,6 +120,10 @@ public class ChooseMapsController implements ChangeScene, Popup, Initializable, 
         }
 
 
+    }
+
+    public void singleStartingPosition() {
+        this.test.setSingleStart(singleStartingPosition.isSelected());;
     }
 
     public void btnMapSettingsOnAction() {
@@ -222,13 +226,6 @@ public class ChooseMapsController implements ChangeScene, Popup, Initializable, 
                 test.setItersPerMap(Integer.parseInt(numItersTf.getText()));
             }
 
-            if (Integer.parseInt(numHomesTf.getText()) <= 0) {
-                check = false;
-                popup("Please set the number of iterations > 0");
-            }
-            else {
-                test.setNumHomes(Integer.parseInt(numHomesTf.getText()));
-            }
         }
         catch(NumberFormatException e){
             popup("Please fill all fields");
@@ -299,8 +296,7 @@ public class ChooseMapsController implements ChangeScene, Popup, Initializable, 
 
     private Map mapFromShell(MapShell shell) {
         int numAgents = Integer.parseInt(numAgentsTf.getText());
-        int numHomes = Integer.parseInt(numHomesTf.getText());
-        return new Map(shell, true, numAgents, numHomes);
+        return new Map(shell, agentparams, numAgents, singleStartingPosition.isSelected());
     }
 
 }

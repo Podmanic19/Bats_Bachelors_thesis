@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainSceneController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.VisualisationController">
    <children>
       <Pane fx:id="paneMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" style="-fx-background-color: WHITE;">
          <children>
@@ -20,35 +20,46 @@
       <Pane fx:id="paneBtn" maxHeight="800.0" maxWidth="200.0" minHeight="200.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: DFDFDF;">
          <children>
             <Button fx:id="btnHelp" layoutX="81.0" layoutY="14.0" mnemonicParsing="false" opacity="0.0" text="Button" />
-            <Button fx:id="btnCreate" layoutX="36.0" layoutY="115.0" mnemonicParsing="false" onAction="#btnCreateEnv" prefHeight="25.0" prefWidth="128.0" style=": ;" text="GENERATE MAP" textAlignment="CENTER">
+            <Button fx:id="btnCreate" layoutX="36.0" layoutY="130.0" mnemonicParsing="false" onAction="#btnCreateEnv" prefHeight="25.0" prefWidth="128.0" style=": ;" text="GENERATE MAP" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <Button fx:id="btnEnvSettings" layoutX="36.0" layoutY="195.0" mnemonicParsing="false" onAction="#btnEnvSettings" prefHeight="25.0" prefWidth="128.0" text="MAP SETTINGS" textAlignment="CENTER">
+            <Button fx:id="btnEnvSettings" layoutX="36.0" layoutY="200.0" mnemonicParsing="false" onAction="#btnEnvSettings" prefHeight="25.0" prefWidth="128.0" text="MAP SETTINGS" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Button>
-            <Button fx:id="btnAgentSettings" layoutX="36.0" layoutY="275.0" mnemonicParsing="false" onAction="#btnAgentSettings" prefHeight="25.0" prefWidth="128.0" text="AGENT SETTINGS" textAlignment="CENTER">
+            <Button fx:id="btnAgentSettings" layoutX="36.0" layoutY="270.0" mnemonicParsing="false" onAction="#btnAgentSettings" prefHeight="25.0" prefWidth="128.0" text="AGENT SETTINGS" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Button>
-            <Button fx:id="btnLoadEnv" layoutX="36.0" layoutY="355.0" mnemonicParsing="false" onAction="#btnLoad" prefHeight="25.0" prefWidth="128.0" text="LOAD MAP" textAlignment="CENTER">
+            <Button fx:id="btnLoadEnv" layoutX="36.0" layoutY="410.0" mnemonicParsing="false" onAction="#btnLoad" prefHeight="25.0" prefWidth="128.0" text="LOAD MAP" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Button>
-            <Button fx:id="btnSave" disable="true" layoutX="36.0" layoutY="435.0" mnemonicParsing="false" onAction="#btnSave" prefHeight="25.0" prefWidth="128.0" text="SAVE MAP" textAlignment="CENTER">
+            <Button fx:id="btnSave" disable="true" layoutX="36.0" layoutY="480.0" mnemonicParsing="false" onAction="#btnSave" prefHeight="25.0" prefWidth="128.0" text="SAVE MAP" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <Button fx:id="btnPlay" disable="true" layoutX="63.0" layoutY="660.0" mnemonicParsing="false" onAction="#btnPlayOnAction" prefHeight="62.0" prefWidth="72.0" text="PLAY" textAlignment="CENTER">
+            <Button fx:id="btnPlay" disable="true" layoutX="67.0" layoutY="684.0" mnemonicParsing="false" onAction="#btnPlayOnAction" prefHeight="62.0" prefWidth="72.0" text="PLAY" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Button>
-            <CheckBox fx:id="cbShowCalls" layoutX="32.0" layoutY="510.0" mnemonicParsing="false" onAction="#showCallsOnAction" text="SHOW CALLS" />
-            <CheckBox fx:id="cbShowVision" layoutX="32.0" layoutY="550.0" mnemonicParsing="false" onAction="#showVisionOnAction" text="SHOW VISION" />
+            <CheckBox fx:id="cbShowCalls" layoutX="38.0" layoutY="582.0" mnemonicParsing="false" onAction="#showCallsOnAction" text="SHOW CALLS" />
+            <CheckBox fx:id="cbShowVision" layoutX="38.0" layoutY="612.0" mnemonicParsing="false" onAction="#showVisionOnAction" text="SHOW VISION" />
             <Label fx:id="lblTicks" layoutX="36.0" layoutY="746.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="128.0" textAlignment="CENTER" />
+            <Button fx:id="btnCreate1" layoutX="36.0" layoutY="60.0" mnemonicParsing="false" onAction="#btnCreateEnv" prefHeight="25.0" prefWidth="128.0" style=": ;" text="MAIN MENU" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <CheckBox fx:id="cbShowCalls1" layoutX="38.0" layoutY="552.0" mnemonicParsing="false" onAction="#showCallsOnAction" text="SINGLE START" />
+            <Button fx:id="btnAgentSettings1" layoutX="36.0" layoutY="340.0" mnemonicParsing="false" onAction="#btnAgentSettings" prefHeight="25.0" prefWidth="128.0" text="ENV SETTINGS" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
    </children>

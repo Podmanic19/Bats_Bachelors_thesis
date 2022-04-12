@@ -1,6 +1,6 @@
 package model.testing;
 
-import model.agents.Agent;
+import model.agents.BatAgent;
 import model.map.Home;
 
 import java.io.Serializable;
@@ -10,29 +10,27 @@ import java.util.HashSet;
 
 public class Statistic implements Aggregable, Serializable {
 
-    String iterationNumber;
-    int takenTime;
-    int[] lifeTimes;
-    int[] spawnTimes;
-    ArrayList<Double> totalPollution;
-    int timeSearching;
-    int timeTravelling;
-    int timeWorking;
-    double[] homeSizes;
-    double[] workDone;
+    private String iterationNumber;
+    private int takenTime;
+    private int[] lifeTimes;
+    private ArrayList<Double> totalPollution;
+    private int timeSearching;
+    private int timeTravelling;
+    private int timeWorking;
+    private double[] homeSizes;
+    private double[] workDone;
 
     public Statistic(String iterationNumber) {
         this.iterationNumber = iterationNumber;
         totalPollution = new ArrayList<>();
     }
 
-    public void aggregate(int iters, ArrayList<Agent> agents, HashSet<Home> homes) {
+    public void aggregate(int iters, ArrayList<BatAgent> agents, HashSet<Home> homes) {
 
         takenTime = iters;
         lifeTimes = new int[homes.size()];
-        workDone = new double[agents.size()];
-        spawnTimes = new int[homes.size()];
         homeSizes = new double[homes.size()];
+        workDone  = new double[agents.size()];
 
         aggregateHomes(homes);
         aggregateAgents(agents);
@@ -43,7 +41,6 @@ public class Statistic implements Aggregable, Serializable {
 
         int i = 0;
         for(Home h : homes) {
-            spawnTimes[i] = h.getSpawnTime();
             lifeTimes[i] = h.getLifeTime();
             homeSizes[i] = h.getPollution();
             ++i;
@@ -56,10 +53,10 @@ public class Statistic implements Aggregable, Serializable {
         return Arrays.stream(workDone).sum();
 
     }
-    private void aggregateAgents(ArrayList<Agent> agents) {
+    private void aggregateAgents(ArrayList<BatAgent> agents) {
 
         int i = 0;
-        for(Agent a : agents) {
+        for(BatAgent a : agents) {
             workDone[i] = a.getTotalWork();
             ++i;
         }
@@ -142,6 +139,38 @@ public class Statistic implements Aggregable, Serializable {
 
     public String getIterationNumber() {
         return iterationNumber;
+    }
+
+    public String exportData(String agentName, String mapName, String hearingDistance, int maxTakenTime) {
+        StringBuilder line = new StringBuilder();
+        String timeTaken = String.valueOf(takenTime);
+        String numAgents = String.valueOf(workDone.length);
+        line.append(agentName).append(",");
+        line.append(mapName).append(",");
+        line.append(numAgents).append(",");
+        line.append(timeTaken).append(",");
+        line.append(timeSearching).append(",");
+        line.append(timeTravelling).append(",");
+        line.append(timeWorking).append(",");
+        line.append(hearingDistance).append(",");
+        for(double work : workDone) {
+            line.append("\"").append(String.format("%2f", work)).append("\"").append(",");
+        }
+        for(int i = 0; i < maxTakenTime; i++){
+            double pollution = 0;
+            try {
+                pollution = totalPollution.get(i);
+            }
+            catch(IndexOutOfBoundsException e){
+                pollution = 0;
+            }
+            finally{
+                line.append("\"").append(String.format("%2f", pollution)).append("\"").append(",");
+            }
+        }
+        line.deleteCharAt(line.length()-1);
+        line.append("\n");
+        return new String(line);
     }
 
     @Override

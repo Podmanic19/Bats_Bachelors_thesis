@@ -31,7 +31,7 @@ public class MapResult implements Aggregable, Serializable {
         int i = 0;
 
         for(Statistic s: iterations) {
-            timesSpent[i] = s.takenTime;
+            timesSpent[i] = s.getTakenTime();
             workDone[i++] = s.getTotalWorkDone();
         }
     }

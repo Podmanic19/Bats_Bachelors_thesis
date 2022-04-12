@@ -5,6 +5,7 @@ import model.map.Coordinate;
 import model.map.LineSegment;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.concurrent.ThreadLocalRandom;
@@ -17,16 +18,31 @@ public class MapShell implements Serializable {
     private final ArrayList<LineSegment> walls = new ArrayList<>();     //initial walls existing on the map
     private Coordinate[] initialAgentPositions;                         //positions of future agent placements
     private Coordinate[] initialHomePositions;                          //positions of future walls placements
+    private Coordinate[] futureHomePositions;
     private double[] initialPollutions;
 
     private boolean chosen;
 
     public MapShell() {
         chosen = false;
+        futureHomePositions = new Coordinate[200];
         generateWalls();
         generateHomes();
         generatePollutions();
         generateAgents();
+    }
+
+    private void generateFutureHomes(ArrayList<Coordinate> flatMap) {
+
+        HashSet<Coordinate> alreadyHomes = new HashSet<>(Arrays.asList(initialHomePositions));
+
+        int added = -1;
+        for(int i = 0; i < flatMap.size(); i++) {
+            Coordinate c = flatMap.get(1);
+            if(liesOnWall(c) || alreadyHomes.contains(c)) continue;
+            futureHomePositions[++added] = c;
+        }
+
     }
 
     private void generateHomes() {
@@ -63,6 +79,9 @@ public class MapShell implements Serializable {
                     possibleHomes.remove(j);
             }
         }
+
+        generateFutureHomes(flatMap);
+
     }
 
     private void generatePollutions() {
@@ -271,4 +290,7 @@ public class MapShell implements Serializable {
         this.chosen = selected;
     }
 
+    public Coordinate[] getFutureHomePositions() {
+        return futureHomePositions;
+    }
 }

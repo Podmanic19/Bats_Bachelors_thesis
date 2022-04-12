@@ -21,32 +21,37 @@
       </ScrollPane>
       <VBox prefHeight="800.0" prefWidth="200.0">
          <children>
-            <AnchorPane prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: DFDFDF;">
+            <AnchorPane prefHeight="541.0" prefWidth="200.0" style="-fx-background-color: DFDFDF;">
                <children>
-                  <Button layoutX="25.0" layoutY="54.0" mnemonicParsing="false" onAction="#saveOnAction" prefWidth="150.0" text="SAVE AS PNG">
+                  <Button layoutX="10.0" layoutY="70.0" mnemonicParsing="false" onAction="#saveOnAction" prefHeight="26.0" prefWidth="179.0" text="SAVE AS PNG">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Button>
-                  <Label layoutX="25.0" layoutY="85.0" text="CHOSEN AGENT TYPE" textAlignment="CENTER">
+                  <Label layoutX="24.0" layoutY="174.0" text="CHOSEN AGENT TYPE" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="agentTypeCb" layoutX="27.0" layoutY="115.0" onAction="#agentTypeOnAction" prefWidth="150.0" promptText="Agent type name" />
-                  <Label layoutX="81.0" layoutY="150.0" text="MAP:" textAlignment="CENTER">
+                  <ComboBox fx:id="agentTypeCb" layoutX="26.0" layoutY="204.0" onAction="#agentTypeOnAction" prefWidth="150.0" promptText="Agent type name" />
+                  <Label layoutX="80.0" layoutY="239.0" text="MAP:" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="mapNameCb" layoutX="25.0" layoutY="180.0" onAction="#mapNameOnAction" prefWidth="150.0" promptText="Map name" />
-                  <Label layoutX="62.0" layoutY="215.0" text="ITERATION:" textAlignment="CENTER">
+                  <ComboBox fx:id="mapNameCb" layoutX="24.0" layoutY="269.0" onAction="#mapNameOnAction" prefWidth="150.0" promptText="Map name" />
+                  <Label layoutX="61.0" layoutY="304.0" text="ITERATION:" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="iterationCb" layoutX="26.0" layoutY="245.0" onAction="#iterNumOnAction" prefWidth="150.0" promptText="Iteration number" />
-                  <Button layoutX="25.0" layoutY="14.0" mnemonicParsing="false" onAction="#btnMainMenuOnAction" prefWidth="150.0" text="BACK TO MAIN MENU">
+                  <ComboBox fx:id="iterationCb" layoutX="25.0" layoutY="334.0" onAction="#iterNumOnAction" prefWidth="150.0" promptText="Iteration number" />
+                  <Button layoutX="10.0" layoutY="30.0" mnemonicParsing="false" onAction="#btnMainMenuOnAction" prefWidth="179.0" text="BACK TO MAIN MENU">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="10.0" layoutY="110.0" mnemonicParsing="false" onAction="#csvOnAction" prefHeight="26.0" prefWidth="179.0" text="EXPORT POLLUTION AS CSV">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>

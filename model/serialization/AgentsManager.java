@@ -11,7 +11,7 @@ public class AgentsManager {
     private ArrayList<AgentParams> agents = new ArrayList<>();
 
     private void load() throws IOException {
-        agents = new DatabaseAdmin<AgentParams>().download("Agents\\agent_array");
+        agents = new DatabaseAdmin<AgentParams>().download("agents" + System.getProperty("file.separator") + "agent_array");
     }
 
     public void update(AgentParams ap) {
@@ -20,12 +20,12 @@ public class AgentsManager {
 
     public void updateAndSave(AgentParams ap) {
         update(ap);
-        new DatabaseAdmin<AgentParams>().upload("Agents\\agent_array", agents);
+        new DatabaseAdmin<AgentParams>().upload("agents" + System.getProperty("file.separator") + "agent_array", agents);
     }
 
     public void delete(AgentParams ap) {
         agents.remove(ap);
-        new DatabaseAdmin<AgentParams>().upload("Agents\\agent_array", agents);
+        new DatabaseAdmin<AgentParams>().upload("agents" + System.getProperty("file.separator") + "agent_array", agents);
     }
 
     public ArrayList<AgentParams> getAgents() {

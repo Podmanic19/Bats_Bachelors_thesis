@@ -12,19 +12,14 @@ import java.util.ResourceBundle;
 
 public class MapSettingsController implements Initializable {
 
-    @FXML TextField nameTf;
     @FXML TextField maxCoordTf;
     @FXML TextField minCoordTf;
     @FXML TextField minDistanceTf;
     @FXML TextField minWorkTf;
     @FXML TextField maxWorkTf;
-    @FXML TextField numHomesTf;
-    @FXML TextField numAgentsTf;
     @FXML TextField numWallsTf;
     @FXML TextField wallLengthMinTf;
     @FXML TextField wallLengthMaxTf;
-    @FXML TextField homeSpawnTimeTf;
-    @FXML TextField homeGrowthSizeTf;
 
     MapParameters mapparams;
     EnvironmentParameters envparams;
@@ -45,36 +40,27 @@ public class MapSettingsController implements Initializable {
     private void setParams(){
         this.mapparams = new MapParameters();
         this.envparams = new EnvironmentParameters();
-        this.mapparams.name = nameTf.getText();
         this.mapparams.POINT_MAX = Integer.parseInt(maxCoordTf.getText());
         this.mapparams.POINT_MIN = Integer.parseInt(minCoordTf.getText());
         this.mapparams.MIN_DISTANCE = Integer.parseInt(minDistanceTf.getText());
         this.mapparams.MIN_WORK = Integer.parseInt(minWorkTf.getText());
         this.mapparams.MAX_WORK = Integer.parseInt(maxWorkTf.getText());
-        this.mapparams.NUMBER_HOME = Integer.parseInt(numHomesTf.getText());
         this.mapparams.WALLS_NUM = Integer.parseInt(numWallsTf.getText());
         this.mapparams.WALL_LENGTH_MIN = Integer.parseInt(wallLengthMinTf.getText());
         this.mapparams.WALL_LENGTH_MAX= Integer.parseInt(wallLengthMaxTf.getText());
-        this.mapparams.AGENT_NUM = Integer.parseInt(numAgentsTf.getText());
-        this.envparams.DYNAMIC_HOME_SPAWN_TIME= Integer.parseInt(homeSpawnTimeTf.getText());
-        this.envparams.DYNAMIC_HOME_GROWTH_SIZE = Double.parseDouble(homeGrowthSizeTf.getText());
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-         nameTf.setText(Main.mapparams.name);
          maxCoordTf.setText(String.valueOf(Main.mapparams.POINT_MAX));
          minCoordTf.setText(String.valueOf(Main.mapparams.POINT_MIN));
          minDistanceTf.setText(String.valueOf(Main.mapparams.MIN_DISTANCE));
          minWorkTf.setText(String.valueOf(Main.mapparams.MIN_WORK));
          maxWorkTf.setText(String.valueOf(Main.mapparams.MAX_WORK));
-         numHomesTf.setText(String.valueOf(Main.mapparams.NUMBER_HOME));
          numWallsTf.setText(String.valueOf(Main.mapparams.WALLS_NUM));
          wallLengthMinTf.setText(String.valueOf(Main.mapparams.WALL_LENGTH_MIN));
          wallLengthMaxTf.setText(String.valueOf(Main.mapparams.WALL_LENGTH_MAX));
-         homeSpawnTimeTf.setText(String.valueOf(Main.envparams.DYNAMIC_HOME_SPAWN_TIME));
-         homeGrowthSizeTf.setText(String.valueOf(Main.envparams.DYNAMIC_HOME_GROWTH_SIZE));
 
     }
 }

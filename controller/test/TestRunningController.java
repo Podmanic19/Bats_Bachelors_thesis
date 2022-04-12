@@ -1,5 +1,6 @@
 package controller.test;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -19,8 +20,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static model.main.Main.mapparams;
-import static model.main.Main.primaryStage;
+import static model.main.Main.*;
 
 public class TestRunningController implements Initializable, ChangeScene, Popup {
 
@@ -46,23 +46,27 @@ public class TestRunningController implements Initializable, ChangeScene, Popup 
 
     public void btnShowOnAction() {
 
-
-        try {
-            FileChooser fch = new FileChooser();
-            FileChooser.ExtensionFilter fileExtensions = new FileChooser.ExtensionFilter("Test Results", "*.test");
-            fch.getExtensionFilters().add(fileExtensions);
-            File file = fch.showSaveDialog(new Stage());
-            if(file == null) {
-                popup("No valid file selected");
-                return;
-            }
-            sendResult();
-            testResult.save(file);
-            popup("File saved successfully");
-        } catch (IOException e) {
-            popup("Ran into error while saving file");
-            e.printStackTrace();
+        FileChooser fch = new FileChooser();
+        FileChooser.ExtensionFilter fileExtensions = new FileChooser.ExtensionFilter("Test Results", "*.test");
+        fch.getExtensionFilters().add(fileExtensions);
+        File file = fch.showSaveDialog(new Stage());
+        if (file == null) {
+            popup("No valid file selected");
+            return;
         }
+        sendResult();
+        new Thread(() -> {
+            try {
+                testResult.save(file);
+            } catch (IOException e) {
+                popup("Ran into error while saving file");
+                e.printStackTrace();
+            }
+            Platform.runLater(() -> {
+                popup("File saved successfully");
+            });
+        }).start();
+
 
         try {
             sceneChanger("showtestresult");

@@ -1,5 +1,6 @@
 package controller.test;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -9,10 +10,10 @@ import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.*;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TitledPane;
 import javafx.scene.image.WritableImage;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import model.gui.ChangeScene;
 import model.gui.Popup;
 import model.testing.*;
@@ -20,12 +21,11 @@ import model.testing.*;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.AnnotatedType;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static model.main.Main.primaryStage;
 
@@ -39,11 +39,6 @@ public class ShowTestResultController implements Initializable, Popup, ChangeSce
     @FXML private ComboBox<MapResult> mapNameCb;
     @FXML private ComboBox<Statistic> iterationCb;
 
-    @FXML private TitledPane testResultPane;
-    @FXML private TitledPane agentResultPane;
-    @FXML private TitledPane mapResultPane;
-    @FXML private TitledPane mapIterationResultPane;
-
     private AgentResult chosenAgent;
     private MapResult chosenMapResult;
     private Statistic chosenIteration;
@@ -52,6 +47,52 @@ public class ShowTestResultController implements Initializable, Popup, ChangeSce
     public void initialize(URL location, ResourceBundle resources) {
         result = (TestResult) primaryStage.getUserData();
         initAgentTypeCombobox();
+    }
+
+
+    public void saveOnAction() {
+        Node n = mainPane.getContent();
+        FileChooser fch = new FileChooser();
+        FileChooser.ExtensionFilter fileExtensions = new FileChooser.ExtensionFilter("Graph png", "*.png");
+        fch.getExtensionFilters().add(fileExtensions);
+        File file = fch.showSaveDialog(new Stage());
+        if(file == null) {
+            popup("No valid file selected");
+            return;
+        }
+        saveAsPNG(n, file);
+    }
+
+
+    private void saveAsPNG(Node n, File file) {
+        WritableImage image = n.snapshot(new SnapshotParameters(), null);
+        try {
+            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
+            popup("File saved successfully");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void csvOnAction() {
+        FileChooser fch = new FileChooser();
+        FileChooser.ExtensionFilter fileExtensions = new FileChooser.ExtensionFilter("Test Results", "*.csv");
+        fch.getExtensionFilters().add(fileExtensions);
+        File file = fch.showSaveDialog(new Stage());
+        if(file == null) {
+            popup("No valid file selected");
+            return;
+        }
+
+        AtomicBoolean success = new AtomicBoolean(false);
+        new Thread(() -> {
+            success.set(result.toCSV(file));
+            Platform.runLater(() -> {
+                popup("File saved successfully");
+            });
+        }).start();
+
+
     }
 
     public void btnMainMenuOnAction() {
@@ -79,7 +120,7 @@ public class ShowTestResultController implements Initializable, Popup, ChangeSce
         for(AgentResult a : result.getAgentResults()) {
             int i = 0;
             for(MapResult m : a.getMapResults()) {
-                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType(), m.getTotalTimeSpent()));
+                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType().getNAME(), m.getTotalTimeSpent()));
             }
         }
 
@@ -103,7 +144,7 @@ public class ShowTestResultController implements Initializable, Popup, ChangeSce
         for(AgentResult a : result.getAgentResults()) {
             int i = 0;
             for(MapResult m : a.getMapResults()) {
-                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType(), m.getMinimumTimeSpent()));
+                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType().getNAME(), m.getMinimumTimeSpent()));
             }
         }
 
@@ -127,7 +168,7 @@ public class ShowTestResultController implements Initializable, Popup, ChangeSce
         for(AgentResult a : result.getAgentResults()) {
             int i = 0;
             for(MapResult m : a.getMapResults()) {
-                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType(), m.getMaximumTimeSpent()));
+                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType().getNAME(), m.getMaximumTimeSpent()));
             }
         }
 
@@ -152,7 +193,7 @@ public class ShowTestResultController implements Initializable, Popup, ChangeSce
         for(AgentResult a : result.getAgentResults()) {
             int i = 0;
             for(MapResult m : a.getMapResults()) {
-                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType(), m.getAverageTimeSpent()));
+                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType().getNAME(), m.getAverageTimeSpent()));
             }
         }
 
@@ -177,7 +218,7 @@ public class ShowTestResultController implements Initializable, Popup, ChangeSce
         for(AgentResult a : result.getAgentResults()) {
             int i = 0;
             for(MapResult m : a.getMapResults()) {
-                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType(), m.getMedianTimeSpent()));
+                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType().getNAME(), m.getMedianTimeSpent()));
             }
         }
 
@@ -202,7 +243,7 @@ public class ShowTestResultController implements Initializable, Popup, ChangeSce
         for(AgentResult a : result.getAgentResults()) {
             int i = 0;
             for(MapResult m : a.getMapResults()) {
-                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType(), m.getTotalWorkDone()));
+                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType().getNAME(), m.getTotalWorkDone()));
             }
         }
 
@@ -226,7 +267,7 @@ public class ShowTestResultController implements Initializable, Popup, ChangeSce
         for(AgentResult a : result.getAgentResults()) {
             int i = 0;
             for(MapResult m : a.getMapResults()) {
-                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType(), m.getMinimumWorkDone()));
+                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType().getNAME(), m.getMinimumWorkDone()));
             }
         }
 
@@ -250,7 +291,7 @@ public class ShowTestResultController implements Initializable, Popup, ChangeSce
         for(AgentResult a : result.getAgentResults()) {
             int i = 0;
             for(MapResult m : a.getMapResults()) {
-                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType(), m.getMaxWorkDone()));
+                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType().getNAME(), m.getMaxWorkDone()));
             }
         }
 
@@ -274,7 +315,7 @@ public class ShowTestResultController implements Initializable, Popup, ChangeSce
         for(AgentResult a : result.getAgentResults()) {
             int i = 0;
             for(MapResult m : a.getMapResults()) {
-                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType(), m.getAverageWorkDone()));
+                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType().getNAME(), m.getAverageWorkDone()));
             }
         }
 
@@ -298,7 +339,7 @@ public class ShowTestResultController implements Initializable, Popup, ChangeSce
         for(AgentResult a : result.getAgentResults()) {
             int i = 0;
             for(MapResult m : a.getMapResults()) {
-                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType(), m.getMedianWorkDone()));
+                mapSeries[i++].getData().add(new XYChart.Data<>(a.getAgentType().getNAME(), m.getMedianWorkDone()));
             }
         }
 
@@ -750,7 +791,7 @@ public class ShowTestResultController implements Initializable, Popup, ChangeSce
     private ArrayList<String> createListOAgentNames(ArrayList<AgentResult> results) {
         ArrayList<String> agentNames = new ArrayList<>();
         for(AgentResult a : results) {
-            agentNames.add(a.getAgentType());
+            agentNames.add(a.getAgentType().getNAME());
         }
         return agentNames;
     }
@@ -831,24 +872,6 @@ public class ShowTestResultController implements Initializable, Popup, ChangeSce
         mainPane.setContent(bc);
 
     }
-
-    public void saveOnAction() {
-        Node n = mainPane.getContent();
-        saveAsPNG(n, "charts\\chart1.png");
-    }
-
-
-    private void saveAsPNG(Node n, String path) {
-        WritableImage image = n.snapshot(new SnapshotParameters(), null);
-        File file = new File(path);
-        try {
-            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
-            popup("File saved successfully");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     private void initAgentTypeCombobox() {
 

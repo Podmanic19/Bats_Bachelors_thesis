@@ -3,7 +3,7 @@ package model.testing;
 import controller.test.TestRunningController;
 import javafx.application.Platform;
 import model.agents.AgentParams;
-import model.agents.Agent;
+import model.agents.BatAgent;
 import model.main.Main;
 import model.map.Home;
 import model.map.mapshell.Map;
@@ -24,6 +24,7 @@ public class Test {
     private int numHomes;
     private int runTime;
     private int itersPerMap;
+    private boolean singleStart;
 
     public Test() {
 
@@ -45,7 +46,7 @@ public class Test {
                 ctrlr.getTotalProgressPb().setProgress((double) finalAgentIter /agentparams.size());
             });
             mapIter = -1;
-            AgentResult agentResult = new AgentResult(currentAgentParams.getNAME());
+            AgentResult agentResult = new AgentResult(currentAgentParams);
             //ITERATE OVER MAPS
             for (MapShell shell : uninitializedMaps) {
                 ++mapIter;
@@ -64,7 +65,7 @@ public class Test {
                         ctrlr.getIterLbl().setText(String.valueOf(finalCurrentIter));
                         ctrlr.getMapProgressPb().setProgress((double) finalCurrentIter / itersPerMap);
                     });
-                    Map testedMap = new Map(shell, true, numAgents, numHomes);
+                    Map testedMap = new Map(shell, currentAgentParams, numAgents, singleStart);
                     int j = -1;
                     Statistic s = new Statistic(String.valueOf(i));
                     Instant iterStart = Instant.now();
@@ -73,15 +74,15 @@ public class Test {
                         if(h.getPollution() >= 0) allHomes.add(h);
                     }
                     //SOLVE MAP
-                    while (!terminate(testedMap, ++j)) {
-                        testedMap.getAgents().parallelStream().forEach(Agent::act);
+                    while (++j < runTime) {
+                        testedMap.getAgents().parallelStream().forEach(BatAgent::act);
                         testedMap.getHomes().removeIf(h -> (h.getPollution() <= 0));
                         for (Home h : testedMap.getHomes()) {
                             h.incrementLifetime();
                             h.increasePollution(Main.envparams.DYNAMIC_HOME_GROWTH_SIZE);
                         }
                         if (Main.envparams.DYNAMIC_HOME_SPAWN_TIME > 0 && j % Main.envparams.DYNAMIC_HOME_SPAWN_TIME == 0)
-                            testedMap.addHome(j);
+                            testedMap.addHome();
                         s.updatePollution(testedMap.getHomes());
                         s.updateTimeInState(testedMap.getAgentsInState());
                     }
@@ -115,14 +116,6 @@ public class Test {
 
     }
 
-    private boolean terminate(Map current, int i){
-        if(runTime > 0) {
-            return i >= runTime;
-        }
-        else return current.getHomes().isEmpty();
-    }
-
-
     public void setAgentparams(ArrayList<AgentParams> agentparams) {
         this.agentparams = agentparams;
     }
@@ -149,5 +142,9 @@ public class Test {
 
     public void setRunTime(int runTime) {
         this.runTime = runTime;
+    }
+
+    public void setSingleStart(boolean singleStart) {
+        this.singleStart = singleStart;
     }
 }

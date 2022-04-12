@@ -1,6 +1,6 @@
 package controller;
 
-import model.agents.Agent;
+import model.agents.BatAgent;
 import model.agents.AgentCircle;
 import model.agents.State;
 import model.main.Main;
@@ -16,10 +16,10 @@ import static model.main.Main.*;
 import static model.main.Main.agentparams;
 
 public interface PlaceAgents {
-    default void placeAgents(ArrayList<Agent> agents, Pane paneMain) {
+    default void placeAgents(ArrayList<BatAgent> agents, Pane paneMain) {
         double coef_h = paneMain.getHeight() / mapparams.POINT_MAX;
         double coef_w = paneMain.getWidth() / mapparams.POINT_MAX;
-        for (Agent a : agents) {
+        for (BatAgent a : agents) {
             AgentCircle cir = new AgentCircle();
             if (Main.SHOW_SIGHT && a.getState() != State.working) {
                 Arc arc = new Arc();

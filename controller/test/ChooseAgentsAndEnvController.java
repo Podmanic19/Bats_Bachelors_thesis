@@ -33,7 +33,6 @@ public class ChooseAgentsAndEnvController implements Initializable, NewWindowSce
     @FXML private TextField spawnTimeTf;
     @FXML private TextField homeGrowthTf;
     @FXML private TextField simulationLengthTf;
-    @FXML private CheckBox dynamicEnvCb;
     @FXML private TableView<AgentParams> agentsTable;
     @FXML private TableColumn<AgentParams, String> nameCol;
     @FXML private TableColumn<AgentParams, Double> forwardCol;
@@ -84,17 +83,6 @@ public class ChooseAgentsAndEnvController implements Initializable, NewWindowSce
         }
 
 
-    }
-
-    public void dynamicEnvOnAction() {
-        spawnTimeTf.setDisable(!dynamicEnvCb.isSelected());
-        simulationLengthTf.setDisable(!dynamicEnvCb.isSelected());
-        if(!dynamicEnvCb.isSelected()){
-            simulationLengthTf.setText("until all POIs are cleared");
-        }
-        else{
-            simulationLengthTf.setText("10000");
-        }
     }
 
     public void btnPrevOnAction() {
@@ -189,10 +177,10 @@ public class ChooseAgentsAndEnvController implements Initializable, NewWindowSce
         if(!simulationLengthTf.isDisable()) {
             try {
                 simLength = Integer.parseInt(simulationLengthTf.getText());
-                if(simLength <= 0) throw new NumberFormatException();
+                if(simLength < 14000) throw new NumberFormatException();
             }
             catch (NumberFormatException e) {
-                popup("Invalid number in simulation length textfield, please enter a positive number");
+                popup("Number of second for each iteration must be at least 14 000");
                 check = false;
             }
         }

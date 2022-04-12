@@ -1,8 +1,7 @@
 package model.map.mapshell;
 
-import model.agents.Agent;
 import model.agents.BatAgent;
-import model.agents.ExplorerAgent;
+import model.agents.AgentParams;
 import model.map.Coordinate;
 import model.map.Home;
 import model.map.LineSegment;
@@ -10,96 +9,58 @@ import model.map.Vector;
 
 import java.io.*;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 import static model.main.Main.mapparams;
 
 public class Map implements Serializable{
 
     private final ArrayList<LineSegment> walls;     //initial walls existing on the map
-    private final ArrayList<Agent> agents;          //agents existing on the map
+    private final ArrayList<BatAgent> agents;          //agents existing on the map
     private ArrayList<Home> homes;               //homes existing on the map
+    private Stack<Coordinate> homes_to_add;
 
-    public Map(MapShell shell, boolean bats, int numAgents, int numHomes) {
+    public Map(MapShell shell, AgentParams ap, int numAgents, boolean singleStart) {
         this.agents = new ArrayList<>();
         this.homes = new ArrayList<>();
         this.walls = new ArrayList<>();
+        this.homes_to_add = new Stack<>();
+
+        for(Coordinate c : shell.getFutureHomePositions()) {
+            homes_to_add.push(c);
+        }
+
         this.walls.addAll(shell.getWalls());
 
-        if(bats) fillWithBats(numAgents, shell.getInitialAgentPositions());
-        else fillWithExplorers(numAgents, shell.getInitialAgentPositions());
+        fillWithBats(numAgents, shell.getInitialAgentPositions(), ap, singleStart);
 
-        fillWithHomes(numHomes, shell.getInitialHomePositions(), shell.getInitialPollutions());
-        for(Agent a : agents) a.giveMap(this);
+        fillWithHomes(shell.getInitialHomePositions(), shell.getInitialPollutions());
+        for(BatAgent a : agents) a.giveMap(this);
     }
 
-    private void fillWithHomes(int numHomes, Coordinate[] positions, double[] pollutions) {
+    private void fillWithHomes(Coordinate[] positions, double[] pollutions) {
 
-        for(int i = 0; i < numHomes; i++) {
-            homes.add(new Home(Home.ID++, pollutions[i], 0, positions[i]));
+        for(int i = 0; i < positions.length; i++) {
+            homes.add(new Home(Home.ID++, pollutions[i], positions[i]));
         }
 
     }
 
-    private void fillWithExplorers(int numAgents, Coordinate[] positions) {
+    private void fillWithBats(int numAgents, Coordinate[] positions, AgentParams ap, boolean singleStart) {
 
         for(int i = 0; i < numAgents; i++) {
-            ExplorerAgent e = new ExplorerAgent(Agent.ID++, positions[i]);
-            agents.add(e);
-            e.setHorizontalDirection(new model.map.Vector(1,0));
-            e.setDirection(new model.map.Vector(0,1));
-            e.setVerticalDirection(new Vector(0,1));
-        }
-
-
-    }
-
-    private void fillWithBats(int numAgents, Coordinate[] positions) {
-
-        for(int i = 0; i < numAgents; i++) {
-            agents.add(new BatAgent(Agent.ID++, positions[i]));
+            agents.add(new BatAgent(positions[singleStart ? 0 : i], ap));
         }
 
     }
 
-    public void addHome(int spawn_time){
+    public void addHome(){
 
-        Coordinate c = new Coordinate(
-                ThreadLocalRandom.current().nextInt(mapparams.POINT_MIN, mapparams.POINT_MAX + 1),
-                ThreadLocalRandom.current().nextInt(mapparams.POINT_MIN, mapparams.POINT_MAX + 1)
-        );
-
-        while(liesOnWall(c) || alreadyHome(c)){
-                c.setX(ThreadLocalRandom.current().nextInt(mapparams.POINT_MIN, mapparams.POINT_MAX + 1));
-                c.setY(ThreadLocalRandom.current().nextInt(mapparams.POINT_MIN, mapparams.POINT_MAX + 1));
-        }
-
-        createHome(c,Home.ID, spawn_time);
+        double pollution = (double)(mapparams.MIN_WORK + mapparams.MAX_WORK) / 2;
+        homes.add(new Home(Home.ID++, pollution, homes_to_add.pop()));
 
     }
 
-    private boolean alreadyHome(Coordinate c){
-        for(Home h : homes){
-            if(c.getX() == h.getCoords().getX() && c.getY() == h.getCoords().getY()) return true;
-        }
-        return false;
-    }
-
-    private boolean liesOnWall(Coordinate c){
-        for(LineSegment w: walls){
-            if(w.liesOnLine(c)) return true;
-        }
-        return false;
-    }
-
-    private void createHome(Coordinate coord, int id, int spawn_time) {
-
-        int workNeeded = ThreadLocalRandom.current().nextInt(mapparams.MIN_WORK, mapparams.MAX_WORK + 1);
-        homes.add(new Home(id, workNeeded, spawn_time, coord));
-
-    }
-
-    public ArrayList<Agent> getAgents() {
+    public ArrayList<BatAgent> getAgents() {
         return agents;
     }
 
@@ -117,7 +78,7 @@ public class Map implements Serializable{
 
         for(int i = 0; i < 3; i++) numInState[i] = 0;
 
-        for (Agent a : agents) {
+        for (BatAgent a : agents) {
             switch (a.getState()) {
                 case searching:
                     numInState[0]++;

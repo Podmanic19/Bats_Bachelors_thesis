@@ -22,7 +22,7 @@ import java.io.IOException;
 
 import static model.main.Main.*;
 
-public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes, PlaceWalls, Popup, ChangeScene {
+public class VisualisationController implements LoadToPane, PlaceAgents, PlaceHomes, PlaceWalls, Popup, ChangeScene {
 
     @FXML Button btnCreate;
     @FXML Button btnEnvSettings;
@@ -49,7 +49,7 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
         new Thread(() -> {
             disableButtons(true);
             mShell = new MapShell();
-            shownMap = new Map(mShell, true, mapparams.AGENT_NUM,  mapparams.NUMBER_HOME);
+            shownMap = new Map(mShell, agentparams, mapparams.AGENT_NUM, false);
             Platform.runLater(() -> {
                 showMap(paneMain);
                 disableButtons(false);
@@ -98,7 +98,7 @@ public class MainSceneController implements LoadToPane, PlaceAgents, PlaceHomes,
             popup("No map selected");
             return;
         }
-        shownMap = new Map(mShell, true, mapparams.AGENT_NUM,  mapparams.NUMBER_HOME);
+        shownMap = new Map(mShell, agentparams, mapparams.AGENT_NUM, false);
         btnPlay.setDisable(false);
         showMap(paneMain);
     }
