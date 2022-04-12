@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="800.0" prefWidth="800.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.settings.EnvironmentSettingsController">
+   <children>
+      <TextField fx:id="growthRateTf" alignment="CENTER" layoutX="501.0" layoutY="213.0" text="0" />
+      <TextField fx:id="spawnRateTf" alignment="CENTER" layoutX="505.0" layoutY="416.0" text="0" />
+      <Label layoutX="96.0" layoutY="212.0" text="DYNAMIC POI GROWTH RATE:">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="106.0" layoutY="421.0" text="DYNAMIC POI SPAWN RATE:">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Button layoutX="383.0" layoutY="681.0" mnemonicParsing="false" onAction="#btnSetOnAction" text="SET">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

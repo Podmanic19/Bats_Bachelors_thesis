@@ -49,13 +49,13 @@
             <CheckBox fx:id="cbShowCalls" layoutX="38.0" layoutY="582.0" mnemonicParsing="false" onAction="#showCallsOnAction" text="SHOW CALLS" />
             <CheckBox fx:id="cbShowVision" layoutX="38.0" layoutY="612.0" mnemonicParsing="false" onAction="#showVisionOnAction" text="SHOW VISION" />
             <Label fx:id="lblTicks" layoutX="36.0" layoutY="746.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="128.0" textAlignment="CENTER" />
-            <Button fx:id="btnCreate1" layoutX="36.0" layoutY="60.0" mnemonicParsing="false" onAction="#btnCreateEnv" prefHeight="25.0" prefWidth="128.0" style=": ;" text="MAIN MENU" textAlignment="CENTER">
+            <Button fx:id="btnMainMenu" layoutX="36.0" layoutY="60.0" mnemonicParsing="false" onAction="#btnMainMenuOnAction" prefHeight="25.0" prefWidth="128.0" style=": ;" text="MAIN MENU" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
             <CheckBox fx:id="cbShowCalls1" layoutX="38.0" layoutY="552.0" mnemonicParsing="false" onAction="#showCallsOnAction" text="SINGLE START" />
-            <Button fx:id="btnAgentSettings1" layoutX="36.0" layoutY="340.0" mnemonicParsing="false" onAction="#btnAgentSettings" prefHeight="25.0" prefWidth="128.0" text="ENV SETTINGS" textAlignment="CENTER">
+            <Button layoutX="36.0" layoutY="340.0" mnemonicParsing="false" onAction="#btnEnvSettingsOnAction" prefHeight="25.0" prefWidth="128.0" text="ENV SETTINGS" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>

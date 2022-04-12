@@ -43,6 +43,25 @@ public class VisualisationController implements LoadToPane, PlaceAgents, PlaceHo
 
     public static boolean playing = false;
 
+    public void btnMainMenuOnAction() {
+        try {
+            sceneChanger("startingscene");
+        } catch (IOException e) {
+            popup("Couldn't load file view/startingscene.fxml");
+            e.printStackTrace();
+        }
+    }
+
+    public void btnEnvSettingsOnAction() {
+        try {
+            load(paneMain, "environmentsettings");
+        } catch (IOException e) {
+            popup("Couldn't load file view/startingscene.fxml");
+            e.printStackTrace();
+        }
+    }
+
+
     public void btnCreateEnv() {
         lblLoading.setText("GENERATING MAP...");
         btnCreate.setDefaultButton(false);

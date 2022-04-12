@@ -56,7 +56,8 @@ public class Map implements Serializable{
     public void addHome(){
 
         double pollution = (double)(mapparams.MIN_WORK + mapparams.MAX_WORK) / 2;
-        homes.add(new Home(Home.ID++, pollution, homes_to_add.pop()));
+        Coordinate c = homes_to_add.pop();
+        homes.add(new Home(Home.ID++, pollution, c));
 
     }
 

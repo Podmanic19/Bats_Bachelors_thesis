@@ -38,7 +38,8 @@ public class MapShell implements Serializable {
 
         int added = -1;
         for(int i = 0; i < flatMap.size(); i++) {
-            Coordinate c = flatMap.get(1);
+            if(added == 199) break;
+            Coordinate c = flatMap.get(i);
             if(liesOnWall(c) || alreadyHomes.contains(c)) continue;
             futureHomePositions[++added] = c;
         }

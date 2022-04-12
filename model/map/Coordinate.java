@@ -1,7 +1,5 @@
 package model.map;
 
-import model.main.Main;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
