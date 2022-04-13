@@ -40,7 +40,7 @@ public class Map implements Serializable{
     private void fillWithHomes(Coordinate[] positions, double[] pollutions) {
 
         for(int i = 0; i < positions.length; i++) {
-            homes.add(new Home(Home.ID++, pollutions[i], positions[i]));
+            homes.add(new Home(pollutions[i], positions[i]));
         }
 
     }
@@ -56,8 +56,7 @@ public class Map implements Serializable{
     public void addHome(){
 
         double pollution = (double)(mapparams.MIN_WORK + mapparams.MAX_WORK) / 2;
-        Coordinate c = homes_to_add.pop();
-        homes.add(new Home(Home.ID++, pollution, c));
+        homes.add(new Home(pollution, homes_to_add.pop()));
 
     }
 

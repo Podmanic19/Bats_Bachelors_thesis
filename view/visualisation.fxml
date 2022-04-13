@@ -54,7 +54,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <CheckBox fx:id="cbShowCalls1" layoutX="38.0" layoutY="552.0" mnemonicParsing="false" onAction="#showCallsOnAction" text="SINGLE START" />
+            <CheckBox fx:id="singleStart" layoutX="38.0" layoutY="552.0" mnemonicParsing="false" onAction="#singleStartOnAction" text="SINGLE START" />
             <Button layoutX="36.0" layoutY="340.0" mnemonicParsing="false" onAction="#btnEnvSettingsOnAction" prefHeight="25.0" prefWidth="128.0" text="ENV SETTINGS" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />

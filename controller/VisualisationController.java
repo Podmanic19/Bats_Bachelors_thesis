@@ -36,6 +36,7 @@ public class VisualisationController implements LoadToPane, PlaceAgents, PlaceHo
     @FXML Label lblLoading;
     @FXML CheckBox cbShowVision;
     @FXML CheckBox cbShowCalls;
+    @FXML CheckBox singleStart;
     @FXML Label lblTicks;
 
     private MapShell mShell;
@@ -61,6 +62,11 @@ public class VisualisationController implements LoadToPane, PlaceAgents, PlaceHo
         }
     }
 
+    public void singleStartOnAction() {
+        if(playing) return;
+        this.shownMap = new Map(mShell, agentparams, mapparams.AGENT_NUM, singleStart.isSelected());
+        showMap();
+    }
 
     public void btnCreateEnv() {
         lblLoading.setText("GENERATING MAP...");
@@ -68,16 +74,16 @@ public class VisualisationController implements LoadToPane, PlaceAgents, PlaceHo
         new Thread(() -> {
             disableButtons(true);
             mShell = new MapShell();
-            shownMap = new Map(mShell, agentparams, mapparams.AGENT_NUM, false);
+            shownMap = new Map(mShell, agentparams, mapparams.AGENT_NUM, singleStart.isSelected());
             Platform.runLater(() -> {
-                showMap(paneMain);
+                showMap();
                 disableButtons(false);
                 lblLoading.setVisible(false);
             });
         }).start();
     }
 
-    private void showMap(Pane paneMain) {
+    private void showMap() {
         paneMain.getChildren().clear();
         placeHomes(shownMap.getHomes(), paneMain);
         placeWalls(shownMap.getWalls(), paneMain);
@@ -117,9 +123,9 @@ public class VisualisationController implements LoadToPane, PlaceAgents, PlaceHo
             popup("No map selected");
             return;
         }
-        shownMap = new Map(mShell, agentparams, mapparams.AGENT_NUM, false);
+        shownMap = new Map(mShell, agentparams, mapparams.AGENT_NUM, singleStart.isSelected());
         btnPlay.setDisable(false);
-        showMap(paneMain);
+        showMap();
     }
 
     public void btnSave() {

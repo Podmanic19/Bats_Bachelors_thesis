@@ -6,23 +6,19 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Home implements Serializable {
-    public static int ID = 1;
-    private final int id;
     private int lifeTime = 0;
     private final Coordinate coords;
     private ArrayList<BatAgent> agents = new ArrayList<>();
     private double pollution;
     private CallType call;
 
-    public Home(int id, double pollution, Coordinate coords) {
-        this.id = id;
+    public Home(double pollution, Coordinate coords) {
         this.pollution = pollution;
         this.coords = coords;
         this.call = CallType.NONE;
     }
 
     public Home(Home h){
-        this.id = h.id;
         this.pollution = h.pollution;
         this.coords = h.coords;
         this.call = h.call;
@@ -34,10 +30,6 @@ public class Home implements Serializable {
 
     public synchronized void addAgent(BatAgent a) {
         agents.add(a);
-    }
-
-    public int getId() {
-        return id;
     }
 
     public synchronized ArrayList<BatAgent> getAgents() {
