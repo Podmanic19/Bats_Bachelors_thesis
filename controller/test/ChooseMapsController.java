@@ -21,14 +21,14 @@ import model.gui.NewWindowScene;
 import model.gui.Popup;
 import model.map.mapshell.Map;
 import model.map.mapshell.MapShell;
-import model.testing.Test;
+import model.testing.TestParams;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import static model.main.Main.*;
 
@@ -51,12 +51,12 @@ public class ChooseMapsController implements ChangeScene, Popup, Initializable, 
     @FXML CheckBox generateRandCb;
     @FXML CheckBox singleStartingPosition;
 
-    private Test test;
+    private TestParams test;
     private Map shownMap;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        test = (Test) primaryStage.getUserData();
+        test = (TestParams) primaryStage.getUserData();
         numMapsTf.setAlignment(Pos.CENTER);
         setTableView();
     }
@@ -134,19 +134,26 @@ public class ChooseMapsController implements ChangeScene, Popup, Initializable, 
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setTitle("Choose maps from subdirectory");
         File selectedDirectory = chooser.showDialog(new Stage());
-        File[] directoryListing = selectedDirectory.listFiles();
-        if (directoryListing != null) {
-            for (File child : directoryListing) {
-                if(child.getName().contains(".emap")) {
-                    MapShell s = MapShell.load(child);
-                    if(s == null){
-                        popup("Unable to load map from file " + child.getName());
-                        return;
+        File[] directoryListing;
+        try{
+            directoryListing = selectedDirectory.listFiles();
+            if (directoryListing != null) {
+                for (File child : directoryListing) {
+                    if(child.getName().contains(".emap")) {
+                        MapShell s = MapShell.load(child);
+                        if(s == null){
+                            popup("Unable to load map from file " + child.getName());
+                            return;
+                        }
+                        mapsTable.getItems().add(s);
                     }
-                    mapsTable.getItems().add(s);
                 }
             }
         }
+        catch(NullPointerException e) {
+            popup("No selected files");
+        }
+
         mapsTable.refresh();
     }
 

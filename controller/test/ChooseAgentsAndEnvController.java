@@ -6,7 +6,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -18,12 +17,11 @@ import model.gui.NewWindowScene;
 import model.gui.Popup;
 import model.serialization.AgentsManager;
 import model.testing.EnvironmentParameters;
-import model.testing.Test;
+import model.testing.TestParams;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static model.main.Main.primaryStage;
@@ -45,7 +43,7 @@ public class ChooseAgentsAndEnvController implements Initializable, NewWindowSce
     @FXML private TableColumn<AgentParams, Boolean> repulseCol;
     @FXML private TableColumn<AgentParams, Boolean> chosenCol;
 
-    private Test test;
+    private TestParams test;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -54,7 +52,7 @@ public class ChooseAgentsAndEnvController implements Initializable, NewWindowSce
         fillTableView();
         spawnTimeTf.setAlignment(Pos.CENTER);
         homeGrowthTf.setAlignment(Pos.CENTER);
-        test = new Test();
+        test = new TestParams();
 
     }
 

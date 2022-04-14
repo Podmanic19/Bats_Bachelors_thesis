@@ -1,4 +1,5 @@
 package controller;
+import controller.test.TestRunningController;
 import javafx.concurrent.Task;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
@@ -18,6 +19,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 import model.map.mapshell.MapShell;
+import model.testing.TestParams;
 
 import java.io.File;
 import java.io.IOException;
@@ -103,18 +105,9 @@ public class VisualisationController implements LoadToPane, PlaceAgents, PlaceHo
     public void btnPlayOnAction(){
         lblTicks.setAlignment(Pos.CENTER);
         if(playing) return;
-        try {
-            new Thread(() -> {
-                try {
-                    visualisation.call();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }).start();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Thread t = new Thread(visualisation);
+        t.setDaemon(true);
+        t.start();
         btnPlay.setDisable(true);
     }
 
