@@ -1,8 +1,11 @@
 package controller;
+import javafx.concurrent.Task;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
+import javafx.scene.shape.Line;
+import model.agents.BatAgent;
 import model.gui.ChangeScene;
-import model.gui.Visualisation;
+import model.map.Home;
 import model.map.mapshell.Map;
 import model.gui.Popup;
 import model.gui.LoadToPane;
@@ -18,8 +21,12 @@ import model.map.mapshell.MapShell;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.concurrent.Semaphore;
 
 
+import static java.lang.Thread.sleep;
 import static model.main.Main.*;
 
 public class VisualisationController implements LoadToPane, PlaceAgents, PlaceHomes, PlaceWalls, Popup, ChangeScene {
@@ -38,14 +45,17 @@ public class VisualisationController implements LoadToPane, PlaceAgents, PlaceHo
     @FXML CheckBox cbShowCalls;
     @FXML CheckBox singleStart;
     @FXML Label lblTicks;
+    @FXML Button btnEnv;
 
     private MapShell mShell;
+    private final Visualisation visualisation = new Visualisation();
     private Map shownMap;
 
     public static boolean playing = false;
 
     public void btnMainMenuOnAction() {
         try {
+            visualisation.cancel();
             sceneChanger("startingscene");
         } catch (IOException e) {
             popup("Couldn't load file view/startingscene.fxml");
@@ -93,7 +103,18 @@ public class VisualisationController implements LoadToPane, PlaceAgents, PlaceHo
     public void btnPlayOnAction(){
         lblTicks.setAlignment(Pos.CENTER);
         if(playing) return;
-        Visualisation.getInstance(shownMap, paneMain, lblTicks).start();
+        try {
+            new Thread(() -> {
+                try {
+                    visualisation.call();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         btnPlay.setDisable(true);
     }
 
@@ -151,6 +172,65 @@ public class VisualisationController implements LoadToPane, PlaceAgents, PlaceHo
         btnLoadEnv.setDisable(disable);
         btnSave.setDisable(disable);
         btnEnvSettings.setDisable(disable);
+        btnEnv.setDisable(disable);
+    }
+
+    class Visualisation extends Task {
+
+        @Override
+        protected Object call() throws Exception {
+            return simulate();
+        }
+
+        public int simulate() {
+            Semaphore semaphore = new Semaphore(0);
+            Instant start = Instant.now();
+            int runtime = 0;
+
+            while(runtime < 14000 && !this.isCancelled()) {
+                int finalI = runtime;
+                shownMap.getAgents().parallelStream().forEach(BatAgent::act);
+                shownMap.getHomes().removeIf(h -> (h.getPollution() <= 0));
+                for(Home h : shownMap.getHomes()){
+                    h.incrementLifetime();
+                    h.increasePollution(envparams.DYNAMIC_HOME_GROWTH_SIZE);
+                }
+                Platform.runLater(() -> {
+                    refresh();
+                    placeHomes(shownMap.getHomes(), paneMain);
+                    placeAgents(shownMap.getAgents(), paneMain);
+                    Platform.runLater(() ->  updateTicks(finalI));
+                    semaphore.release();
+                });
+                try {
+                    semaphore.acquire();
+                    sleep(10);  // sleep to make the visualisation observable by human eye
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (shownMap.getHomes().isEmpty()) {
+                    System.out.println("Pocet iteracii: " + runtime);
+                    break;
+                }
+                if(envparams.DYNAMIC_HOME_SPAWN_TIME > 0 && runtime % envparams.DYNAMIC_HOME_SPAWN_TIME == 0) shownMap.addHome();
+                runtime++;
+            }
+
+            Instant end = Instant.now();
+            System.out.println(Duration.between(start, end));
+            return runtime;
+
+        }
+
+        private void refresh() {
+            paneMain.getChildren().removeIf(node -> (!(node instanceof Line)));
+        }
+
+
+        public void updateTicks(int i){
+            lblTicks.setText("Second: " + i);
+        }
+
     }
 
 }

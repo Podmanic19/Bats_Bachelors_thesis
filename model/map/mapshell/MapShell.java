@@ -246,8 +246,12 @@ public class MapShell implements Serializable {
             m.setName(inFile.getName().replace(".emap", ""));
             ois.close();
             fis.close();
-        } catch (IOException | ClassNotFoundException ioe) {
+        }
+        catch (IOException | ClassNotFoundException ioe) {
             ioe.printStackTrace();
+            return null;
+        }
+        catch (NullPointerException e) {
             return null;
         }
 
