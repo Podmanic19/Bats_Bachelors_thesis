@@ -1,6 +1,7 @@
 package controller.settings;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import model.gui.Popup;
 import model.main.Main;
@@ -8,8 +9,9 @@ import model.testing.EnvironmentParameters;
 
 public class EnvironmentSettingsController implements Popup {
 
-    @FXML TextField growthRateTf;
-    @FXML TextField spawnRateTf;
+    @FXML private TextField growthRateTf;
+    @FXML private TextField spawnRateTf;
+    @FXML private CheckBox singlePointStartingLocation;
 
     EnvironmentParameters envparams = new EnvironmentParameters();
 
@@ -36,6 +38,7 @@ public class EnvironmentSettingsController implements Popup {
         }
         this.envparams.DYNAMIC_HOME_SPAWN_TIME = spawnRate;
         this.envparams.DYNAMIC_HOME_GROWTH_SIZE = growthRate;
+        this.envparams.SINGLE_POINT_STARTING_LOCATION = singlePointStartingLocation.isSelected();
         Main.envparams = this.envparams;
     }
 

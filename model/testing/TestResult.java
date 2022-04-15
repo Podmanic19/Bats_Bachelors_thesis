@@ -1,15 +1,34 @@
 package model.testing;
 
+import controller.settings.MapSettingsController;
+import model.agents.AgentParams;
+import model.map.mapshell.MapShell;
+
 import java.io.*;
 import java.util.ArrayList;
 
-public class TestResult implements Aggregable, Serializable {
+public class TestResult implements Serializable {
 
-    ArrayList<AgentResult> agentResults = new ArrayList<>();
+    private String name;
+    private int numAgents;
+    private boolean singleStart;
+    private EnvironmentParameters envParams;
+    private ArrayList<MapShell> maps;
+    private ArrayList<AgentParams> agentTypes;
+    private ArrayList<Statistic> observations= new ArrayList<>();
 
-    public void update(AgentResult a) {
+    public TestResult(String name, int numAgents, ArrayList<MapShell> maps, ArrayList<AgentParams> ap, EnvironmentParameters ep) {
+        this.name = name;
+        this.maps = maps;
+        this.numAgents = numAgents;
+        this.agentTypes = ap;
+        this.singleStart = singleStart;
+        this.envParams = ep;
+    }
 
-        agentResults.add(a);
+    public void update(Statistic s) {
+
+        observations.add(s);
 
     }
 
@@ -32,6 +51,7 @@ public class TestResult implements Aggregable, Serializable {
             FileInputStream fis = new FileInputStream(f);
             ObjectInputStream ois = new ObjectInputStream(fis);
             tr = (TestResult) ois.readObject();
+            tr.setName(f.getName().replace(".emap", ""));
             ois.close();
             fis.close();
         } catch (IOException | ClassNotFoundException ioe) {
@@ -44,7 +64,7 @@ public class TestResult implements Aggregable, Serializable {
     }
 
     public boolean toCSV(File f) {
-        FileWriter myWriter = null;
+        FileWriter myWriter;
         try {
             myWriter = new FileWriter(f);
         } catch (IOException e) {
@@ -56,19 +76,17 @@ public class TestResult implements Aggregable, Serializable {
         StringBuilder contents = new StringBuilder(
                 "Agent name," +
                 "Map name," +
+                "Hearing distance," +
                 "Number of agents," +
                 "Time taken," +
                 "Time searching," +
                 "Time travelling," +
-                "Time working," +
-                "Hearing distance,"
+                "Time working,"
         );
 
-        Statistic example = agentResults.get(0).getMapResults().get(0).getIterations().get(0);
-        int numberOfAgents = example.getWorkDone().length;
         int maxTakenTime = getLongestTimeTaken();
 
-        for(int i = 0; i < numberOfAgents; i++) {
+        for(int i = 0; i < numAgents; i++) {
             contents.append("Agent ").append(i).append(" work,");
         }
 
@@ -86,59 +104,62 @@ public class TestResult implements Aggregable, Serializable {
         }
 
 
-        for(AgentResult ar : agentResults) {
-            String agentName = ar.getAgentType().getNAME();
-            String hearingDistance = String.valueOf(ar.getAgentType().getHEARING_DISTANCE());
-            for(MapResult mr : ar.getMapResults()) {
-                String mapName = mr.getMapName();
-                for(Statistic s : mr.getIterations()) {
-                    try {
-                        bufferedWriter.write(s.exportData(agentName, mapName, hearingDistance, maxTakenTime));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        return false;
-                    }
-                }
+        for(Statistic s : observations) {
+            try {
+                bufferedWriter.write(s.exportData(maxTakenTime));
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
             }
+        }
+
+        try {
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return true;
     }
 
     private int getLongestTimeTaken(){
         int max = 0;
-        for(AgentResult ar : agentResults) {
-            for (MapResult mr : ar.getMapResults()) {
-                for (Statistic s : mr.getIterations()) {
-                    if(s.getTakenTime() > max) {
-                        max = s.getTakenTime();
-                    }
-                }
+        for (Statistic s : observations) {
+            if(s.getTakenTime() > max) {
+                max = s.getTakenTime();
             }
         }
         return max;
     }
 
-    @Override
-    public double getAverageWorkDone() {
-        return 0;
+    public EnvironmentParameters getEnvParams() {
+        return envParams;
     }
 
-    @Override
-    public double getMaxWorkDone() {
-        return 0;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @Override
-    public double getMinimumWorkDone() {
-        return 0;
+    public String getName() {
+        return name;
     }
 
-    @Override
-    public int getTakenTime() {
-        return 0;
+    public int getNumAgents() {
+        return numAgents;
     }
 
-    public ArrayList<AgentResult> getAgentResults() {
-        return agentResults;
+    public boolean isSingleStart() {
+        return singleStart;
+    }
+
+    public ArrayList<AgentParams> getAgentTypes() {
+        return agentTypes;
+    }
+
+    public ArrayList<MapShell> getMaps() {
+        return maps;
+    }
+
+    public ArrayList<Statistic> getObservations() {
+        return observations;
     }
 }

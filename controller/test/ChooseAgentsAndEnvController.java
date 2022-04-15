@@ -138,6 +138,8 @@ public class ChooseAgentsAndEnvController implements Initializable, NewWindowSce
             ObservableList<AgentParams> observableAgents = FXCollections.observableArrayList();
             observableAgents.addAll(new AgentsManager().getAgents());
             agentsTable.setItems(observableAgents);
+            agentsTable.getSortOrder().add(nameCol);
+            agentsTable.sort();
         } catch (IOException e) {
             popup("Couldn't load any agents from agents directory.");
             e.printStackTrace();

@@ -83,11 +83,11 @@
             <Font name="System Bold" size="13.0" />
          </font>
       </Button>
-      <Label layoutX="40.0" layoutY="269.0" text="Length of simulation:">
+      <Label layoutX="40.0" layoutY="269.0" text="Maximum length of simulation:">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="simulationLengthTf" alignment="CENTER" layoutX="404.0" layoutY="271.0" text="14000" />
+      <TextField fx:id="simulationLengthTf" alignment="CENTER" layoutX="404.0" layoutY="272.0" text="14000" />
    </children>
 </Pane>

@@ -5,8 +5,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.gui.ChangeScene;
 import model.gui.Popup;
-import model.map.mapshell.Map;
-import model.map.mapshell.MapShell;
 import model.testing.TestResult;
 
 import java.io.File;

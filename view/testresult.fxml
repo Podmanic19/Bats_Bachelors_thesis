@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="800.0" maxWidth="800.0" minHeight="800.0" minWidth="800.0" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TestResultController">
+   <children>
+      <Label fx:id="testNameLbl" alignment="CENTER" contentDisplay="CENTER" layoutX="296.0" layoutY="57.0" text="TEST NAME">
+         <font>
+            <Font size="40.0" />
+         </font>
+      </Label>
+      <Label fx:id="testNameLbl1" layoutX="81.0" layoutY="183.0" text="Dynamic home growth:">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+      <Label fx:id="testNameLbl11" layoutX="79.0" layoutY="273.0" text="Dynamic home spawn:">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+      <Label fx:id="testNameLbl111" layoutX="83.0" layoutY="364.0" text="Single starting location:">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+      <Label fx:id="testNameLbl1111" layoutX="80.0" layoutY="457.0" text="Number of agents:">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+      <TableView fx:id="agentsTable" editable="true" layoutX="13.0" layoutY="553.0" prefHeight="179.0" prefWidth="768.0">
+         <columns>
+            <TableColumn fx:id="nameCol" prefWidth="130.93330764770508" text="Name" />
+            <TableColumn fx:id="forwardCol" minWidth="8.26678466796875" prefWidth="108.26667785644531" text="Forward" />
+            <TableColumn fx:id="backCol" minWidth="2.933349609375" prefWidth="71.73330688476562" text="Back" />
+            <TableColumn fx:id="sightCol" prefWidth="78.66656494140625" text="Sight" />
+            <TableColumn fx:id="fovCol" prefWidth="49.86669921875" text="FOV" />
+            <TableColumn fx:id="hearingCol" prefWidth="128.53338623046875" text="Hearing distance" />
+            <TableColumn fx:id="avoidCol" prefWidth="99.7333984375" text="Avoids others" />
+            <TableColumn fx:id="repulseCol" prefWidth="100.5333251953125" text="Repulsive call" />
+            <TableColumn fx:id="decisiveCol" minWidth="0.0" prefWidth="152.2667236328125" text="Decisive" />
+            <TableColumn fx:id="chosenCol" prefWidth="61.00006103515625" text="Chosen" />
+         </columns>
+      </TableView>
+      <TextField fx:id="dynamicHomeGrowthTf" alignment="CENTER" disable="true" layoutX="527.0" layoutY="190.0" />
+      <TextField fx:id="dynamicHomeSpawnTf" alignment="CENTER" disable="true" layoutX="529.0" layoutY="279.0" />
+      <TextField fx:id="numberOfAgentsTf" alignment="CENTER" disable="true" layoutX="530.0" layoutY="467.0" />
+      <CheckBox fx:id="singleStartCb" disable="true" layoutX="529.0" layoutY="373.0" mnemonicParsing="false" text="Single starting location" />
+   </children>
+</AnchorPane>
