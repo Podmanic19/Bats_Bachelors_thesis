@@ -35,18 +35,17 @@
             <Font size="26.0" />
          </font>
       </Label>
-      <TableView fx:id="agentsTable" editable="true" layoutX="13.0" layoutY="553.0" prefHeight="179.0" prefWidth="768.0">
+      <TableView fx:id="agentsTable" editable="true" layoutX="23.0" layoutY="560.0" prefHeight="179.0" prefWidth="747.0">
          <columns>
-            <TableColumn fx:id="nameCol" prefWidth="130.93330764770508" text="Name" />
-            <TableColumn fx:id="forwardCol" minWidth="8.26678466796875" prefWidth="108.26667785644531" text="Forward" />
-            <TableColumn fx:id="backCol" minWidth="2.933349609375" prefWidth="71.73330688476562" text="Back" />
-            <TableColumn fx:id="sightCol" prefWidth="78.66656494140625" text="Sight" />
-            <TableColumn fx:id="fovCol" prefWidth="49.86669921875" text="FOV" />
-            <TableColumn fx:id="hearingCol" prefWidth="128.53338623046875" text="Hearing distance" />
-            <TableColumn fx:id="avoidCol" prefWidth="99.7333984375" text="Avoids others" />
-            <TableColumn fx:id="repulseCol" prefWidth="100.5333251953125" text="Repulsive call" />
-            <TableColumn fx:id="decisiveCol" minWidth="0.0" prefWidth="152.2667236328125" text="Decisive" />
-            <TableColumn fx:id="chosenCol" prefWidth="61.00006103515625" text="Chosen" />
+            <TableColumn fx:id="nameCol" prefWidth="91.73335647583008" text="Name" />
+            <TableColumn fx:id="forwardCol" minWidth="8.26678466796875" prefWidth="66.933349609375" text="Forward" />
+            <TableColumn fx:id="backCol" minWidth="2.933349609375" prefWidth="62.93341064453125" text="Back" />
+            <TableColumn fx:id="sightCol" prefWidth="73.333251953125" text="Sight" />
+            <TableColumn fx:id="fovCol" prefWidth="66.39999389648438" text="FOV" />
+            <TableColumn fx:id="hearingCol" prefWidth="94.39999389648438" text="Hearing " />
+            <TableColumn fx:id="avoidCol" prefWidth="109.60000610351562" text="Avoids " />
+            <TableColumn fx:id="repulseCol" minWidth="0.0" prefWidth="98.66668701171875" text="Repulses" />
+            <TableColumn fx:id="decisiveCol" minWidth="0.0" prefWidth="82.933349609375" text="Decisive" />
          </columns>
       </TableView>
       <TextField fx:id="dynamicHomeGrowthTf" alignment="CENTER" disable="true" layoutX="527.0" layoutY="190.0" />

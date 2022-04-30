@@ -103,6 +103,7 @@ public class VisualisationController implements LoadToPane, PlaceAgents, PlaceHo
     }
 
     public void btnPlayOnAction(){
+        showMap();
         lblTicks.setAlignment(Pos.CENTER);
         if(playing) return;
         Thread t = new Thread(visualisation);
@@ -197,7 +198,7 @@ public class VisualisationController implements LoadToPane, PlaceAgents, PlaceHo
                 });
                 try {
                     semaphore.acquire();
-                    sleep(10);  // sleep to make the visualisation observable by human eye
+                    sleep(30);  // sleep to make the visualisation observable by human eye
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -205,7 +206,8 @@ public class VisualisationController implements LoadToPane, PlaceAgents, PlaceHo
                     System.out.println("Pocet iteracii: " + runtime);
                     break;
                 }
-                if(envparams.DYNAMIC_HOME_SPAWN_TIME > 0 && runtime % envparams.DYNAMIC_HOME_SPAWN_TIME == 0) shownMap.addHome();
+                if(envparams.DYNAMIC_HOME_SPAWN_TIME > 0 && runtime % envparams.DYNAMIC_HOME_SPAWN_TIME == 0)
+                    shownMap.addHome();
                 runtime++;
             }
 

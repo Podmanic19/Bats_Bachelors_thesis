@@ -39,7 +39,7 @@ public interface PlaceAgents {
                 cir.setFill(Color.DARKSEAGREEN);
                 cir.setStroke(Color.DARKSEAGREEN);
             }
-            if (a.getState() == State.traveling) {
+            if (a.getState() == State.travelling) {
                 cir.setFill(Color.DARKRED);
                 cir.setStroke(Color.DARKRED);
             }

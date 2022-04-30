@@ -37,7 +37,6 @@ public class TestResultController implements Initializable, Popup {
     @FXML private TableColumn<AgentParams, Boolean> avoidCol;
     @FXML private TableColumn<AgentParams, Boolean> decisiveCol;
     @FXML private TableColumn<AgentParams, Boolean> repulseCol;
-    @FXML private TableColumn<AgentParams, Boolean> chosenCol;
 
     private TestResult testResult;
 
@@ -66,31 +65,16 @@ public class TestResultController implements Initializable, Popup {
         hearingCol.setCellValueFactory(new PropertyValueFactory<>("HEARING_DISTANCE"));
         avoidCol.setCellValueFactory(new PropertyValueFactory<>("AVOID_OTHERS"));
         decisiveCol.setCellValueFactory(new PropertyValueFactory<>("DECISIVE"));
-        chosenCol.setCellFactory(column -> new CheckBoxTableCell<>());
-        chosenCol.setCellValueFactory(cellData -> {
-            AgentParams cellValue = cellData.getValue();
-            BooleanProperty property = cellValue.getSELECTED();
-
-            property.addListener((observable, oldValue, newValue) ->
-                    cellValue.setSELECTED(newValue)
-            );
-
-            return property;
-        });
     }
 
     private void fillTableView() {
 
-        try {
-            ObservableList<AgentParams> observableAgents = FXCollections.observableArrayList();
-            observableAgents.addAll(new AgentsManager().getAgents());
-            agentsTable.setItems(observableAgents);
-            agentsTable.getSortOrder().add(nameCol);
-            agentsTable.sort();
-        } catch (IOException e) {
-            popup("Couldn't load any agents from agents directory.");
-            e.printStackTrace();
-        }
+        ObservableList<AgentParams> observableAgents = FXCollections.observableArrayList();
+        observableAgents.addAll(testResult.getAgentTypes());
+        agentsTable.setItems(observableAgents);
+        agentsTable.getSortOrder().add(nameCol);
+        agentsTable.sort();
+
 
     }
 

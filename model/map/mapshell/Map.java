@@ -5,7 +5,6 @@ import model.agents.AgentParams;
 import model.map.Coordinate;
 import model.map.Home;
 import model.map.LineSegment;
-import model.map.Vector;
 
 import java.io.*;
 import java.util.*;
@@ -83,7 +82,7 @@ public class Map implements Serializable{
                 case searching:
                     numInState[0]++;
                     break;
-                case traveling:
+                case travelling:
                     numInState[1]++;
                     break;
                 case working:

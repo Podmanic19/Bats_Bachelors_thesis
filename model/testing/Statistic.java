@@ -5,8 +5,6 @@ import model.map.Home;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 
 public class Statistic implements Serializable {
 

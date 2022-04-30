@@ -51,9 +51,7 @@ public class Coordinate implements Serializable {
     }
 
     /***
-     * Returns true if it is possible to get from this coordinate to the coordinate provided - whether there is a wall
-     * between these two coordinates or whether the provided coordinate is outside the environment boundaries
-     *
+     * Returns wall and collision point between given two points if there is a wall on line between them
      */
     public WallCollision checkWalls(Coordinate b, ArrayList<LineSegment> walls){
 

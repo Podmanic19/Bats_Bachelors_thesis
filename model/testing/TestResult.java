@@ -22,7 +22,7 @@ public class TestResult implements Serializable {
         this.maps = maps;
         this.numAgents = numAgents;
         this.agentTypes = ap;
-        this.singleStart = singleStart;
+        this.singleStart = ep.SINGLE_POINT_STARTING_LOCATION;
         this.envParams = ep;
     }
 
@@ -91,7 +91,7 @@ public class TestResult implements Serializable {
         }
 
         for(int i = 0; i < maxTakenTime; i++) {
-            contents.append("Second ").append(i).append(",");
+            contents.append(i).append(",");
         }
 
         contents.deleteCharAt(contents.length()-1);

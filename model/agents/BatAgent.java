@@ -57,7 +57,7 @@ public class BatAgent implements Serializable {
             for (BatAgent a : myMap.getAgents()) {
                 if (a == this)
                     continue;
-                if (a.getState() == State.working)
+                if (a.getState() == State.working)                                      //working agents are not visible
                     continue;
                 Vector thisToAgent = new Vector(this.position, a.getPosition());
                 double angle = direction.angleBetween(thisToAgent);
@@ -77,11 +77,10 @@ public class BatAgent implements Serializable {
             }
 
         }
-        dirJa();
-        //dirZelenka();
+        changeDir();
     }
 
-    private void dirJa() {
+    private void changeDir() {
 
         int degrees = 0;
         if(agentparams.LEFT > 0 && agentparams.RIGHT > 0) {
@@ -94,22 +93,6 @@ public class BatAgent implements Serializable {
             this.direction.reverse();
         }
 
-    }
-
-    private void dirZelenka() {
-        double front = agentparams.FORWARD / (double) (10000 * ThreadLocalRandom.current().nextInt(10000) + 1);
-        double back = agentparams.BACK / (double) (10000 * ThreadLocalRandom.current().nextInt(10000) + 1);
-        double left = agentparams.LEFT / (double) (10000 * ThreadLocalRandom.current().nextInt(10000) + 1);
-        double right = agentparams.RIGHT / (double) (10000 * ThreadLocalRandom.current().nextInt(10000) + 1);
-
-        Vector n = (front - back) >= 0 ? this.direction.copy() : this.direction.reverse();
-        Vector s = (left - right) >= 0 ? this.direction.reverseX() : this.direction.reverseY();
-
-        double frontal_dir = sqrt(Math.pow(front - back, 2) / (Math.pow(n.getX(), 2) + Math.pow(n.getY(), 2)));
-        double side_dir = sqrt(Math.pow(left - right, 2) / (Math.pow(s.getX(), 2) + Math.pow(s.getY(), 2)));
-
-        direction.setX(frontal_dir * n.getX() + side_dir * s.getX());
-        direction.setY(frontal_dir * n.getY() + side_dir * s.getY());
     }
 
     protected void move() { // method that changes the position of the agent
@@ -130,7 +113,7 @@ public class BatAgent implements Serializable {
             else {
                 collideWithWall(collision);
                 this.speed -= position.distanceTo(collision.getCollisionPoint());
-                if (speed == 0) {
+                if (speed == 0) {                                                  //if agent were to get stuck in wall
                     speed = 0.1 + (1 - 0.5) * ThreadLocalRandom.current().nextDouble();
                 }
             }
@@ -141,10 +124,10 @@ public class BatAgent implements Serializable {
         Vector newDirection = wall.getWall().asVector().getNormal();
         double projectionCoef = 2 * (direction.scalarProduct(newDirection)) / Math.pow((newDirection.absValue()), 2);
 
-        if (projectionCoef == 0) {
+        if (projectionCoef == 0) {                          // if colliding vertically
             direction.reverse();
         } else {
-            newDirection.multiply(projectionCoef);
+            newDirection.multiply(projectionCoef);         // if colliding under an angle reflect in same angle
             direction.subtract(newDirection);
         }
     }
@@ -163,7 +146,7 @@ public class BatAgent implements Serializable {
                 this.timeSpentInState[0]++;
                 search(); // Flying around randomly, looking for a home to clean
                 break;
-            case traveling:
+            case travelling:
                 this.timeSpentInState[1]++;
                 travel(); // Traveling towards a home
                 break;
@@ -237,7 +220,7 @@ public class BatAgent implements Serializable {
         this.direction.setX(position, home.getCoords());
         this.direction.setY(position, home.getCoords()); // if a home is found fly towards it
         this.home = home; // set it as the home im traveling to
-        state = State.traveling;
+        state = State.travelling;
     }
 
     protected synchronized void checkForHomes() {
@@ -260,8 +243,11 @@ public class BatAgent implements Serializable {
                 case REPULSING:
                     break;
                 case ATTRACTING: // if agents are attracting others to home
-                    if (isInAttractionDistance(distance, home) || isVisible(home.getCoords(), angle)) {
+                    if(isInAttractionDistance(distance, home)) {
                         attractingHomes.add(home);
+                    }
+                    else if(isVisible(home.getCoords(), angle)) {
+                        notAttractingHomes.add(home);
                     }
                     break;
                 case NONE:

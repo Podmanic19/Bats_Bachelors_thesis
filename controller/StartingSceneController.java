@@ -1,6 +1,7 @@
 package controller;
 
 
+import javafx.fxml.Initializable;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.gui.ChangeScene;
@@ -9,10 +10,18 @@ import model.testing.TestResult;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import static model.main.Main.primaryStage;
 
-public class StartingSceneController implements ChangeScene, Popup {
+public class StartingSceneController implements ChangeScene, Popup, Initializable {
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        primaryStage.setUserData(null);
+    }
 
     public void btnRunTestsOnAction()  {
         try {
@@ -57,4 +66,5 @@ public class StartingSceneController implements ChangeScene, Popup {
             e.printStackTrace();
         }
     }
+
 }

@@ -29,8 +29,6 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -85,7 +83,7 @@ public class ShowTestResultController implements Initializable, Popup, ChangeSce
         fch.getExtensionFilters().add(fileExtensions);
         File file = fch.showSaveDialog(new Stage());
         if(file == null) {
-            popup("No valid file selected");
+            Platform.runLater(() -> popup("No valid file selected"));
             return;
         }
 
@@ -96,8 +94,6 @@ public class ShowTestResultController implements Initializable, Popup, ChangeSce
                 popup("File saved successfully");
             });
         }).start();
-
-
     }
 
     public void btnMainMenuOnAction() {
@@ -110,10 +106,18 @@ public class ShowTestResultController implements Initializable, Popup, ChangeSce
     }
 
     public void btnShowTestOnAction() {
+        mainPane.getChildren().clear();
+        try {
+            load(mainPane, "testresult");
+        } catch (IOException e) {
+            popup("Couldn't load file view/testresult.fxml");
+            e.printStackTrace();
+        }
 
     }
 
     public void btnShowMapOnAction() {
+        mainPane.getChildren().clear();
         MapShell shell = mapCb.getValue();
         Map m = new Map(shell, result.getAgentTypes().get(0), result.getNumAgents(), result.isSingleStart());
         placeHomes(m.getHomes(), mainPane);

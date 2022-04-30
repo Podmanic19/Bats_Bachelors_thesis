@@ -163,6 +163,7 @@ public class TestRunningController implements Initializable, ChangeScene, Popup 
                         if(isCancelled()) return null;
                         Map map = new Map(shell, currentAgent, numAgents, singleStart);
                         Statistic s = test(map, currentAgent.NAME, shell.getName(), numAgents, hearingDist);
+                        //System.out.println("Iteration " + currentIter + " time taken: " + s.getTakenTime());
                         result.update(s);   // update the test result with statistic
                         updateProgress(progress++, total_work); // update progress bar
                     }
@@ -192,7 +193,6 @@ public class TestRunningController implements Initializable, ChangeScene, Popup 
                 s.updateTimeInState(map.getAgentsInState());
                 j++;
             }
-            System.out.println("Time taken: " + j);
             s.aggregate(j, map.getAgents());
             return s;
         }
