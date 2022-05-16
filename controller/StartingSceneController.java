@@ -1,6 +1,7 @@
 package controller;
 
 
+import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -38,24 +39,33 @@ public class StartingSceneController implements ChangeScene, Popup, Initializabl
         FileChooser.ExtensionFilter fileExtensions = new FileChooser.ExtensionFilter("Test results", "*.test");
         fch.getExtensionFilters().add(fileExtensions);
         File file = fch.showOpenDialog(new Stage());
-        TestResult r = null;
-        try {
-            r = TestResult.load(file);
-        } catch (IOException e){
-            popup("Couldn't load given test");
-            e.printStackTrace();
-        }
-        if(file == null || r == null) {
-            popup("No test selected");
-            return;
-        }
-        try {
+        new Thread(() -> {
+            TestResult r = null;
+            if(file == null) {
+                Platform.runLater(() -> popup("No test selected"));
+                return;
+            }
+            try {
+                Platform.runLater(() -> popup("Loading test may take a while"));
+                r = TestResult.load(file);
+            } catch (IOException e){
+                Platform.runLater(() -> popup("Couldn't load given test"));
+                e.printStackTrace();
+            }
+            if(r == null) {
+                Platform.runLater(() -> popup("No test selected"));
+                return;
+            }
             primaryStage.setUserData(r);
-            sceneChanger("showtestresult");
-        } catch (IOException e) {
-            popup("Couldn't load file view/showtestresult.fxml");
-            e.printStackTrace();
-        }
+            Platform.runLater(() -> {
+                try {
+                    sceneChanger("showtestresult");
+                } catch (IOException e) {
+                    popup("Couldn't load file view/showtestresult.fxml");
+                    e.printStackTrace();
+                }
+            });
+        }).start();
     }
 
     public void btnRunVisualisationOnAction() {

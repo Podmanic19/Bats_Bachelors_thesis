@@ -76,7 +76,7 @@ public class ChooseMapsController implements ChangeScene, Popup, Initializable, 
             stage.setResizable(false);
             stage.setScene(scene);
             stage.setTitle(selected.getName());
-            stage.getIcons().add(new Image("/Image/images.jfif"));
+            stage.getIcons().add(new Image("/Image/SKYBAT.png"));
             stage.show();
         }
         else {
@@ -245,6 +245,10 @@ public class ChooseMapsController implements ChangeScene, Popup, Initializable, 
             if(s.isChosen()) testedMaps.add(s);
         }
 
+        if(testedMaps.isEmpty()) {
+            popup("Please select at least one map");
+            check = false;
+        }
         test.setUninitializedMaps(testedMaps);
 
 

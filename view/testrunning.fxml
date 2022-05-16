@@ -40,9 +40,9 @@
             <Font name="System Bold" size="13.0" />
          </font>
       </Button>
-      <ProgressBar fx:id="totalProgressPb" layoutX="373.0" layoutY="441.0" prefHeight="32.0" prefWidth="264.0" progress="0.0" />
+      <ProgressBar fx:id="totalProgressPb" layoutX="376.0" layoutY="490.0" prefHeight="32.0" prefWidth="264.0" progress="0.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e2e2e2" height="123.0" layoutX="169.0" layoutY="209.0" stroke="WHITE" strokeType="INSIDE" width="672.0" />
-      <Label layoutX="392.0" layoutY="230.0" text="RUNNING TEST">
+      <Label layoutX="407.0" layoutY="232.0" text="RUNNING TEST">
          <font>
             <Font name="System Bold" size="29.0" />
          </font>
@@ -52,6 +52,6 @@
             <Font name="System Bold" size="13.0" />
          </font>
       </Button>
-      <Label layoutX="354.0" layoutY="297.0" text="LEAVING THIS SCREEN WILL CANCEL RUNNING TESTS" textAlignment="CENTER" />
+      <Label layoutX="345.0" layoutY="293.0" text="LEAVING THIS SCREEN WILL CANCEL RUNNING TESTS" textAlignment="CENTER" />
    </children>
 </Pane>

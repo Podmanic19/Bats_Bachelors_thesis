@@ -2,6 +2,10 @@ package model.map;
 
 import java.io.Serializable;
 
+/**
+ * Functions taken from https://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/
+ **/
+
 public class LineSegment implements Serializable {
     private final Coordinate A;
     private final Coordinate B;

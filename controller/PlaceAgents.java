@@ -36,12 +36,12 @@ public interface PlaceAgents {
                 paneMain.getChildren().add(arc);
             }
             if (a.getState() == State.searching) {
-                cir.setFill(Color.DARKSEAGREEN);
-                cir.setStroke(Color.DARKSEAGREEN);
-            }
-            if (a.getState() == State.travelling) {
                 cir.setFill(Color.DARKRED);
                 cir.setStroke(Color.DARKRED);
+            }
+            if (a.getState() == State.travelling) {
+                cir.setFill(Color.DARKSEAGREEN);
+                cir.setStroke(Color.DARKSEAGREEN);
             }
             cir.setRadius(3*coef_w);
             cir.setCenterX(a.getPosition().getX() * coef_w);

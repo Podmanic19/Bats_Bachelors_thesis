@@ -1,8 +1,10 @@
 package controller;
 import controller.test.TestRunningController;
 import javafx.concurrent.Task;
+import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Slider;
 import javafx.scene.shape.Line;
 import model.agents.BatAgent;
 import model.gui.ChangeScene;
@@ -23,15 +25,17 @@ import model.testing.TestParams;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ResourceBundle;
 import java.util.concurrent.Semaphore;
 
 
 import static java.lang.Thread.sleep;
 import static model.main.Main.*;
 
-public class VisualisationController implements LoadToPane, PlaceAgents, PlaceHomes, PlaceWalls, Popup, ChangeScene {
+public class VisualisationController implements LoadToPane, PlaceAgents, PlaceHomes, PlaceWalls, Popup, ChangeScene, Initializable {
 
     @FXML Button btnCreate;
     @FXML Button btnEnvSettings;
@@ -48,12 +52,21 @@ public class VisualisationController implements LoadToPane, PlaceAgents, PlaceHo
     @FXML CheckBox singleStart;
     @FXML Label lblTicks;
     @FXML Button btnEnv;
+    @FXML Slider numAgentsSlider;
 
     private MapShell mShell;
-    private final Visualisation visualisation = new Visualisation();
+    private Visualisation visualisation = new Visualisation();
     private Map shownMap;
 
     public static boolean playing = false;
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        numAgentsSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            showMap();
+        });
+    }
 
     public void btnMainMenuOnAction() {
         try {
@@ -95,8 +108,14 @@ public class VisualisationController implements LoadToPane, PlaceAgents, PlaceHo
         }).start();
     }
 
+    public void sliderOnDragDone() {
+        reloadMap();
+    }
+
     private void showMap() {
         paneMain.getChildren().clear();
+        if(mShell == null) return;
+        reloadMap();
         placeHomes(shownMap.getHomes(), paneMain);
         placeWalls(shownMap.getWalls(), paneMain);
         placeAgents(shownMap.getAgents(), paneMain);
@@ -106,10 +125,11 @@ public class VisualisationController implements LoadToPane, PlaceAgents, PlaceHo
         showMap();
         lblTicks.setAlignment(Pos.CENTER);
         if(playing) return;
-        Thread t = new Thread(visualisation);
+        Thread t = new Thread(new Visualisation());
         t.setDaemon(true);
         t.start();
         btnPlay.setDisable(true);
+        disableButtons(true);
     }
 
     public void btnEnvSettings() {
@@ -138,7 +158,7 @@ public class VisualisationController implements LoadToPane, PlaceAgents, PlaceHo
             popup("No map selected");
             return;
         }
-        shownMap = new Map(mShell, agentparams, mapparams.AGENT_NUM, singleStart.isSelected());
+        reloadMap();
         btnPlay.setDisable(false);
         showMap();
     }
@@ -167,6 +187,13 @@ public class VisualisationController implements LoadToPane, PlaceAgents, PlaceHo
         btnSave.setDisable(disable);
         btnEnvSettings.setDisable(disable);
         btnEnv.setDisable(disable);
+        numAgentsSlider.setDisable(disable);
+        singleStart.setDisable(disable);
+    }
+
+    private void reloadMap() {
+        if(mShell == null) return;
+        shownMap = new Map(mShell, agentparams, (int) numAgentsSlider.getValue(), this.singleStart.isSelected());
     }
 
     class Visualisation extends Task {
@@ -213,6 +240,10 @@ public class VisualisationController implements LoadToPane, PlaceAgents, PlaceHo
 
             Instant end = Instant.now();
             System.out.println(Duration.between(start, end));
+            Platform.runLater(()-> {
+                disableButtons(false);
+                btnPlay.setDisable(true);
+            });
             return runtime;
 
         }
